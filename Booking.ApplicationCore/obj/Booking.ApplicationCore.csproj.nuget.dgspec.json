@@ -1,20 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "E:\\Study\\ItAcademy\\ASPNet\\Team\\Booking\\Booking.ApplicationCore\\Booking.ApplicationCore.csproj": {}
+    "C:\\Users\\buxar\\OneDrive\\Рабочий стол\\Совместный проект\\bookingprototype\\Booking.ApplicationCore\\Booking.ApplicationCore.csproj": {}
   },
   "projects": {
-    "E:\\Study\\ItAcademy\\ASPNet\\Team\\Booking\\Booking.ApplicationCore\\Booking.ApplicationCore.csproj": {
+    "C:\\Users\\buxar\\OneDrive\\Рабочий стол\\Совместный проект\\bookingprototype\\Booking.ApplicationCore\\Booking.ApplicationCore.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Study\\ItAcademy\\ASPNet\\Team\\Booking\\Booking.ApplicationCore\\Booking.ApplicationCore.csproj",
+        "projectUniqueName": "C:\\Users\\buxar\\OneDrive\\Рабочий стол\\Совместный проект\\bookingprototype\\Booking.ApplicationCore\\Booking.ApplicationCore.csproj",
         "projectName": "Booking.ApplicationCore",
-        "projectPath": "E:\\Study\\ItAcademy\\ASPNet\\Team\\Booking\\Booking.ApplicationCore\\Booking.ApplicationCore.csproj",
-        "packagesPath": "C:\\Users\\mats\\.nuget\\packages\\",
-        "outputPath": "E:\\Study\\ItAcademy\\ASPNet\\Team\\Booking\\Booking.ApplicationCore\\obj\\",
+        "projectPath": "C:\\Users\\buxar\\OneDrive\\Рабочий стол\\Совместный проект\\bookingprototype\\Booking.ApplicationCore\\Booking.ApplicationCore.csproj",
+        "packagesPath": "C:\\Users\\buxar\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\buxar\\OneDrive\\Рабочий стол\\Совместный проект\\bookingprototype\\Booking.ApplicationCore\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\mats\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\buxar\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -55,7 +59,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.100\\RuntimeIdentifierGraph.json"
         }
       }
     }
