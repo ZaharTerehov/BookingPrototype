@@ -4,6 +4,7 @@ namespace Booking.Web.Interfaces
 {
     public interface IApartmentTypeViewModelService
     {
-        void UpdateApartmentType(ApartmentType catalogItemViewModel);
+        void UpdateApartmentType(ApartmentType apartmentTypeViewModel);
+        void CreateNewApartmentType(ApartmentType apartmentTypeViewModel);
     }
 }

@@ -27,5 +27,20 @@ namespace Booking.Web.Services
             existingApartmentType.UpdateDetails(details);
             _apartmentTypeRepository.Update(existingApartmentType);
         }
+
+        public void CreateNewApartmentType(ApartmentType viewModel)
+        {
+            var existingApartmentType = _apartmentTypeRepository.GetAll().ToList();
+            if (existingApartmentType.Any(x => x.Name == viewModel.Name))
+            {
+                var exception = new Exception($"Apartment type {viewModel.Name} is already created");
+
+                throw exception;
+            }
+
+            int newID = existingApartmentType.Max(x => x.Id) + 1;
+
+            _apartmentTypeRepository.Create(new ApartmentType() { Id = newID, Name = viewModel.Name });
+        }
     }
 }

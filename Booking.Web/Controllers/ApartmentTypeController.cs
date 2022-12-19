@@ -2,7 +2,6 @@
 using Booking.ApplicationCore.Models;
 using Booking.ApplicationCore.Services;
 using Booking.Web.Interfaces;
-using Booking.Web.Models;
 using Booking.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,16 +21,7 @@ namespace Booking.Web.Controllers
 
         public IActionResult Index()
         {
-            var apartmentsViewModel = _apartmentTypeRepository.GetAll().Select(apartment => 
-            new ApartmentTypeViewModel() { Name = apartment.Name}).ToList();
-
-            //var catalogitemsViewModel = _catalogRepository.GetAll().Select(item => new CatalogItemViewModel()
-            //{
-            //    Id= item.Id,
-            //    Name= item.Name,
-            //    PictureUrl= item.PictureUrl,
-            //    Price= item.Price,
-            //}).ToList();
+            var apartmentsViewModel = _apartmentTypeRepository.GetAll().ToList();
 
             return View(apartmentsViewModel);
         }
@@ -55,11 +45,32 @@ namespace Booking.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(ApartmentType catalogItemViewModel)
+        public IActionResult Edit(ApartmentType apartmentTypeViewModel)
         {
             try
             {
-                _apartmentTypeViewModelService.UpdateApartmentType(catalogItemViewModel);
+                _apartmentTypeViewModelService.UpdateApartmentType(apartmentTypeViewModel);
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View(new ApartmentType());
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(ApartmentType apartmentTypeViewModel)
+        {
+            try
+            {
+                _apartmentTypeViewModelService.CreateNewApartmentType(apartmentTypeViewModel);
                 return RedirectToAction(nameof(Index));
             }
             catch
