@@ -12,7 +12,7 @@ namespace Booking.Web.Controllers
         private readonly IApartmentTypeViewModelService _apartmentTypeViewModelService;
         private readonly IRepository<ApartmentType> _apartmentTypeRepository;
 
-        public ApartmentTypeController(IRepository<ApartmentType> apartmentTypeRepository, 
+        public ApartmentTypeController(IRepository<ApartmentType> apartmentTypeRepository,
             IApartmentTypeViewModelService apartmentTypeViewModelService)
         {
             _apartmentTypeViewModelService = apartmentTypeViewModelService;
@@ -30,8 +30,9 @@ namespace Booking.Web.Controllers
             return View(apartmentsViewModel);
         }
 
+        //[HttpGet ("{id}")]  
         [HttpGet]
-        public IActionResult Edit(int id)
+        public IActionResult Edit(int id) 
         {
             var apartment = _apartmentTypeRepository.GetById(id);
             if (apartment == null)
@@ -44,6 +45,8 @@ namespace Booking.Web.Controllers
                 Id = apartment.Id,
                 Name = apartment.Name,
             };
+
+
             return View(result);
         }
 
