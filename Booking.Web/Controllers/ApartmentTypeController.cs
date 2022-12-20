@@ -1,7 +1,7 @@
 ﻿using Booking.ApplicationCore.Interfaces;
 using Booking.ApplicationCore.Models;
-using Booking.ApplicationCore.Services;
 using Booking.Web.Interfaces;
+using Booking.Web.Models;
 using Booking.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,12 +16,16 @@ namespace Booking.Web.Controllers
             IApartmentTypeViewModelService apartmentTypeViewModelService)
         {
             _apartmentTypeViewModelService = apartmentTypeViewModelService;
-            _apartmentTypeRepository =apartmentTypeRepository;
+            _apartmentTypeRepository = apartmentTypeRepository;
         }
 
         public IActionResult Index()
         {
-            var apartmentsViewModel = _apartmentTypeRepository.GetAll().ToList();
+            var apartmentsViewModel = _apartmentTypeRepository.GetAll().Select(item => new ApartmentTypeViewModel()
+            {
+                Id= item.Id,
+                Name = item.Name
+            }).ToList();
 
             return View(apartmentsViewModel);
         }
@@ -35,7 +39,7 @@ namespace Booking.Web.Controllers
                 return RedirectToAction("Index");
             }
 
-            var result = new ApartmentType()
+            var result = new ApartmentTypeViewModel()
             {
                 Id = apartment.Id,
                 Name = apartment.Name,
@@ -45,7 +49,7 @@ namespace Booking.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(ApartmentType apartmentTypeViewModel)
+        public IActionResult Edit(ApartmentTypeViewModel apartmentTypeViewModel)
         {
             try
             {
@@ -61,12 +65,12 @@ namespace Booking.Web.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            return View(new ApartmentType());
+            return View(new ApartmentTypeViewModel());
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(ApartmentType apartmentTypeViewModel)
+        public IActionResult Create(ApartmentTypeViewModel apartmentTypeViewModel)
         {
             try
             {

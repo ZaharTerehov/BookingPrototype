@@ -1,6 +1,6 @@
 ﻿using Booking.ApplicationCore.Interfaces;
 using Booking.ApplicationCore.Models;
-using Booking.ApplicationCore.Services;
+using Booking.Infrastructure.Services;
 using Booking.Web.Interfaces;
 using Booking.Web.Services;
 

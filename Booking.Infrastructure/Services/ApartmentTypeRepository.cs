@@ -6,16 +6,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Booking.ApplicationCore.Services
+namespace Booking.Infrastructure.Services
 {
-    public class ApartmentTypeRepository : IRepository<ApartmentType>
+    public sealed class ApartmentTypeRepository : IRepository<ApartmentType>
     {
         private static IList<ApartmentType> _apartmentTypes = new List<ApartmentType>
-            {
-                new ApartmentType { Id = 1, Name = "House" },
-                new ApartmentType { Id = 2, Name = "HotelRoom" },
-                new ApartmentType { Id = 3, Name = "Apartment" }
-            };
+        {
+            new ApartmentType { Id = 1, Name = "House" },
+            new ApartmentType { Id = 2, Name = "HotelRoom" },
+            new ApartmentType { Id = 3, Name = "Apartment" }
+        };
 
         public void Create(ApartmentType entity)
         {
@@ -46,5 +46,6 @@ namespace Booking.ApplicationCore.Services
                 _apartmentTypes[index] = entity;
             }
         }
+        
     }
 }
