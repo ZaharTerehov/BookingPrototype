@@ -1,10 +1,11 @@
 ﻿using Booking.ApplicationCore.Models;
+using Booking.Web.Models;
 
 namespace Booking.Web.Interfaces
 {
     public interface IApartmentTypeViewModelService
     {
-        void UpdateApartmentType(ApartmentType apartmentTypeViewModel);
-        void CreateNewApartmentType(ApartmentType apartmentTypeViewModel);
+        void UpdateApartmentType(ApartmentTypeViewModel apartmentTypeViewModel);
+        void CreateNewApartmentType(ApartmentTypeViewModel apartmentTypeViewModel);
     }
 }

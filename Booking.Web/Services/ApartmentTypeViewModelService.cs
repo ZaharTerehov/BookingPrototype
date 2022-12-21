@@ -1,6 +1,7 @@
 ﻿using Booking.ApplicationCore.Interfaces;
 using Booking.ApplicationCore.Models;
 using Booking.Web.Interfaces;
+using Booking.Web.Models;
 
 namespace Booking.Web.Services
 {
@@ -13,7 +14,7 @@ namespace Booking.Web.Services
             _apartmentTypeRepository = apartmentTypeRepostitory;
         }
 
-        public void UpdateApartmentType(ApartmentType viewModel)
+        public void UpdateApartmentType(ApartmentTypeViewModel viewModel)
         {
             var existingApartmentType = _apartmentTypeRepository.GetById(viewModel.Id);
             if (existingApartmentType is null)
@@ -28,7 +29,7 @@ namespace Booking.Web.Services
             _apartmentTypeRepository.Update(existingApartmentType);
         }
 
-        public void CreateNewApartmentType(ApartmentType viewModel)
+        public void CreateNewApartmentType(ApartmentTypeViewModel viewModel)
         {
             var existingApartmentType = _apartmentTypeRepository.GetAll().ToList();
             if (existingApartmentType.Any(x => x.Name == viewModel.Name))

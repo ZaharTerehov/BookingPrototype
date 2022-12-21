@@ -1,7 +1,7 @@
 ﻿using Booking.ApplicationCore.Interfaces;
 using Booking.ApplicationCore.Models;
-using Booking.ApplicationCore.Services;
 using Booking.Web.Interfaces;
+using Booking.Web.Models;
 using Booking.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,23 +11,32 @@ namespace Booking.Web.Controllers
     {
         private readonly IApartmentTypeViewModelService _apartmentTypeViewModelService;
         private readonly IRepository<ApartmentType> _apartmentTypeRepository;
+        private readonly ILogger<ApartmentTypeController> _logger;
 
-        public ApartmentTypeController(IRepository<ApartmentType> apartmentTypeRepository, 
-            IApartmentTypeViewModelService apartmentTypeViewModelService)
+        public ApartmentTypeController(IRepository<ApartmentType> apartmentTypeRepository,
+            IApartmentTypeViewModelService apartmentTypeViewModelService,
+            ILogger<ApartmentTypeController> logger)
         {
             _apartmentTypeViewModelService = apartmentTypeViewModelService;
-            _apartmentTypeRepository =apartmentTypeRepository;
+            _apartmentTypeRepository = apartmentTypeRepository;
+            _logger=logger;
         }
 
         public IActionResult Index()
         {
-            var apartmentsViewModel = _apartmentTypeRepository.GetAll().ToList();
+            var apartmentsViewModel = _apartmentTypeRepository.GetAll().Select(item => new ApartmentTypeViewModel()
+            {
+                Id= item.Id,
+                Name = item.Name
+            }).ToList();
+
+            _logger.LogInformation("Open Index method...");
 
             return View(apartmentsViewModel);
         }
 
         [HttpGet]
-        public IActionResult Edit(int id)
+        public IActionResult Edit(int id) 
         {
             var apartment = _apartmentTypeRepository.GetById(id);
             if (apartment == null)
@@ -35,17 +44,19 @@ namespace Booking.Web.Controllers
                 return RedirectToAction("Index");
             }
 
-            var result = new ApartmentType()
+            var result = new ApartmentTypeViewModel()
             {
                 Id = apartment.Id,
                 Name = apartment.Name,
             };
+
+
             return View(result);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(ApartmentType apartmentTypeViewModel)
+        public IActionResult Edit(ApartmentTypeViewModel apartmentTypeViewModel)
         {
             try
             {
@@ -61,12 +72,12 @@ namespace Booking.Web.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            return View(new ApartmentType());
+            return View(new ApartmentTypeViewModel());
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(ApartmentType apartmentTypeViewModel)
+        public IActionResult Create(ApartmentTypeViewModel apartmentTypeViewModel)
         {
             try
             {
