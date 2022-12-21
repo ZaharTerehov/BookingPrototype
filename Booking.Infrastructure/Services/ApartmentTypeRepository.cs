@@ -1,5 +1,6 @@
 ﻿using Booking.ApplicationCore.Interfaces;
 using Booking.ApplicationCore.Models;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,13 @@ namespace Booking.Infrastructure.Services
 {
     public sealed class ApartmentTypeRepository : IRepository<ApartmentType>
     {
+        private readonly ILogger<ApartmentTypeRepository> _logger;
+
+        public ApartmentTypeRepository(ILoggerFactory loggerFactory)
+        {
+            _logger = loggerFactory.CreateLogger<ApartmentTypeRepository>();
+        }
+
         private static IList<ApartmentType> _apartmentTypes = new List<ApartmentType>
         {
             new ApartmentType { Id = 1, Name = "House" },
@@ -23,6 +31,8 @@ namespace Booking.Infrastructure.Services
             {
                 throw new Exception("This apartment type is already created");
             }
+
+            _logger.LogInformation($"Create new instance of {entity.GetType().Name} : {entity.Name}");
             _apartmentTypes.Add(entity);
         }
 

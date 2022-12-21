@@ -11,12 +11,15 @@ namespace Booking.Web.Controllers
     {
         private readonly IApartmentTypeViewModelService _apartmentTypeViewModelService;
         private readonly IRepository<ApartmentType> _apartmentTypeRepository;
+        private readonly ILogger<ApartmentTypeController> _logger;
 
         public ApartmentTypeController(IRepository<ApartmentType> apartmentTypeRepository,
-            IApartmentTypeViewModelService apartmentTypeViewModelService)
+            IApartmentTypeViewModelService apartmentTypeViewModelService,
+            ILogger<ApartmentTypeController> logger)
         {
             _apartmentTypeViewModelService = apartmentTypeViewModelService;
             _apartmentTypeRepository = apartmentTypeRepository;
+            _logger=logger;
         }
 
         public IActionResult Index()
@@ -27,10 +30,11 @@ namespace Booking.Web.Controllers
                 Name = item.Name
             }).ToList();
 
+            _logger.LogInformation("Open Index method...");
+
             return View(apartmentsViewModel);
         }
 
-        //[HttpGet ("{id}")]  
         [HttpGet]
         public IActionResult Edit(int id) 
         {
