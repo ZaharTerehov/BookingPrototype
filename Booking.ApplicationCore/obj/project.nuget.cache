@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "eqZ3buw+60Zsref+yS78eY3ZF19RbtN59cp1pp6fD7GzTY+KK6w5EHbyjSTNCmHcKva8jV0uaunTraWAyi/R+Q==",
+  "dgSpecHash": "DX3jf3PV8/8XGlO3FQSuzuGQ1deEDDxybpU3+OJbgwDmsgcFm834jrFeZMYVlQJzzTFRoE0lQk0dllysyAiZcg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\buxar\\OneDrive\\Рабочий стол\\Совместный проект\\bookingprototype\\Booking.ApplicationCore\\Booking.ApplicationCore.csproj",
+  "projectFilePath": "C:\\Users\\buxar\\OneDrive\\Рабочий стол\\Совместный проект\\bookingprototype\\bookingprototype\\Booking.ApplicationCore\\Booking.ApplicationCore.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\buxar\\.nuget\\packages\\microsoft.extensions.configuration\\2.0.0\\microsoft.extensions.configuration.2.0.0.nupkg.sha512",
     "C:\\Users\\buxar\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\3.1.8\\microsoft.extensions.configuration.abstractions.3.1.8.nupkg.sha512",

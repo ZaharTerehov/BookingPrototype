@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "yw+uoarKi81e69MXbRJuPFPP1SG04WbFXHQeIawoJILIu7vyht6TYNEpiMOmW0fRkffJpIhy0l5ABEvZPy0aEw==",
+  "dgSpecHash": "FX+xFUMI+zd3PfOXZt3ijhRNbXHGSrE6qKEJg55cB0OsuOGtMxYJ/x1fEFPYdTv73651lnMLs6rjoWQFPBuPxw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\buxar\\OneDrive\\Рабочий стол\\Совместный проект\\bookingprototype\\Booking.Web\\Booking.Web.csproj",
+  "projectFilePath": "C:\\Users\\buxar\\OneDrive\\Рабочий стол\\Совместный проект\\bookingprototype\\bookingprototype\\Booking.Web\\Booking.Web.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\buxar\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\buxar\\.nuget\\packages\\microsoft.aspnetcore.razor.language\\6.0.11\\microsoft.aspnetcore.razor.language.6.0.11.nupkg.sha512",

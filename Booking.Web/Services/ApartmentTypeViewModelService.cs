@@ -43,5 +43,19 @@ namespace Booking.Web.Services
 
             _apartmentTypeRepository.Create(new ApartmentType() { Id = newID, Name = viewModel.Name });
         }
+
+        public void DeleteApartmentType(ApartmentTypeViewModel apartmentTypeViewModel)
+        {
+            var existingApartmentType = _apartmentTypeRepository.GetById(apartmentTypeViewModel.Id);
+            if (existingApartmentType is null)
+            {
+                var exception = new Exception($"Apartment type {apartmentTypeViewModel.Id} was not found");
+
+                throw exception;
+            }
+
+            _apartmentTypeRepository.Delete(existingApartmentType.Id);
+        }
+
     }
 }

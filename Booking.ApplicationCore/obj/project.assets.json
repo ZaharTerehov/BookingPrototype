@@ -836,11 +836,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\buxar\\OneDrive\\Рабочий стол\\Совместный проект\\bookingprototype\\Booking.ApplicationCore\\Booking.ApplicationCore.csproj",
+      "projectUniqueName": "C:\\Users\\buxar\\OneDrive\\Рабочий стол\\Совместный проект\\bookingprototype\\bookingprototype\\Booking.ApplicationCore\\Booking.ApplicationCore.csproj",
       "projectName": "Booking.ApplicationCore",
-      "projectPath": "C:\\Users\\buxar\\OneDrive\\Рабочий стол\\Совместный проект\\bookingprototype\\Booking.ApplicationCore\\Booking.ApplicationCore.csproj",
+      "projectPath": "C:\\Users\\buxar\\OneDrive\\Рабочий стол\\Совместный проект\\bookingprototype\\bookingprototype\\Booking.ApplicationCore\\Booking.ApplicationCore.csproj",
       "packagesPath": "C:\\Users\\buxar\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\buxar\\OneDrive\\Рабочий стол\\Совместный проект\\bookingprototype\\Booking.ApplicationCore\\obj\\",
+      "outputPath": "C:\\Users\\buxar\\OneDrive\\Рабочий стол\\Совместный проект\\bookingprototype\\bookingprototype\\Booking.ApplicationCore\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
