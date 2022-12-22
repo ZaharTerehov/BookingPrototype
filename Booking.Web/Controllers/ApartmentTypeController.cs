@@ -89,5 +89,38 @@ namespace Booking.Web.Controllers
                 return View();
             }
         }
+
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+            var apartment = _apartmentTypeRepository.GetById(id);
+            if (apartment == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            var result = new ApartmentTypeViewModel()
+            {
+                Id = apartment.Id,
+                Name = apartment.Name,
+            };
+
+            return View(result);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Delete(ApartmentTypeViewModel apartmentTypeViewModel)
+        {
+            try
+            {
+                _apartmentTypeViewModelService.DeleteApartmentType(apartmentTypeViewModel);
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
     }
 }

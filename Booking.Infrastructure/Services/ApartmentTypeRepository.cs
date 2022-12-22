@@ -56,6 +56,16 @@ namespace Booking.Infrastructure.Services
                 _apartmentTypes[index] = entity;
             }
         }
-        
+
+        public void Delete(int id)
+        {
+
+            var existedApartmentType = GetById(id);
+            if (existedApartmentType!=null)
+            {
+                int index = _apartmentTypes.IndexOf(existedApartmentType);
+                _apartmentTypes.RemoveAt(index);
+            }
+        }
     }
 }
