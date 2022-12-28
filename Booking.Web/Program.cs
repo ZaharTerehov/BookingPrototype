@@ -3,6 +3,8 @@ using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
+Booking.Infrastructure.Dependencies.ConfigureServices(builder.Configuration, builder.Services);
+
 #region Serilog Configure
 var logger = new LoggerConfiguration()
   .ReadFrom.Configuration(builder.Configuration).CreateLogger();
