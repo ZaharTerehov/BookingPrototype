@@ -1,5 +1,6 @@
 ﻿using Booking.ApplicationCore.Interfaces;
 using Booking.ApplicationCore.Models;
+using Booking.Infrastructure.Data;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ namespace Booking.Infrastructure.Services
     public sealed class ApartmentTypeRepository : IRepository<ApartmentType>
     {
         private readonly ILogger<ApartmentTypeRepository> _logger;
+        
 
         public ApartmentTypeRepository(ILoggerFactory loggerFactory)
         {
@@ -69,6 +71,31 @@ namespace Booking.Infrastructure.Services
         }
 
         public Task<List<ApartmentType>> GetAllAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DeleteAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ApartmentType?> GetByIdAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Delete(ApartmentType entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DeleteAsync(ApartmentType entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CreateAsync(ApartmentType entity)
         {
             throw new NotImplementedException();
         }

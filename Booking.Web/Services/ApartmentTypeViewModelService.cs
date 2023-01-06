@@ -1,17 +1,21 @@
-﻿using Booking.ApplicationCore.Interfaces;
+﻿using AutoMapper;
+using Booking.ApplicationCore.Interfaces;
 using Booking.ApplicationCore.Models;
 using Booking.Web.Interfaces;
 using Booking.Web.Models;
+using Serilog;
 
 namespace Booking.Web.Services
 {
     public sealed class ApartmentTypeViewModelService : IApartmentTypeViewModelService
     {
         private readonly IRepository<ApartmentType> _apartmentTypeRepository;
+        private readonly IMapper _mapper;
 
-        public ApartmentTypeViewModelService(IRepository<ApartmentType> apartmentTypeRepostitory)
+        public ApartmentTypeViewModelService(IMapper mapper,IRepository<ApartmentType> apartmentTypeRepostitory)
         {
             _apartmentTypeRepository = apartmentTypeRepostitory;
+            _mapper = mapper;
         }
 
         public void UpdateApartmentType(ApartmentTypeViewModel viewModel)
@@ -31,17 +35,22 @@ namespace Booking.Web.Services
 
         public void CreateNewApartmentType(ApartmentTypeViewModel viewModel)
         {
-            var existingApartmentType = _apartmentTypeRepository.GetAll().ToList();
-            if (existingApartmentType.Any(x => x.Name == viewModel.Name))
-            {
-                var exception = new Exception($"Apartment type {viewModel.Name} is already created");
 
-                throw exception;
-            }
+            var dto = _mapper.Map<ApartmentType>(viewModel);
+            _apartmentTypeRepository.CreateAsync(dto);
 
-            int newID = existingApartmentType.Max(x => x.Id) + 1;
 
-            _apartmentTypeRepository.Create(new ApartmentType() { Id = newID, Name = viewModel.Name });
+            //var existingApartmentType = _apartmentTypeRepository.GetAll().ToList();
+            //if (existingApartmentType.Any(x => x.Name == viewModel.Name))
+            //{
+            //    var exception = new Exception($"Apartment type {viewModel.Name} is already created");
+
+            //    throw exception;
+            //}
+
+            //int newID = existingApartmentType.Max(x => x.Id) + 1;
+
+            //_apartmentTypeRepository.CreateAsync(new ApartmentType() { Id = newID, Name = viewModel.Name });
         }
 
         public void DeleteApartmentType(ApartmentTypeViewModel apartmentTypeViewModel)
@@ -54,7 +63,7 @@ namespace Booking.Web.Services
                 throw exception;
             }
 
-            _apartmentTypeRepository.Delete(existingApartmentType.Id);
+            _apartmentTypeRepository.DeleteAsync(existingApartmentType);
         }
 
         public async Task<List<ApartmentTypeViewModel>> GetApartmentTypesAsync()

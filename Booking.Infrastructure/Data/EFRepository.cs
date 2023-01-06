@@ -18,9 +18,23 @@ namespace Booking.Infrastructure.Data
             _dbBookingContext= bookingContext;
         }
 
-        public void Create(T entity)
+        public async void CreateAsync(T entity)
         {
-            throw new NotImplementedException();
+            _dbBookingContext.Add(entity);
+            await _dbBookingContext.SaveChangesAsync();
+        }
+
+        public async void DeleteAsync(T entity)
+        {
+            _dbBookingContext.Remove(entity);
+           await _dbBookingContext.SaveChangesAsync();
+            //var entity = GetById(id);
+
+            //if (entity != null)
+            //{
+            //    _dbBookingContext.Set<T>().Remove(entity);
+            //    _dbBookingContext.SaveChanges();
+            //}
         }
 
         public void Delete(int id)
@@ -42,12 +56,13 @@ namespace Booking.Infrastructure.Data
 
         public T? GetById(int id)
         {
-            throw new NotImplementedException();
+            var entities = _dbBookingContext.Set<T>().Find(id);
+            return entities;
         }
 
         public void Update(T entity)
         {
-            throw new NotImplementedException();
+            _dbBookingContext.Remove(entity);
         }
     }
 }

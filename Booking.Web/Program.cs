@@ -19,6 +19,9 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddCoreServices();
 
+//AutoMapper
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 var app = builder.Build();
 
 app.Logger.LogInformation("Database migraion running...");

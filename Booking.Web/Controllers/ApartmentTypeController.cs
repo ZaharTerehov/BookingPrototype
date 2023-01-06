@@ -1,4 +1,5 @@
-﻿using Booking.ApplicationCore.Interfaces;
+﻿using AutoMapper;
+using Booking.ApplicationCore.Interfaces;
 using Booking.ApplicationCore.Models;
 using Booking.Web.Interfaces;
 using Booking.Web.Models;
@@ -12,14 +13,16 @@ namespace Booking.Web.Controllers
         private readonly IApartmentTypeViewModelService _apartmentTypeViewModelService;
         private readonly IRepository<ApartmentType> _apartmentTypeRepository;
         private readonly ILogger<ApartmentTypeController> _logger;
+        private readonly IMapper _mapper;
 
-        public ApartmentTypeController(IRepository<ApartmentType> apartmentTypeRepository,
+        public ApartmentTypeController(IMapper mapper,IRepository<ApartmentType> apartmentTypeRepository,
             IApartmentTypeViewModelService apartmentTypeViewModelService,
             ILogger<ApartmentTypeController> logger)
         {
             _apartmentTypeViewModelService = apartmentTypeViewModelService;
             _apartmentTypeRepository = apartmentTypeRepository;
             _logger=logger;
+            _mapper = mapper;
         }
 
         public async Task <IActionResult> Index()
@@ -72,15 +75,16 @@ namespace Booking.Web.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(ApartmentTypeViewModel apartmentTypeViewModel)
         {
-            try
-            {
-                _apartmentTypeViewModelService.CreateNewApartmentType(apartmentTypeViewModel);
+            //try
+            //{
+                var apartment = _mapper.Map<ApartmentTypeViewModel>(apartmentTypeViewModel);
+                _apartmentTypeViewModelService.CreateNewApartmentType(apartment);
                 return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            //}
+            //catch
+            //{
+            //   return View();
+            //}
         }
 
         [HttpGet]
