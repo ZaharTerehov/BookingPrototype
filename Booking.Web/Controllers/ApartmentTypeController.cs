@@ -22,16 +22,9 @@ namespace Booking.Web.Controllers
             _logger=logger;
         }
 
-        public IActionResult Index()
+        public async Task <IActionResult> Index()
         {
-            var apartmentsViewModel = _apartmentTypeRepository.GetAll().Select(item => new ApartmentTypeViewModel()
-            {
-                Id= item.Id,
-                Name = item.Name
-            }).ToList();
-
-            _logger.LogInformation("Open Index method...");
-
+            var apartmentsViewModel = await _apartmentTypeViewModelService.GetApartmentTypesAsync();
             return View(apartmentsViewModel);
         }
 

@@ -57,5 +57,17 @@ namespace Booking.Web.Services
             _apartmentTypeRepository.Delete(existingApartmentType.Id);
         }
 
+        public async Task<List<ApartmentTypeViewModel>> GetApartmentTypesAsync()
+        {
+            var entities = await _apartmentTypeRepository.GetAllAsync();
+            var apartmentTypes = entities
+                .Select(x => new ApartmentTypeViewModel
+                {
+                    Id= x.Id,
+                    Name= x.Name
+                }).ToList();
+
+            return apartmentTypes;
+        }
     }
 }

@@ -67,5 +67,10 @@ namespace Booking.Infrastructure.Services
                 _apartmentTypes.RemoveAt(index);
             }
         }
+
+        public Task<List<ApartmentType>> GetAllAsync()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

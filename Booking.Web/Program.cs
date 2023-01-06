@@ -32,7 +32,7 @@ using (var scope = app.Services.CreateScope())
         {
             bookingContext.Database.Migrate();
         }
-        //await CatalogContextSeed.SeedAsync(catalogContext, app.Logger);
+        await BookingContextSeed.SeedAsync(bookingContext, app.Logger);
     }
     catch (Exception ex)
     {

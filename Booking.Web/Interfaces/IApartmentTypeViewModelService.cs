@@ -8,5 +8,7 @@ namespace Booking.Web.Interfaces
         void UpdateApartmentType(ApartmentTypeViewModel apartmentTypeViewModel);
         void CreateNewApartmentType(ApartmentTypeViewModel apartmentTypeViewModel);
         void DeleteApartmentType(ApartmentTypeViewModel apartmentTypeViewModel);
+
+        Task<List<ApartmentTypeViewModel>> GetApartmentTypesAsync();
     }
 }

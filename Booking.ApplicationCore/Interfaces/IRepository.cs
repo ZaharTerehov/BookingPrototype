@@ -9,6 +9,7 @@ namespace Booking.ApplicationCore.Interfaces
     public interface IRepository<T> where T : class
     {
         IEnumerable<T> GetAll();
+        Task<List<T>> GetAllAsync();
         T? GetById(int id);
         void Create(T entity);
         void Update(T entity);
