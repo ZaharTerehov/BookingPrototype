@@ -10,17 +10,15 @@ namespace Booking.Web.Controllers
 {
     public class ApartmentTypeController : Controller
     {
-        private readonly IApartmentTypeViewModelService _apartmentTypeViewModelService;
-        private readonly IRepository<ApartmentType> _apartmentTypeRepository;
+        private readonly IApartmentTypeViewModelService _apartmentTypeViewModelService;        
         private readonly ILogger<ApartmentTypeController> _logger;
         private readonly IMapper _mapper;
 
-        public ApartmentTypeController(IMapper mapper,IRepository<ApartmentType> apartmentTypeRepository,
+        public ApartmentTypeController(IMapper mapper,
             IApartmentTypeViewModelService apartmentTypeViewModelService,
             ILogger<ApartmentTypeController> logger)
         {
-            _apartmentTypeViewModelService = apartmentTypeViewModelService;
-            _apartmentTypeRepository = apartmentTypeRepository;
+            _apartmentTypeViewModelService = apartmentTypeViewModelService;            
             _logger=logger;
             _mapper = mapper;
         }
@@ -45,11 +43,11 @@ namespace Booking.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(ApartmentTypeViewModel apartmentTypeViewModel)
+        public async Task<IActionResult> Edit(ApartmentTypeViewModel viewModel)
         {
             try
             {
-                await _apartmentTypeViewModelService.UpdateApartmentType(apartmentTypeViewModel);
+                await _apartmentTypeViewModelService.UpdateApartmentType(viewModel);
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -66,12 +64,12 @@ namespace Booking.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(ApartmentTypeViewModel apartmentTypeViewModel)
+        public async Task<IActionResult> Create(ApartmentTypeViewModel viewModel)
         {
             try
             {
-                var apartment = _mapper.Map<ApartmentTypeViewModel>(apartmentTypeViewModel);
-                await _apartmentTypeViewModelService.CreateNewApartmentTypeAsync(apartmentTypeViewModel);
+                var apartment = _mapper.Map<ApartmentTypeViewModel>(viewModel);
+                await _apartmentTypeViewModelService.CreateApartmentTypeAsync(viewModel);
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
@@ -95,11 +93,11 @@ namespace Booking.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(ApartmentTypeViewModel apartmentTypeViewModel)
+        public async Task<IActionResult> Delete(ApartmentTypeViewModel viewModel)
         {
             try
             {
-                await _apartmentTypeViewModelService.DeleteApartmentTypeAsync(apartmentTypeViewModel);
+                await _apartmentTypeViewModelService.DeleteApartmentTypeAsync(viewModel);
                 return RedirectToAction(nameof(Index));
             }
             catch

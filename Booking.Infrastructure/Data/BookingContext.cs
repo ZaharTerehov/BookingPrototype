@@ -11,8 +11,8 @@ namespace Booking.Infrastructure.Data
     public class BookingContext : DbContext
     {
         public DbSet<ApartmentType> ApartmentTypes { get; set; }
+        public DbSet<Country> Countries { get; set; }
 
         public BookingContext(DbContextOptions<BookingContext> options) : base(options) { }
-
     }
 }

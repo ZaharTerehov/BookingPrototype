@@ -18,6 +18,17 @@ namespace Booking.Infrastructure.Data
             _dbBookingContext= bookingContext;
         }
 
+        public async Task<T?> GetByIdAsync(int id)
+        {
+            var entities = await _dbBookingContext.Set<T>().FindAsync(id);
+            return entities;
+        }
+        public async Task<List<T>> GetAllAsync()
+        {
+            var entities = await _dbBookingContext.Set<T>().ToListAsync();
+            return entities;
+        }
+
         public async Task CreateAsync(T entity)
         {
             _dbBookingContext.Add(entity);
@@ -27,38 +38,8 @@ namespace Booking.Infrastructure.Data
         public async Task DeleteAsync(T entity)
         {
             _dbBookingContext.Remove(entity);
-           await _dbBookingContext.SaveChangesAsync();
-            //var entity = GetById(id);
-
-            //if (entity != null)
-            //{
-            //    _dbBookingContext.Set<T>().Remove(entity);
-            //    _dbBookingContext.SaveChanges();
-            //}
-        }
-
-        public void Delete(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<T> GetAll()
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<List<T>> GetAllAsync()
-        {
-            var entities = await _dbBookingContext.Set<T>().ToListAsync();
-
-            return entities; 
-        }
-
-        public async Task<T?> GetByIdAsync(int id)
-        {
-            var entities = await _dbBookingContext.Set<T>().FindAsync(id);
-            return entities;
-        }
+            await _dbBookingContext.SaveChangesAsync();
+        }            
 
         public async Task UpdateAsync(T entity)
         {

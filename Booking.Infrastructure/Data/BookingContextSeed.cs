@@ -36,5 +36,17 @@ namespace Booking.Infrastructure.Data
                 new ApartmentType { Name = "Apartment" },
             };
         }
+
+        private static IEnumerable<Country> GetInitialCountries()
+        {
+            return new List<Country>
+            {
+                new Country { Name = "Belarus" },
+                new Country { Name = "Poland" },
+                new Country { Name = "Italy" },
+                new Country { Name = "France"},
+                new Country { Name = "Spain"},
+            };
+        }
     }
 }
