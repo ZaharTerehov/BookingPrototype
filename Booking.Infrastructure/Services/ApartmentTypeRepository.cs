@@ -43,7 +43,7 @@ namespace Booking.Infrastructure.Services
             return _apartmentTypes;
         }
 
-        public ApartmentType? GetById(int id)
+        public async Task<ApartmentType?> GetById(int id)
         {
             var foundApartmentType = _apartmentTypes.FirstOrDefault(x => x.Id==id);
             return foundApartmentType;
@@ -51,7 +51,7 @@ namespace Booking.Infrastructure.Services
 
         public void Update(ApartmentType entity)
         {
-            var existedApartmentType = GetById(entity.Id);
+            var existedApartmentType = GetById(entity.Id).Result;
             if (existedApartmentType!=null)
             {
                 int index = _apartmentTypes.IndexOf(existedApartmentType);
@@ -62,7 +62,7 @@ namespace Booking.Infrastructure.Services
         public void Delete(int id)
         {
 
-            var existedApartmentType = GetById(id);
+            var existedApartmentType = GetById(id).Result;
             if (existedApartmentType!=null)
             {
                 int index = _apartmentTypes.IndexOf(existedApartmentType);
@@ -90,12 +90,17 @@ namespace Booking.Infrastructure.Services
             throw new NotImplementedException();
         }
 
-        public void DeleteAsync(ApartmentType entity)
+        public Task DeleteAsync(ApartmentType entity)
         {
             throw new NotImplementedException();
         }
 
-        public void CreateAsync(ApartmentType entity)
+        public Task CreateAsync(ApartmentType entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task UpdateAsync(ApartmentType entity)
         {
             throw new NotImplementedException();
         }

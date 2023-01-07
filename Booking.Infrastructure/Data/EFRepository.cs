@@ -18,13 +18,13 @@ namespace Booking.Infrastructure.Data
             _dbBookingContext= bookingContext;
         }
 
-        public async void CreateAsync(T entity)
+        public async Task CreateAsync(T entity)
         {
             _dbBookingContext.Add(entity);
             await _dbBookingContext.SaveChangesAsync();
         }
 
-        public async void DeleteAsync(T entity)
+        public async Task DeleteAsync(T entity)
         {
             _dbBookingContext.Remove(entity);
            await _dbBookingContext.SaveChangesAsync();
@@ -54,15 +54,16 @@ namespace Booking.Infrastructure.Data
             return entities; 
         }
 
-        public T? GetById(int id)
+        public async Task<T?> GetByIdAsync(int id)
         {
-            var entities = _dbBookingContext.Set<T>().Find(id);
+            var entities = await _dbBookingContext.Set<T>().FindAsync(id);
             return entities;
         }
 
-        public void Update(T entity)
+        public async Task UpdateAsync(T entity)
         {
-            _dbBookingContext.Remove(entity);
+            _dbBookingContext.Update(entity);
+            await _dbBookingContext.SaveChangesAsync();
         }
     }
 }

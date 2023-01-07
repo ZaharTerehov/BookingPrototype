@@ -10,11 +10,11 @@ namespace Booking.ApplicationCore.Interfaces
     {
         IEnumerable<T> GetAll();
         Task<List<T>> GetAllAsync();
-        T? GetById(int id);
-        void CreateAsync(T entity);
-        void Update(T entity);
+        Task<T?> GetByIdAsync(int id);
+        Task CreateAsync(T entity);
+        Task UpdateAsync(T entity);
         void Delete(int id); 
-        void DeleteAsync(T entity); 
+        Task DeleteAsync(T entity); 
 
         //void Save();
     }
