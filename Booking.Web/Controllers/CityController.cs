@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Booking.ApplicationCore.Interfaces;
 using Booking.ApplicationCore.Models;
+using Booking.Web.Extentions;
 using Booking.Web.Interfaces;
 using Booking.Web.Models;
 using Booking.Web.Services;
@@ -64,9 +65,7 @@ namespace Booking.Web.Controllers
                 return RedirectToAction("Index");
             }
 
-            var countriesList = (List<SelectListItem>?)await _cityViewModelService.GetCountries(false);
-
-            result.Countries = (List<SelectListItem>?)await _cityViewModelService.GetCountries(false);
+            result.Countries = (await _cityViewModelService.GetCountries(false)).ToList().SetSelectedValue(result.CountryFilterApplied);
             
             return View(result);
         }

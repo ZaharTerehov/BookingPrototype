@@ -31,7 +31,9 @@ namespace Booking.Web.Services
         public async Task<CityIndexViewModel> GetCitiesAsync(int? countryId)
         {
             var entities = await _unitOfWork.Cities.GetAllAsync();
-            var selectedCities = entities.Where(item => (!countryId.HasValue || item.CountryId == countryId)).ToList();
+            var selectedCities = entities.Where(item => (!countryId.HasValue || item.CountryId == countryId))
+                                        .OrderBy(item => item.Name) 
+                                        .ToList();
             var cityes = _mapper.Map<List<CityViewModel>>(selectedCities);
 
             var vm = new CityIndexViewModel()
@@ -39,25 +41,6 @@ namespace Booking.Web.Services
                 Cities = cityes,
                 Countries = (await GetCountries(true)).ToList(),
             };
-            //var entities = await _catalogItemRepository.GetAllAsync();
-            //var catalogItems = entities
-            //    .Where(item => (!brandId.HasValue || item.CatalogBrandId== brandId)
-            //                    && (!typeId.HasValue || item.CatalogTypeId == typeId))
-            //    .Select(x => new CatalogItemViewModel
-            //    {
-            //        Id= x.Id,
-            //        Name= x.Name,
-            //        PictureUrl= x.PictureUrl,
-            //        Price= x.Price,
-            //    }).ToList();
-
-            //var vm = new CatalogIndexViewModel()
-            //{
-            //    CatalogItems = catalogItems,
-            //    Brands = (await GetBrands()).ToList(),
-            //    Types = (await GetTypes()).ToList(),
-            //};
-            //return vm;
 
             return vm;
         }
