@@ -60,6 +60,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=ApartmentType}/{action=Index}/{id?}");
+    pattern: "{controller=City}/{action=Index}/{id?}");
 
 app.Run();

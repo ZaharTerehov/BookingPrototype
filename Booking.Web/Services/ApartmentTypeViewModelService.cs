@@ -10,18 +10,18 @@ namespace Booking.Web.Services
 {
     public sealed class ApartmentTypeViewModelService : IApartmentTypeViewModelService
     {
-        private readonly IRepository<ApartmentType> _apartmentTypeRepository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public ApartmentTypeViewModelService(IMapper mapper,IRepository<ApartmentType> apartmentTypeRepostitory)
+        public ApartmentTypeViewModelService(IMapper mapper, IUnitOfWork unitOfWork)
         {
-            _apartmentTypeRepository = apartmentTypeRepostitory;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
         public async Task<ApartmentTypeViewModel> GetApartmentTypeViewModelByIdAsync(int id)
         {
-            var apartmentType = await _apartmentTypeRepository.GetByIdAsync(id);
+            var apartmentType = await _unitOfWork.ApartmentTypes.GetByIdAsync(id);
             if (apartmentType == null)
             {
                 var exception = new Exception($"Appartment type with id = {id} was not found");
@@ -36,7 +36,7 @@ namespace Booking.Web.Services
 
         public async Task<List<ApartmentTypeViewModel>> GetApartmentTypesAsync()
         {
-            var entities = await _apartmentTypeRepository.GetAllAsync();
+            var entities = await _unitOfWork.ApartmentTypes.GetAllAsync();
             var apartmentTypes = _mapper.Map<List<ApartmentTypeViewModel>>(entities);
 
             return apartmentTypes;
@@ -44,7 +44,7 @@ namespace Booking.Web.Services
 
         public async Task UpdateApartmentType(ApartmentTypeViewModel viewModel)
         {
-            var existingApartmentType = await _apartmentTypeRepository.GetByIdAsync(viewModel.Id);
+            var existingApartmentType = await _unitOfWork.ApartmentTypes.GetByIdAsync(viewModel.Id);
             if (existingApartmentType is null)
             {
                 var exception = new Exception($"Apartment type {viewModel.Id} was not found");
@@ -53,18 +53,18 @@ namespace Booking.Web.Services
 
             ApartmentType.ApartmentTypeDetails details = new ApartmentType.ApartmentTypeDetails(viewModel.Name);
             existingApartmentType.UpdateDetails(details);
-            await _apartmentTypeRepository.UpdateAsync(existingApartmentType);
+            await _unitOfWork.ApartmentTypes.UpdateAsync(existingApartmentType);
         }
 
         public async Task CreateApartmentTypeAsync(ApartmentTypeViewModel viewModel)
         {
             var dto = _mapper.Map<ApartmentType>(viewModel);
-            await _apartmentTypeRepository.CreateAsync(dto);
+            await _unitOfWork.ApartmentTypes.CreateAsync(dto);
         }
 
         public async Task DeleteApartmentTypeAsync(ApartmentTypeViewModel viewModel)
         {
-            var existingApartmentType = await _apartmentTypeRepository.GetByIdAsync(viewModel.Id);
+            var existingApartmentType = await _unitOfWork.ApartmentTypes.GetByIdAsync(viewModel.Id);
             if (existingApartmentType is null)
             {
                 var exception = new Exception($"Apartment type {viewModel.Id} was not found");
@@ -72,7 +72,7 @@ namespace Booking.Web.Services
                 throw exception;
             }
 
-            await _apartmentTypeRepository.DeleteAsync(existingApartmentType);
+            await _unitOfWork.ApartmentTypes.DeleteAsync(existingApartmentType);
         }        
     }
 }

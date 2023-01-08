@@ -1,4 +1,6 @@
-﻿namespace Booking.Web.Models
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+
+namespace Booking.Web.Models
 {
     public class CountryViewModel
     {

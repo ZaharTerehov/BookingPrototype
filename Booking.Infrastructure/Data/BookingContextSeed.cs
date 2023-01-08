@@ -24,6 +24,28 @@ namespace Booking.Infrastructure.Data
                 await bookingContext.SaveChangesAsync();
 
                 logger.LogInformation("Seed database ApartmentTypes complete");
+            } 
+            
+            if (!await bookingContext.Countries.AnyAsync())
+            {
+                logger.LogInformation("Table Countries is empty");
+
+                await bookingContext.Countries.AddRangeAsync(GetInitialCountries());
+
+                await bookingContext.SaveChangesAsync();
+
+                logger.LogInformation("Seed database Countries complete");
+            }
+            
+            if (!await bookingContext.Cities.AnyAsync())
+            {
+                logger.LogInformation("Table Cities is empty");
+
+                await bookingContext.Cities.AddRangeAsync(GetInitialCities());
+
+                await bookingContext.SaveChangesAsync();
+
+                logger.LogInformation("Seed database Cities complete");
             }
         }
 
@@ -46,6 +68,16 @@ namespace Booking.Infrastructure.Data
                 new Country { Name = "Italy" },
                 new Country { Name = "France"},
                 new Country { Name = "Spain"},
+            };
+        }
+
+        private static IEnumerable<City> GetInitialCities()
+        {
+            return new List<City>
+            {
+                new City { Name = "Brest", CountryId = 1 },
+                new City { Name =  "Paris", CountryId = 4},
+                new City { Name = "Katowice", CountryId = 2 }
             };
         }
     }

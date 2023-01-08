@@ -2,7 +2,7 @@
 
 namespace Booking.Web.Models
 {
-    public class ApartmentTypeViewModel
+    public sealed class ApartmentTypeViewModel
     {
         public int Id { get; set; }
 
