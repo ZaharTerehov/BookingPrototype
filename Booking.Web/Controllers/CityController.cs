@@ -45,13 +45,43 @@ namespace Booking.Web.Controllers
         {
             try
             {
-                var city = _mapper.Map<City>(viewModel);
-                await _unitOfWork.Cities.CreateAsync(city);
+                await _cityViewModelService.CreateCityAsync(viewModel);
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message, ex);
+                return View();
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var result = await _cityViewModelService.GetCityViewModelByIdAsync(id);
+            if (result == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            var countriesList = (List<SelectListItem>?)await _cityViewModelService.GetCountries(false);
+
+            result.Countries = (List<SelectListItem>?)await _cityViewModelService.GetCountries(false);
+            
+            return View(result);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(CityViewModel viewModel)
+        {
+            try
+            {
+                await _cityViewModelService.UpdateCity(viewModel);
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
                 return View();
             }
         }

@@ -8,7 +8,10 @@ namespace Booking.Web.MappingProfile
     {
         public CityProfiles() 
         {
-            CreateMap<City, CityViewModel>();
+            CreateMap<City, CityViewModel>()
+                .ForMember(dto => dto.Id, opt => opt.MapFrom(entity => entity.Id))
+                .ForMember(dto => dto.Name, opt => opt.MapFrom(entity => entity.Name))
+                .ForMember(dto => dto.CountryFilterApplied, opt => opt.MapFrom(entity => entity.CountryId));
 
             CreateMap<CityViewModel, City>()
                 .ForMember(dto => dto.Id, opt => opt.MapFrom(entity => entity.Id))

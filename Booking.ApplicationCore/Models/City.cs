@@ -16,5 +16,23 @@ namespace Booking.ApplicationCore.Models
 
         public int? CountryId { get; set; }
 
+        public void UpdateDetails(CityDetails details)
+        {
+            Name = details.Name;
+            CountryId = details.CountryId;
+        }
+
+        public readonly record struct CityDetails
+        {
+            public string? Name { get; }
+            public int? CountryId { get; }
+
+            public CityDetails(string? name, int? countryId)
+            {
+                Name = name;
+                CountryId = countryId;
+            }
+        }
+
     }
 }

@@ -21,10 +21,11 @@
     @if (Model.Cities.Any())
     {
             <div class="row">
-            @foreach (var catalogItem in Model.Cities)
+            @foreach (var city in Model.Cities)
             {
                         <div>
-                            <span>@catalogItem.Name</span>
+                    <span>@city.Name</span>
+                    @Html.ActionLink("Edit", "Edit", new {  id=city.Id}) 
                         </div>
             }
             </div>

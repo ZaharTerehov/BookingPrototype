@@ -62,9 +62,20 @@ namespace Booking.Web.Services
             return vm;
         }
 
-        public Task<CityViewModel> GetCityViewModelByIdAsync(int id)
+        public async Task<CityViewModel> GetCityViewModelByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var existingCity = await _unitOfWork.Cities.GetByIdAsync(id);
+
+            if (existingCity == null)
+            {
+                var exception = new Exception($"Appartment type with id = {id} was not found");
+
+                throw exception;
+            }
+
+            var dto = _mapper.Map<CityViewModel>(existingCity);
+
+            return dto;
         }
 
         public async Task<IEnumerable<SelectListItem>> GetCountries(bool filter)
@@ -85,9 +96,19 @@ namespace Booking.Web.Services
             return items;
         }
 
-        public Task UpdateCity(CityViewModel viewModel)
+        public async Task UpdateCity(CityViewModel viewModel)
         {
-            throw new NotImplementedException();
+            var existingCity = await _unitOfWork.Cities.GetByIdAsync(viewModel.Id);
+
+            if (existingCity is null)
+            {
+                var exception = new Exception($"Apartment type {viewModel.Id} was not found");
+                throw exception;
+            }
+
+            City.CityDetails details = new City.CityDetails(viewModel.Name, viewModel.CountryFilterApplied);
+            existingCity.UpdateDetails(details);
+            await _unitOfWork.Cities.UpdateAsync(existingCity);
         }
     }
 }
