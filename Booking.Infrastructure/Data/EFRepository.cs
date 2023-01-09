@@ -23,7 +23,7 @@ namespace Booking.Infrastructure.Data
             var entities = await _dbBookingContext.Set<T>().FindAsync(id);
             return entities;
         }
-        public async Task<List<T>> GetAllAsync()
+        public async Task<IList<T>> GetAllAsync()
         {
             var entities = await _dbBookingContext.Set<T>().ToListAsync();
             return entities;
