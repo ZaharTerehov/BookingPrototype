@@ -1,0 +1,47 @@
+﻿@model Booking.Web.Models.CityIndexViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<p>
+    <a class="btn btn-primary" asp-action="Create">Create New</a>
+</p>
+<section>
+    <div>        
+        <form method="get">
+            <label data-title = "country">
+                <select asp-for="@Model.CountryFilterApplied" asp-items="@Model.Countries"></select>
+            </label>
+            <input class="btn btn-outline-primary" type="submit" value="Apply Filters"/>
+        </form>
+    </div>
+</section>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Cities)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new {  id=item.Id  }) |
+                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Delete", "Delete", new { id=item.Id  })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+

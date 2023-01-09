@@ -1,4 +1,5 @@
-﻿using Booking.ApplicationCore.Interfaces;
+﻿using AutoMapper;
+using Booking.ApplicationCore.Interfaces;
 using Booking.ApplicationCore.Models;
 using Booking.Web.Interfaces;
 using Booking.Web.Models;
@@ -9,58 +10,44 @@ namespace Booking.Web.Controllers
 {
     public class ApartmentTypeController : Controller
     {
-        private readonly IApartmentTypeViewModelService _apartmentTypeViewModelService;
-        private readonly IRepository<ApartmentType> _apartmentTypeRepository;
+        private readonly IApartmentTypeViewModelService _apartmentTypeViewModelService;        
         private readonly ILogger<ApartmentTypeController> _logger;
+        private readonly IMapper _mapper;
 
-        public ApartmentTypeController(IRepository<ApartmentType> apartmentTypeRepository,
+        public ApartmentTypeController(IMapper mapper,
             IApartmentTypeViewModelService apartmentTypeViewModelService,
             ILogger<ApartmentTypeController> logger)
         {
-            _apartmentTypeViewModelService = apartmentTypeViewModelService;
-            _apartmentTypeRepository = apartmentTypeRepository;
+            _apartmentTypeViewModelService = apartmentTypeViewModelService;            
             _logger=logger;
+            _mapper = mapper;
         }
 
-        public IActionResult Index()
+        public async Task <IActionResult> Index()
         {
-            var apartmentsViewModel = _apartmentTypeRepository.GetAll().Select(item => new ApartmentTypeViewModel()
-            {
-                Id= item.Id,
-                Name = item.Name
-            }).ToList();
-
-            _logger.LogInformation("Open Index method...");
-
+            var apartmentsViewModel = await _apartmentTypeViewModelService.GetApartmentTypesAsync();
             return View(apartmentsViewModel);
         }
 
         [HttpGet]
-        public IActionResult Edit(int id) 
+        public async Task<IActionResult> Edit(int id) 
         {
-            var apartment = _apartmentTypeRepository.GetById(id);
-            if (apartment == null)
+            var result = await _apartmentTypeViewModelService.GetApartmentTypeViewModelByIdAsync(id);
+            if (result == null)
             {
                 return RedirectToAction("Index");
             }
-
-            var result = new ApartmentTypeViewModel()
-            {
-                Id = apartment.Id,
-                Name = apartment.Name,
-            };
-
 
             return View(result);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(ApartmentTypeViewModel apartmentTypeViewModel)
+        public async Task<IActionResult> Edit(ApartmentTypeViewModel viewModel)
         {
             try
             {
-                _apartmentTypeViewModelService.UpdateApartmentType(apartmentTypeViewModel);
+                await _apartmentTypeViewModelService.UpdateApartmentType(viewModel);
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -77,44 +64,40 @@ namespace Booking.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(ApartmentTypeViewModel apartmentTypeViewModel)
+        public async Task<IActionResult> Create(ApartmentTypeViewModel viewModel)
         {
             try
             {
-                _apartmentTypeViewModelService.CreateNewApartmentType(apartmentTypeViewModel);
+                var apartment = _mapper.Map<ApartmentTypeViewModel>(viewModel);
+                await _apartmentTypeViewModelService.CreateApartmentTypeAsync(viewModel);
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                _logger.LogError(ex.Message, ex);
+               return View();
             }
         }
 
         [HttpGet]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var apartment = _apartmentTypeRepository.GetById(id);
-            if (apartment == null)
+            var result = await _apartmentTypeViewModelService.GetApartmentTypeViewModelByIdAsync(id);
+            if (result == null)
             {
                 return RedirectToAction("Index");
-            }
-
-            var result = new ApartmentTypeViewModel()
-            {
-                Id = apartment.Id,
-                Name = apartment.Name,
-            };
+            }            
 
             return View(result);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete(ApartmentTypeViewModel apartmentTypeViewModel)
+        public async Task<IActionResult> Delete(ApartmentTypeViewModel viewModel)
         {
             try
             {
-                _apartmentTypeViewModelService.DeleteApartmentType(apartmentTypeViewModel);
+                await _apartmentTypeViewModelService.DeleteApartmentTypeAsync(viewModel);
                 return RedirectToAction(nameof(Index));
             }
             catch
