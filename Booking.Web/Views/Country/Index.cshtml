@@ -8,11 +8,11 @@
 <div class="container">
     <div class="row">
         <div class="col-6">
-            <h2 class="text-primary">Country List</h2>
+            <h2 class="text-primary text-uppercase">Country List</h2>
         </div>
         <div class="col-6 text-end">
-            <a class="btn btn-primary" asp-action="Create">
-                <i class="bi bi-plus-circle"></i> &nbsp; Create new
+            <a class="btn btn-outline-primary" asp-action="Create">
+                <i class="bi bi-file-earmark-plus"></i> &nbsp; Create new
             </a>
         </div>
     </div>
@@ -39,12 +39,12 @@
                     <td align="left">
                         <div>
                             <a asp-controller="Country" asp-action="Edit" asp-route-id="@item.Id"
-                                class="btn btn-success btn-sm">
+                                class="btn btn-outline-success btn-sm">
                                 <i class="bi bi-pencil-square"></i>
                                 Edit
                             </a>                      
                             <a asp-controller="Country" asp-action="Delete" asp-route-id="@item.Id"
-                           class="btn btn-danger btn-sm">
+                           class="btn btn-outline-danger btn-sm">
                                 <i class="bi bi-trash"></i>
                                 Delete
                             </a>
