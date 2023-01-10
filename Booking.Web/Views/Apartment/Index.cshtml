@@ -30,9 +30,12 @@
         </nav>
         <nav class="bk_header_nav_bar">
             <ul class="bk_header_nav_panel">
-                <li class="bk_header_nav_item">Apartaments</li>
+                <a class="nav__link" asp-action="Index" asp-controller="Apartment">
+                <li class="bk_header_nav_item">Apartments</li></a>
+                <a class="nav__link" asp-action="Index" asp-controller="ApartmentType">
+                <li class="bk_header_nav_item">Apartments types</li></a>
                 <a class="nav__link" asp-action="Index" asp-controller="City">
-                    <li class="bk_header_nav_item">Cities</li></a>
+                <li class="bk_header_nav_item">Cities</li></a>
                 <a class="nav__link" asp-action="Index" asp-controller="Country">
                 <li class="bk_header_nav_item">Countries</li></a>
             </ul>
