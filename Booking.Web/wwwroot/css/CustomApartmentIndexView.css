@@ -1,0 +1,137 @@
+﻿body {
+
+}
+
+
+header {
+    position: relative;
+
+    color: #fff;
+}
+
+.bk_header {
+    background-color: #003580;
+    height: 150px;
+    align-items: center;
+}
+
+.bk_header__bar {
+    margin: auto;
+    height: 70px;
+    padding: 5px 10px 0px 10px;
+    display: flex;
+    vertical-align: middle;
+    max-width: 1140px;
+    min-width: 740px;
+}
+
+.bk_header__main{
+    width:50%;
+    
+}
+
+.bk_header__logo{
+    font-family:Arial;
+    font-weight:700;
+    font-size:30px;
+}
+
+.bk_header__buttons {
+    width:50%;
+    display:flex;
+    align-content: right;
+    justify-content:right;
+    margin: auto;
+
+}
+
+.bk_header__buttons__button {
+    /*width:70px;
+    text-align: center;
+    vertical-align: central;*/
+
+    display: inline-block;
+    /*vertical-align: top;*/
+    margin: 5px 5px;
+    vertical-align: middle;
+    padding: 8px 30px;
+    border: 3px solid #fff;*/
+    font-size: 14px;
+    font-weight: 700;
+    /*color: #003580;*/
+    color:#fff;
+    /*background-color: #fff;*/
+    /*text-transform: uppercase;*/
+    text-decoration: none;
+    transition: background .2s linear, color .2s linear;
+}
+
+.bk_header__buttons__button:hover {
+    background-color: #fff;
+    color: black;
+}
+
+.bk_header_nav_bar {
+    margin: auto;
+    height: 70px;
+    width: 1140px;
+
+}
+
+.bk_header_nav_panel {
+    margin: 0;
+    margin-top: 10px;
+    padding: 0;
+    display: flex;
+}
+
+.bk_header_nav_item {
+    height: 45px;
+    
+    width: 120px;
+    margin: 5px;
+    font-weight: 600;
+    text-align: center;
+   /* vertical-align: auto;*/
+    display: inline-block;
+    color: #fff;
+    border: 1px solid #fff;
+    border-radius: 25px;
+    transition: background .1s linear, color .1s linear;
+    display:flex;
+    align-items: center;
+    justify-content:center;
+}
+
+.nav__link {
+    color: #fff;
+    text-decoration: none;
+}
+
+    .nav__link:hover {
+        color: #fff;
+        text-decoration: none;
+    }
+
+    .bk_header_nav_item:hover {
+        background-color: #d6d6d65e;
+        color: #fff;
+    }
+/*
+.btn {
+    display: inline-block;
+    vertical-align: top;
+    padding: 8px 30px;
+    border: 3px solid #fff;
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background .2s linear, color .2s linear;
+}
+
+    .btn:hover {
+        background-color: #fff;
+        color: black;
+    }*/

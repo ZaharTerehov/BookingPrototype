@@ -1,0 +1,42 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="~/css/CustomApartmentIndexView.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <title>Booking</title>
+</head>
+<body>
+    <header class="bk_header">
+        <nav class="bk_header__bar">
+            <div class="bk_header__main">
+                <div class="bk_header__logo">
+                    <span aria-label="Booking online service">Booking</span>
+                </div>
+            </div>
+            <div class="bk_header__buttons">
+                <div class="bk_header__buttons__button">Register</div>
+                <div class="bk_header__buttons__button">Sign in</div>
+            </div>
+        </nav>
+        <nav class="bk_header_nav_bar">
+            <ul class="bk_header_nav_panel">
+                <li class="bk_header_nav_item">Apartaments</li>
+                <a class="nav__link" asp-action="Index" asp-controller="City">
+                    <li class="bk_header_nav_item">Cities</li></a>
+                <a class="nav__link" asp-action="Index" asp-controller="Country">
+                <li class="bk_header_nav_item">Countries</li></a>
+            </ul>
+        </nav>
+    </header>
+</body>
+</html>
