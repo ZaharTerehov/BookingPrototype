@@ -24,7 +24,7 @@ namespace Booking.Web.Services
             var apartmentType = await _unitOfWork.ApartmentTypes.GetByIdAsync(id);
             if (apartmentType == null)
             {
-                var exception = new Exception($"Appartment type with id = {id} was not found");
+                var exception = new Exception($"Apartment type with id = {id} was not found");
 
                 throw exception;
             }
