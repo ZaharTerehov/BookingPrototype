@@ -1,47 +1,65 @@
 ﻿@model Booking.Web.Models.CityIndexViewModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "City";
 }
 
-<p>
-    <a class="btn btn-primary" asp-action="Create">Create New</a>
-</p>
-<section>
-    <div>        
-        <form method="get">
-            <label data-title = "country">
-                <select asp-for="@Model.CountryFilterApplied" asp-items="@Model.Countries"></select>
-            </label>
-            <input class="btn btn-outline-primary" type="submit" value="Apply Filters"/>
-        </form>
+<div class="container">
+    <div class="row">
+        <div class="col-2">
+            <h2 class="text-primary text-uppercase"> Town List</h2>
+        </div>
+        <div class="col-4">
+            <form method="get">
+                <div class="input-group mb-3">
+                    <label class="input-group-text" for="selectCountry">Country</label>
+                    <select class="form-select" id="selectCountry" asp-for="@Model.CountryFilterApplied"
+                        asp-items="@Model.Countries"></select>
+                    <input class="btn btn-primary" type="submit" value="Apply Filters" />
+                </div>
+            </form>
+        </div>
+        <div class="col-6 text-end">
+            <a class="btn btn-outline-primary" asp-action="Create">
+                <i class="bi bi-file-earmark-plus"></i> &nbsp; Create new
+            </a>
+        </div>
     </div>
-</section>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Name
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.Cities)
-        {
+    <br />
+    <table class="table table-striped">
+        <thead>
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new {  id=item.Id  }) |
-                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                    @Html.ActionLink("Delete", "Delete", new { id=item.Id  })
-                </td>
+                <th>
+                    Town Name
+                </th>
+                <th width="170px">
+                    Modification
+                </th>
             </tr>
-        }
-    </tbody>
-</table>
-
-
-
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Cities)
+            {
+                <tr>
+                    <td>
+                        @item.Name
+                    </td>
+                    <td align="left">
+                        <div>
+                            <a asp-controller="City" asp-action="Edit" asp-route-id="@item.Id"
+                            class="btn btn-outline-success btn-sm">
+                                <i class="bi bi-pencil-square"></i>
+                                Edit
+                            </a>
+                            <a asp-controller="City" asp-action="Delete" asp-route-id="@item.Id"
+                            class="btn btn-outline-danger btn-sm">
+                                <i class="bi bi-trash"></i>
+                                Delete
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

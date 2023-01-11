@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -23,9 +24,16 @@ namespace Booking.Infrastructure.Data
             var entities = await _dbBookingContext.Set<T>().FindAsync(id);
             return entities;
         }
+
         public async Task<IList<T>> GetAllAsync()
         {
             var entities = await _dbBookingContext.Set<T>().ToListAsync();
+            return entities;
+        }
+
+        public async Task<IList<T>> GetAllAsync(Expression<Func<T, bool>> predicate)
+        {
+            var entities = await _dbBookingContext.Set<T>().Where(predicate).ToListAsync();
             return entities;
         }
 
