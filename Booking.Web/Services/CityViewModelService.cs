@@ -30,9 +30,8 @@ namespace Booking.Web.Services
 
         public async Task<CityIndexViewModel> GetCitiesAsync(int? countryId)
         {
-            var entities = await _unitOfWork.Cities.GetAllAsync();
-            var selectedCities = entities.Where(item => (!countryId.HasValue || item.CountryId == countryId))
-                                        .OrderBy(item => item.Name) 
+            var entities = await _unitOfWork.Cities.GetAllAsync(item => (!countryId.HasValue || item.CountryId == countryId));
+            var selectedCities = entities.OrderBy(item => item.Name) 
                                         .ToList();
             var cityes = _mapper.Map<List<CityViewModel>>(selectedCities);
 
