@@ -4,35 +4,34 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
-
-<h4>CityViewModel</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="text_action">Creation Town</h2>
+        </div>
         <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+            <div class="col-12">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="inputGroup-sizing-name">Name</span>
+                    <input asp-for="Name" type="text" class="form-control" aria-describedby="inputGroup-sizing-name">
+                </div>
             </div>
-            <div class="form-group">
-                <label data-title = "country">
-                <select asp-for="@Model.CountryFilterApplied" asp-items="@Model.Countries"></select>
-                </label>
+            <div class="col-12">
+                <div class="input-group mb-3">
+                    <label class="input-group-text" for="selectCountry">Country</label>
+                    <select class="form-select" id="selectCountry" asp-for="@Model.CountryFilterApplied"
+                        asp-items="@Model.Countries"></select>
+                </div>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
+            <button type="submit" class="btn btn-primary" style="width: 150px;">Edit</button>
+            <a asp-controller=City asp-action="Index" class="btn btn-outline-primary" style="width:150px">
+                Cancel
+            </a>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

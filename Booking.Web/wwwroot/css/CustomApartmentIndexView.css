@@ -122,6 +122,38 @@ header {
         background-color: #d6d6d65e;
         color: #fff;
     }
+
+.text_action {
+    font-family: Arial;
+    font-weight: 700;
+    font-size: 25px;
+    color: #003580;
+}
+
+
+.btn-primary {
+    background-color: #003580;
+    color: white;
+}
+
+    .btn-primary:hover,
+    .btn-primary:focus,
+    .btn-primary:visited {
+        background-color: #0b5ed7;
+        color: white;
+    }
+
+.btn-outline-primary {
+    border-color: #003580;
+    color: #003580;
+}
+
+    .btn-outline-primary:hover,
+    .btn-outline-primary:focus,
+    .btn-outline-primary:visited {
+        background-color: #0b5ed7;   
+    }
+
 /*
 .btn {
     display: inline-block;

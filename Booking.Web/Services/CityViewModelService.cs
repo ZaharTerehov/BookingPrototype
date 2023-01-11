@@ -23,9 +23,17 @@ namespace Booking.Web.Services
             await _unitOfWork.Cities.CreateAsync(dto);
         }
 
-        public Task DeleteCityAsync(CityViewModel viewModel)
+        public async Task DeleteCityAsync(CityViewModel viewModel)
         {
-            throw new NotImplementedException();
+            var existingCity = await _unitOfWork.Cities.GetByIdAsync(viewModel.Id);
+            if (existingCity is null)
+            {
+                var exception = new Exception($"Country with id = {viewModel.Id} was not found");
+
+                throw exception;
+            }
+
+            await _unitOfWork.Cities.DeleteAsync(existingCity);
         }
 
         public async Task<CityIndexViewModel> GetCitiesAsync(int? countryId)

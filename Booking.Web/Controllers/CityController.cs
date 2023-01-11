@@ -84,5 +84,32 @@ namespace Booking.Web.Controllers
                 return View();
             }
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var result = await _cityViewModelService.GetCityViewModelByIdAsync(id);
+            if (result == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            return View(result);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(CityViewModel viewModel)
+        {
+            try
+            {
+                await _cityViewModelService.DeleteCityAsync(viewModel);
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
     }
 }
