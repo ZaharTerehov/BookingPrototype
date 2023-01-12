@@ -10,7 +10,8 @@ namespace Booking.ApplicationCore.Interfaces
     public interface IRepository<T> where T : class
     {
        // Task<IList<T>> GetAllAsync();
-        Task<IList<T>> GetAllAsync(Expression<Func<T, bool>> predicate = null);
+        Task<IList<T>> GetAllAsync(Expression < Func<T, bool>> selectCondition = null,
+                                            params Expression<Func<T, object>>[] includes);
         Task<T?> GetByIdAsync(int id);
         Task CreateAsync(T entity);
         Task UpdateAsync(T entity);

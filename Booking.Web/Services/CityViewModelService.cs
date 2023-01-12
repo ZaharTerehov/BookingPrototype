@@ -38,10 +38,10 @@ namespace Booking.Web.Services
 
         public async Task<CityIndexViewModel> GetCitiesAsync(int? countryId)
         {
-            var entities = await _unitOfWork.Cities.GetAllAsync(item => (!countryId.HasValue || item.CountryId == countryId));
-            var selectedCities = entities.OrderBy(item => item.Name) 
-                                        .ToList();
-            var cityes = _mapper.Map<List<CityViewModel>>(selectedCities);
+            var entities = await _unitOfWork.Cities.GetAllAsync(item => (!countryId.HasValue || item.CountryId == countryId), item => item.Country);
+            var orderedEntities = entities.OrderBy(x => x.Country.Name).ThenBy(x => x.Name);
+            
+            var cityes = _mapper.Map<List<CityViewModel>>(orderedEntities);
 
             var vm = new CityIndexViewModel()
             {
@@ -71,19 +71,16 @@ namespace Booking.Web.Services
         public async Task<IEnumerable<SelectListItem>> GetCountries(bool filter)
         {
             //_logger.LogInformation("GetBrands call");
-            var countries = await _unitOfWork.Countries.GetAllAsync();
-            var items = countries
-                .Select(contry => new SelectListItem() { Value = contry.Id.ToString(), Text = contry.Name })
-                .OrderBy(c => c.Text)
-                .ToList();
+            var entities = await _unitOfWork.Countries.GetAllAsync();
+            var countries = _mapper.Map<List<SelectListItem>>(entities);
             if (filter)
             {
                 var allItem = new SelectListItem() { Value = null, Text = "All", Selected = true };
-                items.Insert(0, allItem);
+                countries.Insert(0, allItem);
             }
             
 
-            return items;
+            return countries;
         }
 
         public async Task UpdateCity(CityViewModel viewModel)
