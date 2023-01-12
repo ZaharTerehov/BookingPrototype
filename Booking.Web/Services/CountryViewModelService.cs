@@ -36,7 +36,8 @@ namespace Booking.Web.Services
         public async Task<List<CountryViewModel>> GetCountriesAsync()
         {
             var entities = await _unitOfWork.Countries.GetAllAsync();
-            var countries = _mapper.Map<List<CountryViewModel>>(entities);
+            var orderedEntities = entities.OrderBy(x => x.Name);
+            var countries = _mapper.Map<List<CountryViewModel>>(orderedEntities);
 
             return countries;
         }

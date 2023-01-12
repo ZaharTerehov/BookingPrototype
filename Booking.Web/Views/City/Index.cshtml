@@ -30,7 +30,10 @@
         <thead>
             <tr>
                 <th>
-                    Town Name
+                    Country
+                </th>
+                <th>
+                    Town
                 </th>
                 <th width="170px">
                     Modification
@@ -41,6 +44,9 @@
             @foreach (var item in Model.Cities)
             {
                 <tr>
+                    <td>
+                        @item.CountryName
+                    </td>
                     <td>
                         @item.Name
                     </td>
