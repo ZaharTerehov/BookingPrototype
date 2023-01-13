@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Booking.ApplicationCore.Interfaces;
 using Booking.ApplicationCore.Models;
+using Booking.ApplicationCore.QueryOptions;
 using Booking.Web.Interfaces;
 using Booking.Web.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -38,10 +39,13 @@ namespace Booking.Web.Services
 
         public async Task<CityIndexViewModel> GetCitiesAsync(int? countryId)
         {
-            var entities = await _unitOfWork.Cities.GetAllAsync(item => (!countryId.HasValue || item.CountryId == countryId), item => item.Country);
-            var orderedEntities = entities.OrderBy(x => x.Country.Name).ThenBy(x => x.Name);
+            var options = new QueryOptions<City>();
+            options.AddSortOption(false, x => x.Country.Name).AddSortOption(false, y => y.Name)
+                   .SetFilterOption(item => (!countryId.HasValue || item.CountryId == countryId))
+                    .AddIncludeOption(item => item.Country);
+            var entities = await _unitOfWork.Cities.GetAllAsync(options);
             
-            var cityes = _mapper.Map<List<CityViewModel>>(orderedEntities);
+            var cityes = _mapper.Map<List<CityViewModel>>(entities);
 
             var vm = new CityIndexViewModel()
             {
@@ -71,7 +75,10 @@ namespace Booking.Web.Services
         public async Task<IEnumerable<SelectListItem>> GetCountries(bool filter)
         {
             //_logger.LogInformation("GetBrands call");
-            var entities = await _unitOfWork.Countries.GetAllAsync();
+            var options = new QueryOptions<Country>();
+            options.AddSortOption(false, y => y.Name);
+
+            var entities = await _unitOfWork.Countries.GetAllAsync(options);
             var countries = _mapper.Map<List<SelectListItem>>(entities);
             if (filter)
             {

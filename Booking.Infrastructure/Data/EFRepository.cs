@@ -1,5 +1,7 @@
 ﻿using Booking.ApplicationCore.Interfaces;
 using Booking.ApplicationCore.Models;
+using Booking.ApplicationCore.QueryOptions;
+using Booking.Infrastructure.Data.DBExtentions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using System;
@@ -32,39 +34,12 @@ namespace Booking.Infrastructure.Data
         //    return entities;
         //}
 
-        public async Task<IList<T>> GetAllAsync(Expression<Func<T, bool>> selectCondition,
-                                                params Expression<Func<T, object>>[] includes)
+        public async Task<IList<T>> GetAllAsync(QueryOptions<T> options)
         {
-            IIncludableQueryable<T, object> query = BuildIncludes(includes);            
-       
-            if (selectCondition == null)
-            {
-                return query == null ? 
-                                    await _dbBookingContext.Set<T>().ToListAsync():                
-                                    await query.ToListAsync();
-            }
-            else
-            {
-                return query == null ? 
-                                    await _dbBookingContext.Set<T>().Where(selectCondition).ToListAsync():
-                                    await query.Where(selectCondition).ToListAsync();                    
-            }
-        }
-
-        private IIncludableQueryable<T, object> BuildIncludes(params Expression<Func<T, object>>[] includes)
-        {
-            IIncludableQueryable<T, object> query = null;
-            #region Check if exists any Navigation Properties, if exists include its into query
-            if (includes.Length > 0)
-            {
-                query = _dbBookingContext.Set<T>().Include(includes[0]);
-            }
-            foreach (var include in includes.Skip(1))
-            {
-                query = query.Include(include);
-            }
-            return query;
-            #endregion
+            return await _dbBookingContext.Set<T>().IncludeFields(options.IncludeOptions)
+                                            .FilterEntities(options.FilterOption)
+                                            .OrderEntityBy(options.SortOptions)
+                                            .ToListAsync();            
         }
 
         public async Task CreateAsync(T entity)
