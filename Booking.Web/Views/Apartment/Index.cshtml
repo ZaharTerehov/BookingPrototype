@@ -1,45 +1,61 @@
-﻿@{
-    Layout = null;
+﻿@model IEnumerable<Booking.Web.Models.ApartmentViewModel>
+
+@{
+    ViewData["Title"] = "Index";
 }
 
-<!DOCTYPE html>
+<h2>Available apartments</h2>
 
-<html lang="en">
-<head>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="~/css/CustomApartmentIndexView.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
-    <title>Booking</title>
-</head>
-<body>
-    <header class="bk_header">
-        <nav class="bk_header__bar">
-            <div class="bk_header__main">
-                <div class="bk_header__logo">
-                    <span aria-label="Booking online service">Booking</span>
-                </div>
-            </div>
-            <div class="bk_header__buttons">
-                <div class="bk_header__buttons__button">Register</div>
-                <div class="bk_header__buttons__button">Sign in</div>
-            </div>
-        </nav>
-        <nav class="bk_header_nav_bar">
-            <ul class="bk_header_nav_panel">
-                <a class="nav__link" asp-action="Index" asp-controller="Apartment">
-                <li class="bk_header_nav_item">Apartments</li></a>
-                <a class="nav__link" asp-action="Index" asp-controller="ApartmentType">
-                <li class="bk_header_nav_item">Apartments types</li></a>
-                <a class="nav__link" asp-action="Index" asp-controller="City">
-                <li class="bk_header_nav_item">Cities</li></a>
-                <a class="nav__link" asp-action="Index" asp-controller="Country">
-                <li class="bk_header_nav_item">Countries</li></a>
-            </ul>
-        </nav>
-    </header>
-</body>
-</html>
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+@*            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Picture)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+@*            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>*@
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td style="width:500px">
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                    <img style="border-radius:10px; border:1px solid #ddd" width="150px"
+                     src="@Html.DisplayFor(modelItem => item.Picture)" />
+                @*@Html.DisplayFor(modelItem => item.Picture)*@
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id=item.Id}) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { id=item.Id  })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

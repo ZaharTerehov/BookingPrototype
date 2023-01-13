@@ -26,11 +26,11 @@ namespace Booking.Infrastructure.Data
             return entities;
         }
 
-        //public async Task<IList<T>> GetAllAsync()
-        //{
-        //    var entities = await _dbBookingContext.Set<T>().ToListAsync();
-        //    return entities;
-        //}
+        public async Task<IList<T>> GetAllAsync()
+        {
+            var entities = await _dbBookingContext.Set<T>().ToListAsync();
+            return entities;
+        }
 
         public async Task<IList<T>> GetAllAsync(Expression<Func<T, bool>> selectCondition,
                                                 params Expression<Func<T, object>>[] includes)

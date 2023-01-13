@@ -12,6 +12,7 @@ namespace Booking.ApplicationCore.Interfaces
         IRepository<City> Cities { get; }
         IRepository<Country> Countries { get; }
         IRepository<ApartmentType> ApartmentTypes { get; }
+        IRepository<Apartment> Apartments { get; }
         
     }
 }
