@@ -36,11 +36,9 @@ namespace Booking.Web.Services
 
         public async Task<List<CountryViewModel>> GetCountriesAsync()
         {
-            var options = new QueryOptions<Country>();
-            options.AddSortOption(false, x => x.Name);
+            var options = new QueryOptions<Country>().AddSortOption(false, x => x.Name);
             var entities = await _unitOfWork.Countries.GetAllAsync(options);
-            var orderedEntities = entities.OrderBy(x => x.Name);
-            var countries = _mapper.Map<List<CountryViewModel>>(orderedEntities);
+            var countries = _mapper.Map<List<CountryViewModel>>(entities);
 
             return countries;
         }

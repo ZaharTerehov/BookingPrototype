@@ -14,7 +14,7 @@ namespace Booking.Web.Services
 
         public ApartmentViewModelService(IUnitOfWork unitOfWork, IMapper mapper)
         {
-                _unitOfWork= unitOfWork;
+            _unitOfWork= unitOfWork;
             _mapper= mapper;
         }
 
@@ -39,8 +39,7 @@ namespace Booking.Web.Services
 
         public async Task<List<ApartmentViewModel>> GetAllAsync()
         {
-            var options = new QueryOptions<Apartment>();
-            options.AddSortOption(false, y => y.Id);
+            var options = new QueryOptions<Apartment>().AddSortOption(false, y => y.Id);
             var entities = await _unitOfWork.Apartments.GetAllAsync(options);
             var apartment = _mapper.Map<List<ApartmentViewModel>>(entities);
             return apartment;

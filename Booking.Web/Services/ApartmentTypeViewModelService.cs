@@ -37,16 +37,12 @@ namespace Booking.Web.Services
 
         public async Task<List<ApartmentTypeViewModel>> GetApartmentTypesAsync()
         {
-            var options = new QueryOptions<ApartmentType>();
-            options.AddSortOption(false, x => x.Name);
+            var options = new QueryOptions<ApartmentType>().AddSortOption(false, x => x.Name);
             var entities = await _unitOfWork.ApartmentTypes.GetAllAsync(options);
-            var orderedEntities = entities.OrderBy(x => x.Name);
-            var apartmentTypes = _mapper.Map<List<ApartmentTypeViewModel>>(orderedEntities);
+            var apartmentTypes = _mapper.Map<List<ApartmentTypeViewModel>>(entities);
 
             return apartmentTypes;
         }       
-
-        //private QueryOptions BuildOptions(par)
 
         public async Task UpdateApartmentType(ApartmentTypeViewModel viewModel)
         {
