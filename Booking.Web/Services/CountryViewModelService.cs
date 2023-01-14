@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Booking.ApplicationCore.Interfaces;
 using Booking.ApplicationCore.Models;
+using Booking.ApplicationCore.QueryOptions;
 using Booking.Web.Interfaces;
 using Booking.Web.Models;
 
@@ -35,7 +36,9 @@ namespace Booking.Web.Services
 
         public async Task<List<CountryViewModel>> GetCountriesAsync()
         {
-            var entities = await _unitOfWork.Countries.GetAllAsync();
+            var options = new QueryOptions<Country>();
+            options.AddSortOption(false, x => x.Name);
+            var entities = await _unitOfWork.Countries.GetAllAsync(options);
             var orderedEntities = entities.OrderBy(x => x.Name);
             var countries = _mapper.Map<List<CountryViewModel>>(orderedEntities);
 

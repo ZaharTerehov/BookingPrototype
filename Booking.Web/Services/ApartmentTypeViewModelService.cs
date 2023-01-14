@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Booking.ApplicationCore.Interfaces;
 using Booking.ApplicationCore.Models;
+using Booking.ApplicationCore.QueryOptions;
 using Booking.Web.Interfaces;
 using Booking.Web.Models;
 using Serilog;
@@ -36,12 +37,16 @@ namespace Booking.Web.Services
 
         public async Task<List<ApartmentTypeViewModel>> GetApartmentTypesAsync()
         {
-            var entities = await _unitOfWork.ApartmentTypes.GetAllAsync();
+            var options = new QueryOptions<ApartmentType>();
+            options.AddSortOption(false, x => x.Name);
+            var entities = await _unitOfWork.ApartmentTypes.GetAllAsync(options);
             var orderedEntities = entities.OrderBy(x => x.Name);
             var apartmentTypes = _mapper.Map<List<ApartmentTypeViewModel>>(orderedEntities);
 
             return apartmentTypes;
         }       
+
+        //private QueryOptions BuildOptions(par)
 
         public async Task UpdateApartmentType(ApartmentTypeViewModel viewModel)
         {
