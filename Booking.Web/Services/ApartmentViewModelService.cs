@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Booking.ApplicationCore.Interfaces;
 using Booking.ApplicationCore.Models;
+using Booking.ApplicationCore.QueryOptions;
 using Booking.Web.Interfaces;
 using Booking.Web.Models;
 
@@ -38,7 +39,9 @@ namespace Booking.Web.Services
 
         public async Task<List<ApartmentViewModel>> GetAllAsync()
         {
-            var entities = await _unitOfWork.Apartments.GetAllAsync();
+            var options = new QueryOptions<Apartment>();
+            options.AddSortOption(false, y => y.Id);
+            var entities = await _unitOfWork.Apartments.GetAllAsync(options);
             var apartment = _mapper.Map<List<ApartmentViewModel>>(entities);
             return apartment;
         }
