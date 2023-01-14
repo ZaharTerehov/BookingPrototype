@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Booking.ApplicationCore.QueryOptions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -8,11 +10,11 @@ namespace Booking.ApplicationCore.Interfaces
 {
     public interface IRepository<T> where T : class
     {
-        IEnumerable<T> GetAll();
-        T? GetById(int id);
-        void Create(T entity);
-        void Update(T entity);
-        void Delete(int id); 
-        //void Save();
+       // Task<IList<T>> GetAllAsync();
+        Task<IList<T>> GetAllAsync(QueryOptions<T> options);
+        Task<T?> GetByIdAsync(int id);
+        Task CreateAsync(T entity);
+        Task UpdateAsync(T entity);
+        Task DeleteAsync(T entity); 
     }
 }

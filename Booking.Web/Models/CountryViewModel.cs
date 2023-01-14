@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Booking.Web.Models
 {
-    public sealed class ApartmentTypeViewModel
+    public class CountryViewModel
     {
         public int Id { get; set; }
 
