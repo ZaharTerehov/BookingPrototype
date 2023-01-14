@@ -1,7 +1,7 @@
 ﻿
 namespace Booking.ApplicationCore.Models
 {
-    internal class User
+    public class User
     {
         public Guid Id { get; set; }
 
