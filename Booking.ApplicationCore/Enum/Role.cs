@@ -10,9 +10,8 @@ namespace Booking.ApplicationCore.Enum
     public enum Role
     {
         [Display(Name = "User")]
-        User 0,
-
+        User = 0,
         [Display(Name = "Admin")]
-        Admin = 1
+        Admin = 1,
     }
 }
