@@ -78,7 +78,7 @@ namespace Booking.Web.Services
         public async Task<IEnumerable<SelectListItem>> GetCountries(bool filter)
         {
             //_logger.LogInformation("GetBrands call");
-            var options = new QueryOptions<Country>().AddSortOption(false, y => y.Name);
+            var options = new QueryEntityOptions<Country>().AddSortOption(false, y => y.Name);
             var entities = await _unitOfWork.Countries.GetAllAsync(options);
             var countries = _mapper.Map<List<SelectListItem>>(entities);
             if (filter)
