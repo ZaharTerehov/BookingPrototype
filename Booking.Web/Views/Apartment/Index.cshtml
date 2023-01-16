@@ -55,6 +55,9 @@
                 @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
                 @Html.ActionLink("Delete", "Delete", new { id=item.Id  })
             </td>
+
+
+
         </tr>
         }
 
@@ -63,18 +66,19 @@
             <a asp-action="Index"
                asp-route-page="@(Model.PageViewModel.CurrentPage - 1)"
            class="btn btn-outline-dark btn-sm">
-                    <i class="glyphicon glyphicon-chevron-left"></i>
+                   <i class="bi bi-skip-backward-fill"></i>
                     Назад
             </a>
-       }
+       } 
         @if (Model.PageViewModel.HasNextPage)
         {
              <a asp-action="Index"
                asp-route-page="@(Model.PageViewModel.CurrentPage + 1)"
                class="btn btn-outline-dark btn-sm">
                 Вперед
-                <i class="glyphicon glyphicon-chevron-right"></i>
+                <i class="bi bi-skip-forward-fill"></i>
             </a>
         }
+
     </tbody>
 </table>

@@ -3,17 +3,15 @@
     public class PageViewModel
     {
         public int CurrentPage { get; private set; }
-        //public int TotalPages { get; private set; }
         public int PageSize { get; private set; } 
 
-        public int CurrentElementsCount { get; private set; }
+        public int CurrentElementsCount { get; private set; }   
 
         public PageViewModel(int count, int currentPage, int pageSize)
         {
             CurrentPage = currentPage;
             CurrentElementsCount = count;
             PageSize = pageSize;
-            //TotalPages = (int)Math.Ceiling(count / (double)pageSize);
         }
 
         public bool HasPreviousPage

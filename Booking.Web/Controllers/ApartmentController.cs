@@ -28,7 +28,6 @@ namespace Booking.Web.Controllers
 
             PageViewModel pageViewModel = 
                 new PageViewModel(countApartments, page, ApplicationConstants.ApartmentsPageSize);
-            //return  View(apartmentsViewModel);
             ApartmentIndexViewModel viewModel = new ApartmentIndexViewModel
             {
                 PageViewModel = pageViewModel,
@@ -36,11 +35,6 @@ namespace Booking.Web.Controllers
             };
 
             return View(viewModel);
-
-            //return View(new ApartmentIndexViewModel
-            //{
-            //    Apartments = apartmentsViewModel,
-            //});
         }
 
         [HttpGet]
