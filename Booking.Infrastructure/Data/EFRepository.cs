@@ -28,18 +28,20 @@ namespace Booking.Infrastructure.Data
             return entities;
         }
 
-        public async Task<IList<T>> GetAllAsync()
-        {
-            var entities = await _dbBookingContext.Set<T>().ToListAsync();
-            return entities;
-        }
-
         public async Task<IList<T>> GetAllAsync(QueryOptions<T> options)
         {
             return await _dbBookingContext.Set<T>().IncludeFields(options.IncludeOptions)
                                             .FilterEntities(options.FilterOption)
                                             .OrderEntityBy(options.SortOptions)
                                             .ToListAsync();            
+        }
+
+        public async Task<IList<TVM>> GetAllViewModelAsync<TVM>(QueryViewModelOption<T, TVM> options) where TVM : class
+        {
+            return await _dbBookingContext.Set<T>().FilterEntities(options.FilterOption)
+                                            .OrderEntityBy(options.SortOptions)
+                                            .SelectEntities(options.SelectOption)
+                                            .ToListAsync();
         }
 
         public async Task CreateAsync(T entity)
