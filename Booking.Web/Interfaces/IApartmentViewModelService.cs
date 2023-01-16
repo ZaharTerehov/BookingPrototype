@@ -5,7 +5,7 @@ namespace Booking.Web.Interfaces
 {
     public interface IApartmentViewModelService
     {
-        Task<List<ApartmentViewModel>> GetAllAsync();
+        Task<List<ApartmentViewModel>> GetApartmentsAsync(int currentPage);
 
         Task CreateApartmentAsync(ApartmentViewModel viewModel);
         Task UpdateApartmentAsync(ApartmentViewModel viewModel);

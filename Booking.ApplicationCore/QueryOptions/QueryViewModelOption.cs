@@ -7,15 +7,8 @@ using System.Threading.Tasks;
 
 namespace Booking.ApplicationCore.QueryOptions
 {
-    public sealed class QueryViewModelOption<TEntity, TVM> where TEntity : class where TVM : class
-
+    public sealed class QueryViewModelOption<TEntity, TVM> :BaseQueryOptions<TEntity> where TEntity : class where TVM : class 
     {
-        private IList<SortOption<TEntity>> _sortOptions;
-        public IList<SortOption<TEntity>> SortOptions { get { return _sortOptions; } }
-
-        private Expression<Func<TEntity, bool>> _filterOption;
-        public Expression<Func<TEntity, bool>> FilterOption { get { return _filterOption; } }
-
         private Expression<Func<TEntity, TVM>> _selectOption;
         public Expression<Func<TEntity, TVM>> SelectOption { get { return _selectOption; } }
 
@@ -34,6 +27,30 @@ namespace Booking.ApplicationCore.QueryOptions
         public QueryViewModelOption<TEntity, TVM> AddSelectOption(Expression<Func<TEntity, TVM>> selectOption)
         {
             _selectOption = selectOption;
+            return this;
+        }
+
+        public QueryViewModelOption<TEntity, TVM> SetCurentPage(int currentPage)
+        {
+            if (currentPage > 0)
+            {
+                CurrentPage = currentPage;
+            }
+            return this;
+        }
+
+        public QueryViewModelOption<TEntity, TVM> NextPage()
+        {
+            CurrentPage++;
+            return this;
+        }
+
+        public QueryViewModelOption<TEntity, TVM> PrevPage()
+        {
+            if (CurrentPage > 1)
+            {
+                CurrentPage--;
+            }
             return this;
         }
     }

@@ -37,7 +37,7 @@ namespace Booking.Web.Services
 
         public async Task<List<ApartmentTypeViewModel>> GetApartmentTypesAsync()
         {
-            var options = new QueryOptions<ApartmentType>().AddSortOption(false, x => x.Name);
+            var options = new QueryEntityOptions<ApartmentType>().AddSortOption(false, x => x.Name);
             var entities = await _unitOfWork.ApartmentTypes.GetAllAsync(options);
             var apartmentTypes = _mapper.Map<List<ApartmentTypeViewModel>>(entities);
 

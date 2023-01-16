@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
+using Booking.ApplicationCore.Constants;
 using Booking.Web.Interfaces;
 using Booking.Web.Models;
 using Booking.Web.Services;
+using Elfie.Serialization;
 using Microsoft.AspNetCore.Mvc;
+using System.Drawing.Printing;
 
 namespace Booking.Web.Controllers
 {
@@ -17,11 +20,27 @@ namespace Booking.Web.Controllers
             _mapper=mapper;
             _logger=logger;
         }
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int  page = 1)
         {
-            var apartmentsViewModel = await _apartmentViewModelService.GetAllAsync();
+            var apartmentsViewModel = await _apartmentViewModelService.GetApartmentsAsync(page);
 
-            return  View(apartmentsViewModel);
+            var countApartments = apartmentsViewModel.Count();
+
+            PageViewModel pageViewModel = 
+                new PageViewModel(countApartments, page, ApplicationConstants.ApartmentsPageSize);
+            //return  View(apartmentsViewModel);
+            ApartmentIndexViewModel viewModel = new ApartmentIndexViewModel
+            {
+                PageViewModel = pageViewModel,
+                Apartments =apartmentsViewModel
+            };
+
+            return View(viewModel);
+
+            //return View(new ApartmentIndexViewModel
+            //{
+            //    Apartments = apartmentsViewModel,
+            //});
         }
 
         [HttpGet]
