@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace Booking.ApplicationCore.Models
 {
-    public sealed class ApartmentType
+    public sealed class ApartmentType : BaseModel
     {
-        public int Id { get; set; }
         public string Name { get; set; }
 
         public void UpdateDetails(ApartmentTypeDetails details)

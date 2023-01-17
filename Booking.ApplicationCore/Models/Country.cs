@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Booking.ApplicationCore.Models
 {
-    public sealed class Country
+    public sealed class Country : BaseModel
     {
         public int Id { get; set; }
         public string Name { get; set; } 

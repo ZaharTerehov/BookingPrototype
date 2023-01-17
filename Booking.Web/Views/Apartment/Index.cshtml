@@ -4,17 +4,25 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Available apartments</h2>
+<div class="container">
+    <div class="row">
+        <div class="col-4">
+            <h2 class="text_action"> Available apartments</h2>
+        </div>
+        <div class="col-6">
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+        </div>
+        <div class="col-2" text-end>
+            <a class="btn btn-outline-primary" asp-action="Create">
+                <i class="bi bi-file-earmark-plus"></i> &nbsp; Create new
+            </a>
+        </div>
+    </div>
+</div>
+
 <table class="table">
     <thead>
         <tr>
-@*            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>*@
             <th>
                 Name
             </th>
@@ -31,50 +39,55 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Apartments) {
-        <tr>
-@*            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>*@
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td style="width:500px">
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
+        @foreach (var item in Model.Apartments)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td style="width:500px">
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
                     <img style="border-radius:10px; border:1px solid #ddd" width="150px"
-                     src="@Html.DisplayFor(modelItem => item.Picture)" />
-                @*@Html.DisplayFor(modelItem => item.Picture)*@
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id=item.Id}) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { id=item.Id  })
-            </td>
-
-
-
-        </tr>
+                    src="@Html.DisplayFor(modelItem => item.Picture)" />
+                    @*@Html.DisplayFor(modelItem => item.Picture)*@
+                </td>
+                <td>
+                    <a asp-controller="Apartment" asp-action="Edit" asp-route-id="@item.Id"
+                    class="btn btn-secondary btn-sm">
+                        <i class="bi bi-pencil-square"></i>
+                        Edit
+                    </a>
+                    <a asp-controller="Apartment" asp-action="Details" asp-route-id="@item.Id"
+                    class="btn btn-secondary btn-sm">
+                        <i class="bi bi-ticket-detailed"></i>
+                        Details
+                    </a>
+                    <a asp-controller="Apartment" asp-action="Delete" asp-route-id="@item.Id"
+                    class="btn btn-secondary btn-sm">
+                        <i class="bi bi-trash"></i>
+                        Delete
+                    </a>
+                </td>
+            </tr>
         }
 
         @if (Model.PageViewModel.HasPreviousPage)
         {
-            <a asp-action="Index"
-               asp-route-page="@(Model.PageViewModel.CurrentPage - 1)"
-           class="btn btn-outline-dark btn-sm">
-                   <i class="bi bi-skip-backward-fill"></i>
-                    Назад
+            <a asp-action="Index" asp-route-page="@(Model.PageViewModel.CurrentPage - 1)"
+            class="btn btn-outline-dark btn-sm">
+                <i class="bi bi-skip-backward-fill"></i>
+                Назад
             </a>
-       } 
+        }
         @if (Model.PageViewModel.HasNextPage)
         {
-             <a asp-action="Index"
-               asp-route-page="@(Model.PageViewModel.CurrentPage + 1)"
-               class="btn btn-outline-dark btn-sm">
+            <a asp-action="Index" asp-route-page="@(Model.PageViewModel.CurrentPage + 1)"
+            class="btn btn-outline-dark btn-sm">
                 Вперед
                 <i class="bi bi-skip-forward-fill"></i>
             </a>
