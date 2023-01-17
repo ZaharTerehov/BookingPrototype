@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Booking.Infrastructure.Data
 {
-    public class EFRepository<T> : IRepository<T> where T : class
+    public class EFRepository<T> : IRepository<T> where T : BaseModel
     {
         private readonly BookingContext _dbBookingContext;
 
@@ -50,6 +50,7 @@ namespace Booking.Infrastructure.Data
 
         public async Task CreateAsync(T entity)
         {
+            entity.DateCreated = DateTime.UtcNow;
             _dbBookingContext.Add(entity);
             await _dbBookingContext.SaveChangesAsync();
         }
@@ -62,6 +63,7 @@ namespace Booking.Infrastructure.Data
 
         public async Task UpdateAsync(T entity)
         {
+            entity.DateUpdated = DateTime.UtcNow;
             _dbBookingContext.Update(entity);
             await _dbBookingContext.SaveChangesAsync();
         }

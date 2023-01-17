@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Booking.ApplicationCore.Models
 {
-    public class City
+    public class City : BaseModel
     {
         public int Id { get; set; }
 
