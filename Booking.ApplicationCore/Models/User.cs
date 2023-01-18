@@ -1,4 +1,6 @@
 ﻿
+using Booking.ApplicationCore.Enum;
+
 namespace Booking.ApplicationCore.Models
 {
     public class User
@@ -18,5 +20,7 @@ namespace Booking.ApplicationCore.Models
         public DateTime DateOfBirth { get; set; }
 
         public DateTime RegistrationDate { get; set; } = DateTime.Now;
+
+        public Role Role { get; set; }
     }
 }
