@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Booking.ApplicationCore.Response
 {
-    public class BaseResponse<T>
+    public class BaseResponse<T> : IBaseResponse<T>
     {
         public string Description { get; set; }
 
