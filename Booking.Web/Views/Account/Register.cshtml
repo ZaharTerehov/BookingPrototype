@@ -2,7 +2,7 @@
 
 @{
     Layout = "_Layout";
-    ViewBag.Title = "Регистрация";
+    ViewBag.Title = "Register";
 }
 
 <div style="padding: 20px;"></div>
@@ -15,25 +15,39 @@
                     <span class="anchor"></span>
                     <div class="card card-account card-outline-secondary border border-white">
                         <div class="card-header">
-                            <h3 class="mb-0 text-center paragraphHome text-black">Регистрация</h3>
+                            <h3 class="mb-0 text-center paragraphHome text-black">Registration</h3>
                         </div>
                         <div class="card-body">
                             <form asp-controller="Account" asp-action="Register">
                                 <div asp-validation-summary="All" style="font-size:23px; font-family:Impact" class="text-danger text-center"></div>
                                 <div class="form-group">
-                                    <input asp-for="Name" class="form-control textbox-dg font-weight-bold text-center" placeholder="Имя" type="text">
+                                    <input asp-for="Email" class="form-control textbox-dg font-weight-bold text-center" placeholder="Email" type="email">
                                 </div>
                                 <div class="form-group">
-                                    <input autocomplete="new-password" asp-for="Password" placeholder="Пароль" class="form-control textbox-dg font-weight-bold text-center" type="password">
+                                    <input asp-for="Name" class="form-control textbox-dg font-weight-bold text-center" placeholder="Name" type="text">
                                 </div>
-                                <span class="text-black" style="font-size: small; font-family:'Comic Sans MS'">Пароль должен быть длиной больше 6 символов и иметь только латинские символы</span>
                                 <div class="form-group">
-                                    <input autocomplete="new-password" asp-for="PasswordConfirm" placeholder="Подтвердите пароль" class="form-control textbox-dg font-weight-bold text-center" type="password">
+                                    <input asp-for="Surname" class="form-control textbox-dg font-weight-bold text-center" placeholder="Surname" type="text">
                                 </div>
-                                <div>
-                                    <h2 class="paragraphHome text-center"><a asp-controller="Account" target="_blank" asp-action="Login" style="color:deepskyblue;">Вход</a></h2>
+                                <div class="form-group">
+                                    <input asp-for="NumberPhone" class="form-control textbox-dg font-weight-bold text-center" placeholder="NumberPhone" type="number">
                                 </div>
-                                <button class="btn btn-success btn-lg float-right" type="submit">Отправить</button>
+                                <div class="form-group" data-provide="datepicker">
+                                    <input asp-for="DateOfBirth" type="text" id="datepicker" class="form-control textbox-dg font-weight-bold text-center" placeholder="DateOfBirth">
+                                    <div class="input-group-addon">
+                                        <span class="glyphicon glyphicon-th"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <input autocomplete="new-password" asp-for="Password" placeholder="Password" class="form-control textbox-dg font-weight-bold text-center" type="password">
+                                </div>
+                                <span class="text-black" style="font-size: small; font-family:'Comic Sans MS'">
+                                    The password must be more than 6 characters long and contain only Latin characters
+                                </span>
+                                <div class="form-group">
+                                    <input autocomplete="new-password" asp-for="PasswordConfirm" placeholder="PasswordConfirm" class="form-control textbox-dg font-weight-bold text-center" type="password">
+                                </div>
+                                <button class="btn btn-success btn-lg float-right" type="submit">Register</button>
                             </form>
                         </div>
                     </div>
@@ -42,3 +56,4 @@
         </div>
     </div>
 </div>
+
