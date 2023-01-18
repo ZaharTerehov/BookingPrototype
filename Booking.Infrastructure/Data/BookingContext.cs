@@ -15,6 +15,8 @@ namespace Booking.Infrastructure.Data
         public DbSet<City> Cities { get; set; }
         public DbSet<Apartment> Apartments { get; set; }
 
+        public DbSet<User> Users { get; set; }
+
         public BookingContext(DbContextOptions<BookingContext> options) : base(options) { }
 
         internal Task SaveChangesAsync(IEnumerable<Apartment> enumerable)
