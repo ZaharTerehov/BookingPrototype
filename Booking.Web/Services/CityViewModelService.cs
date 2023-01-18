@@ -39,17 +39,20 @@ namespace Booking.Web.Services
 
         public async Task<CityIndexViewModel> GetCitiesAsync(int? countryId)
         {
-            var options = new QueryOptions<City>().AddSortOption(false, x => x.Country.Name)
+             var options = new QueryViewModelOption<City, CityViewModel>().AddSortOption(false, x => x.Country.Name)
                                                     .AddSortOption(false, y => y.Name)
                                                     .SetFilterOption(item => (!countryId.HasValue || item.CountryId == countryId))
-                                                    .AddIncludeOption(item => item.Country);
-            var entities = await _unitOfWork.Cities.GetAllAsync(options);
-            
-            var cityes = _mapper.Map<List<CityViewModel>>(entities);
+                                                    .AddSelectOption(item => new CityViewModel() 
+                                                                    { 
+                                                                        Id = item.Id,
+                                                                        Name = item.Name,
+                                                                        CountryName = item.Country.Name
+                                                                    });
+            var cities = await _unitOfWork.Cities.GetAllViewModelAsync(options);
 
             var vm = new CityIndexViewModel()
             {
-                Cities = cityes,
+                Cities = cities,
                 Countries = (await GetCountries(true)).ToList(),
             };
 
@@ -75,7 +78,7 @@ namespace Booking.Web.Services
         public async Task<IEnumerable<SelectListItem>> GetCountries(bool filter)
         {
             //_logger.LogInformation("GetBrands call");
-            var options = new QueryOptions<Country>().AddSortOption(false, y => y.Name);
+            var options = new QueryEntityOptions<Country>().AddSortOption(false, y => y.Name);
             var entities = await _unitOfWork.Countries.GetAllAsync(options);
             var countries = _mapper.Map<List<SelectListItem>>(entities);
             if (filter)

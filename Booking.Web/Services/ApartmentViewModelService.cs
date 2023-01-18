@@ -37,9 +37,10 @@ namespace Booking.Web.Services
             await _unitOfWork.Apartments.DeleteAsync(existingApartment);
         }
 
-        public async Task<List<ApartmentViewModel>> GetAllAsync()
+        public async Task<List<ApartmentViewModel>> GetApartmentsAsync(int currentPage)
         {
-            var options = new QueryOptions<Apartment>().AddSortOption(false, y => y.Id);
+            var options = new QueryEntityOptions<Apartment>().AddSortOption(false, y => y.Price)
+                .SetCurentPage(currentPage);
             var entities = await _unitOfWork.Apartments.GetAllAsync(options);
             var apartment = _mapper.Map<List<ApartmentViewModel>>(entities);
             return apartment;

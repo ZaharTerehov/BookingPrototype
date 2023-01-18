@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Booking.Infrastructure.Data
 {
-    public class EFRepository<T> : IRepository<T> where T : class
+    public class EFRepository<T> : IRepository<T> where T : BaseModel
     {
         private readonly BookingContext _dbBookingContext;
 
@@ -28,22 +28,29 @@ namespace Booking.Infrastructure.Data
             return entities;
         }
 
-        public async Task<IList<T>> GetAllAsync()
-        {
-            var entities = await _dbBookingContext.Set<T>().ToListAsync();
-            return entities;
-        }
-
-        public async Task<IList<T>> GetAllAsync(QueryOptions<T> options)
+        public async Task<IList<T>> GetAllAsync(QueryEntityOptions<T> options)
         {
             return await _dbBookingContext.Set<T>().IncludeFields(options.IncludeOptions)
                                             .FilterEntities(options.FilterOption)
                                             .OrderEntityBy(options.SortOptions)
+                                            .Skip((options.CurrentPage -1)*options.PageSize)
+                                            .Take(options.PageSize)
                                             .ToListAsync();            
+        }
+
+        public async Task<IList<TVM>> GetAllViewModelAsync<TVM>(QueryViewModelOption<T, TVM> options) where TVM : class
+        {
+            return await _dbBookingContext.Set<T>().FilterEntities(options.FilterOption)
+                                            .OrderEntityBy(options.SortOptions)
+                                            .SelectEntities(options.SelectOption)
+                                            .Skip((options.CurrentPage -1)*options.PageSize)
+                                            .Take(options.PageSize)
+                                            .ToListAsync();
         }
 
         public async Task CreateAsync(T entity)
         {
+            entity.DateCreated = DateTime.UtcNow;
             _dbBookingContext.Add(entity);
             await _dbBookingContext.SaveChangesAsync();
         }
@@ -56,6 +63,7 @@ namespace Booking.Infrastructure.Data
 
         public async Task UpdateAsync(T entity)
         {
+            entity.DateUpdated = DateTime.UtcNow;
             _dbBookingContext.Update(entity);
             await _dbBookingContext.SaveChangesAsync();
         }

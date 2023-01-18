@@ -154,6 +154,9 @@ header {
         background-color: #0b5ed7;   
     }
 
+.w-10 {
+    width: 11%;
+}
 /*
 .btn {
     display: inline-block;

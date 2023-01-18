@@ -1,4 +1,5 @@
 ﻿using Booking.ApplicationCore.QueryOptions;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,15 @@ namespace Booking.Infrastructure.Data.DBExtentions
             if (filterOptions != null)
             {
                 entities = entities.Where(filterOptions);             
+            }
+            return entities;
+        }
+
+        public static IQueryable<TEntity> FilterEntities<TEntity>(this DbSet<TEntity> entities, Expression<Func<TEntity, bool>> filterOptions) where TEntity : class
+        {
+            if (filterOptions != null)
+            {
+                return entities.Where(filterOptions);
             }
             return entities;
         }

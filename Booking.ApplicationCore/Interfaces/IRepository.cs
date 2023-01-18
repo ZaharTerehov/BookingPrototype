@@ -8,10 +8,11 @@ using System.Threading.Tasks;
 
 namespace Booking.ApplicationCore.Interfaces
 {
-    public interface IRepository<T> where T : class
+    public interface IRepository<T> where T : class 
     {
        // Task<IList<T>> GetAllAsync();
-        Task<IList<T>> GetAllAsync(QueryOptions<T> options);
+        Task<IList<T>> GetAllAsync(QueryEntityOptions<T> options);
+        Task<IList<TVM>> GetAllViewModelAsync<TVM>(QueryViewModelOption<T, TVM> options) where TVM : class; 
         Task<T?> GetByIdAsync(int id);
         Task CreateAsync(T entity);
         Task UpdateAsync(T entity);

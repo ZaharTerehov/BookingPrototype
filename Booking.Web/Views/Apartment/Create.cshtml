@@ -4,50 +4,47 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
-
-<h4>ApartmentViewModel</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="text_action">Creation Apartament</h2>
+        </div>
         <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Id" class="control-label"></label>
-                <input asp-for="Id" class="form-control" />
-                <span asp-validation-for="Id" class="text-danger"></span>
+            <div class="col-12">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend w-10">
+                        <span class="input-group-text w-100" id="inputGroup-sizing-name">Name</span>
+                    </div>
+                    <input asp-for="Name" type="text" class="form-control" aria-describedby="inputGroup-sizing-name">
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+            <div class="col-12">
+                <div class="input-group mb-3">
+                    <span class="input-group-text w-10" id="inputGroup-sizing-name">Description</span>
+                    <input asp-for="Description" type="text" class="form-control"
+                        aria-describedby="inputGroup-sizing-name">
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
+            <div class="col-12">
+                <div class="input-group mb-3">
+                    <span class="input-group-text w-10" id="inputGroup-sizing-name">Price</span>
+                    <input asp-for="Price" class="form-control" aria-describedby="inputGroup-sizing-name">
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
+            <div class="col-12">
+                <div class="input-group mb-3">
+                    <span class="input-group-text w-10" id="inputGroup-sizing-name">Picture</span>
+                    <input asp-for="Picture" type="text" class="form-control" aria-describedby="inputGroup-sizing-name">
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Picture" class="control-label"></label>
-                <input asp-for="Picture" class="form-control" />
-                <span asp-validation-for="Picture" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
+            <button type="submit" class="btn btn-primary" style="width: 150px;">Create</button>
+            <a asp-controller=Apartment asp-action="Index" class="btn btn-outline-primary" style="width:150px">
+                Cancel
+            </a>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
