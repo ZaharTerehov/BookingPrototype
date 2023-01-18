@@ -10,7 +10,7 @@ namespace Booking.Web.Models
 
         [DataType(DataType.Password)]
         [Required(ErrorMessage = "Enter password")]
-        [MinLength(3, ErrorMessage = "Min length 5")]
+        [MinLength(6, ErrorMessage = "Min length 6")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]

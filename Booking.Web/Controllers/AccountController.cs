@@ -1,18 +1,20 @@
 ﻿using Booking.ApplicationCore.Enum;
-using Booking.Web.Interfaces;
 using Booking.Web.Models;
+using Booking.ApplicationCore.Interfaces;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using Booking.ApplicationCore.Models;
+using Booking.Web.Interfaces;
 
 namespace Booking.Web.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly IAccountService _accountService;
+        private readonly IAccountServiceViewModelService _accountService;
 
-        public AccountController(IAccountService accountService)
+        public AccountController(IAccountServiceViewModelService accountService)
         {
             _accountService = accountService;
         }
@@ -21,6 +23,7 @@ namespace Booking.Web.Controllers
         public IActionResult Register() => View();
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
@@ -29,10 +32,7 @@ namespace Booking.Web.Controllers
 
                 if (response.StatusCode == ApplicationCore.Enum.StatusCode.OK)
                 {
-                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
-                        new ClaimsPrincipal(response.Data));
-
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Apartment");
                 }
 
                 ModelState.AddModelError("", response.Description);
