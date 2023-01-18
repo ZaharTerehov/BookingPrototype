@@ -1,13 +1,16 @@
-﻿namespace Booking.Web.Models
+﻿using Booking.ApplicationCore.Enums;
+using System.Drawing.Printing;
+
+namespace Booking.Web.Models
 {
     public class PageViewModel
     {
         public int CurrentPage { get; private set; }
-        public int PageSize { get; private set; } 
+        public PageSize PageSize { get; private set; } 
 
         public int CurrentElementsCount { get; private set; }   
 
-        public PageViewModel(int count, int currentPage, int pageSize)
+        public PageViewModel(int count, int currentPage, PageSize pageSize)
         {
             CurrentPage = currentPage;
             CurrentElementsCount = count;
@@ -26,7 +29,8 @@
         {
             get
             {
-                return (CurrentElementsCount == PageSize);
+                var ps = (int)PageSize;
+                return (CurrentElementsCount == ps);
             }
         }
     }

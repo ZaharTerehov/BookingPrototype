@@ -1,4 +1,5 @@
 ﻿using Booking.ApplicationCore.Constants;
+using Booking.ApplicationCore.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace Booking.ApplicationCore.QueryOptions
         protected Expression<Func<TEntity, bool>> _filterOption;
         public Expression<Func<TEntity, bool>> FilterOption { get { return _filterOption; } }
 
-        public int PageSize { get; set; } = ApplicationConstants.ApartmentsPageSize;
+        public PageSize PageSize { get; set; } = PageSize.AllElements;
 
         public int CurrentPage { get; protected set; } = 1;
 

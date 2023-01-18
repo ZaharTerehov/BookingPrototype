@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Booking.ApplicationCore.Enums;
 using Booking.ApplicationCore.Interfaces;
 using Booking.ApplicationCore.Models;
 using Booking.ApplicationCore.QueryOptions;
@@ -37,10 +38,10 @@ namespace Booking.Web.Services
             await _unitOfWork.Apartments.DeleteAsync(existingApartment);
         }
 
-        public async Task<List<ApartmentViewModel>> GetApartmentsAsync(int currentPage)
+        public async Task<List<ApartmentViewModel>> GetApartmentsAsync(int currentPage, PageSize pageSize)
         {
             var options = new QueryEntityOptions<Apartment>().AddSortOption(false, y => y.Price)
-                .SetCurentPage(currentPage);
+                .SetCurentPageAndPageSize(currentPage, pageSize);
             var entities = await _unitOfWork.Apartments.GetAllAsync(options);
             var apartment = _mapper.Map<List<ApartmentViewModel>>(entities);
             return apartment;

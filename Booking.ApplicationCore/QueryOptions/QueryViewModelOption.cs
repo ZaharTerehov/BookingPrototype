@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Booking.ApplicationCore.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -30,8 +31,9 @@ namespace Booking.ApplicationCore.QueryOptions
             return this;
         }
 
-        public QueryViewModelOption<TEntity, TVM> SetCurentPage(int currentPage)
+        public QueryViewModelOption<TEntity, TVM> SetCurentPageAndPageSize(int currentPage, PageSize pageSize)
         {
+            PageSize = pageSize;
             if (currentPage > 0)
             {
                 CurrentPage = currentPage;
