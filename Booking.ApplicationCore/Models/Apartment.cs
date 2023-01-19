@@ -16,12 +16,17 @@ namespace Booking.ApplicationCore.Models
 
         public string Picture { get; set; }
 
+        public int? ApartmentTypeId { get; set; }
+        public ApartmentType? ApartmentType { get; set; }
+    
+
         public void UpdateDetails(ApartmentDetails details)
         {
             Name = details.Name;
             Description = details.Description;
             Price = details.Price;
             Picture = details.Picture;
+            ApartmentTypeId = details.ApartmentTypeId;
         }
 
         public readonly record struct ApartmentDetails
@@ -32,13 +37,16 @@ namespace Booking.ApplicationCore.Models
             public decimal Price { get; }
 
             public string? Picture { get;  }
+            public int? ApartmentTypeId { get;  }
 
-            public ApartmentDetails(string? name, string? description, decimal price, string? picture)
+            public ApartmentDetails(string? name, string? description, decimal price, string? picture, int? apartmentTypeId)
             {
+
                 Name = name;
                 Description = description;
                 Price = price;
                 Picture = picture;
+                ApartmentTypeId = apartmentTypeId;
             }
         }
     }

@@ -6,6 +6,8 @@ using Booking.Web.Services;
 using Elfie.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using System.Drawing.Printing;
+using Booking.Web.Extentions;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Booking.Web.Controllers
 {
@@ -14,7 +16,8 @@ namespace Booking.Web.Controllers
         private readonly IApartmentViewModelService _apartmentViewModelService;
         private readonly IMapper _mapper;
         private readonly ILogger _logger;
-        public ApartmentController(IMapper mapper, IApartmentViewModelService apartmentViewModelService, ILogger<ApartmentController> logger)
+        public ApartmentController(IMapper mapper, IApartmentViewModelService apartmentViewModelService, 
+            ILogger<ApartmentController> logger)
         {
             _apartmentViewModelService= apartmentViewModelService;
             _mapper=mapper;
@@ -24,7 +27,7 @@ namespace Booking.Web.Controllers
         {
             var pNS = new {PageNum = page, PageSize = ApplicationConstants.ApartmentsPageSize };
 
-            var apartmentsViewModel = await _apartmentViewModelService.GetApartmentsAsync(pNS.PageNum, pNS.PageSize);
+            var apartmentsViewModel = await _apartmentViewModelService.GetApartmentsAsync(0, pNS.PageNum, pNS.PageSize);
 
             ApartmentIndexViewModel viewModel = new ApartmentIndexViewModel
             {
@@ -38,7 +41,9 @@ namespace Booking.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            return View(new ApartmentViewModel());
+            var newApartment = new ApartmentViewModel();
+            newApartment.ApartmentTypes = (List<SelectListItem>?)await _apartmentViewModelService.GetApartmentTypes(false);
+            return View(newApartment);
         }
 
         [HttpPost]
@@ -47,7 +52,6 @@ namespace Booking.Web.Controllers
         {
             try
             {
-                var apartment = _mapper.Map<ApartmentViewModel>(viewModel);
                 await _apartmentViewModelService.CreateApartmentAsync(viewModel);
                 return RedirectToAction(nameof(Index));
             }
@@ -93,7 +97,7 @@ namespace Booking.Web.Controllers
             {
                 return RedirectToAction("Index");
             }
-
+            result.ApartmentTypes = (await _apartmentViewModelService.GetApartmentTypes(false)).SetSelectedValue(result.ApatrmentTypeFilterApplied);
             return View(result);
         }
 

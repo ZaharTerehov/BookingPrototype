@@ -65,7 +65,7 @@ namespace Booking.Web.Controllers
                 return RedirectToAction("Index");
             }
 
-            result.Countries = (await _cityViewModelService.GetCountries(false)).ToList().SetSelectedValue(result.CountryFilterApplied);
+            result.Countries = (await _cityViewModelService.GetCountries(false)).SetSelectedValue(result.CountryFilterApplied);
             
             return View(result);
         }

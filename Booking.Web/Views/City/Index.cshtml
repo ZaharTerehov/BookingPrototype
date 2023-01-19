@@ -10,12 +10,11 @@
             <h2 class="text_action"> Town List</h2>
         </div>
         <div class="col-4">
-            <form method="get">
+            <form method="get" >
                 <div class="input-group mb-3">
                     <label class="input-group-text" for="selectCountry">Country</label>
                     <select class="form-select" id="selectCountry" asp-for="@Model.CountryFilterApplied"
-                        asp-items="@Model.Countries"></select>
-                    <input class="btn btn-primary" type="submit" value="Apply Filters" />
+                            asp-items="@Model.Countries" onchange="this.form.submit()"></select>                    
                 </div>
             </form>
         </div>

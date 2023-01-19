@@ -8,8 +8,10 @@ namespace Booking.Web.MappingProfile
     {
         public ApartmentProfiles()
         {
-            CreateMap<Apartment, ApartmentViewModel>();
-            CreateMap<ApartmentViewModel, Apartment>();
+            CreateMap<Apartment, ApartmentViewModel>()
+             .ForMember(dto => dto.ApatrmentTypeFilterApplied, opt => opt.MapFrom(entity => entity.ApartmentTypeId));
+            CreateMap<ApartmentViewModel, Apartment>()            
+            .ForMember(dto => dto.ApartmentTypeId, opt => opt.MapFrom(entity => entity.ApatrmentTypeFilterApplied));
         }
     }
 }
