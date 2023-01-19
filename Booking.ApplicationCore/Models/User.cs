@@ -1,9 +1,11 @@
 ﻿
+using Booking.ApplicationCore.Enum;
+
 namespace Booking.ApplicationCore.Models
 {
-    internal class User
+    public class User : BaseModel
     {
-        public Guid Id { get; set; }
+        public int Id { get; set; }
 
         public string Email { get; set; }
 
@@ -18,5 +20,7 @@ namespace Booking.ApplicationCore.Models
         public DateTime DateOfBirth { get; set; }
 
         public DateTime RegistrationDate { get; set; } = DateTime.Now;
+
+        public Role Role { get; set; }
     }
 }

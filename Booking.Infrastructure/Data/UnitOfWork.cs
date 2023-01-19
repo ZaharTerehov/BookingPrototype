@@ -18,12 +18,15 @@ namespace Booking.Infrastructure.Data
 
         public IRepository<Apartment> Apartments { get; }
 
-        public UnitOfWork(IRepository<City> cities, IRepository<Country> countries, IRepository<ApartmentType> apartmentTypes, IRepository<Apartment> apartments)
+        public IRepository<User> Users { get; }
+
+        public UnitOfWork(IRepository<City> cities, IRepository<Country> countries, IRepository<ApartmentType> apartmentTypes, IRepository<Apartment> apartments, IRepository<User> users)
         {
-            Cities=cities;
-            Countries=countries;
-            ApartmentTypes=apartmentTypes;
-            Apartments=apartments;
+            Cities = cities;
+            Countries = countries;
+            ApartmentTypes = apartmentTypes;
+            Apartments = apartments;
+            Users = users;
         }
     }
 }
