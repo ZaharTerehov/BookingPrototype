@@ -10,6 +10,7 @@ using Booking.Web.Models;
 using Microsoft.AspNetCore.Http.HttpResults;
 using NuGet.ContentModel;
 using System.Security.Claims;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Booking.Web.Services
 {
@@ -29,7 +30,7 @@ namespace Booking.Web.Services
         {
             try
             {
-                var options = new QueryOptions<User>().SetFilterOption(y => y.Email == model.Email);
+                var options = new QueryEntityOptions<User>().SetFilterOption(y => y.Email == model.Email);
                 var users = await _unitOfWork.Users.GetAllAsync(options);
 
                 if (users.Count > 0)
@@ -40,8 +41,20 @@ namespace Booking.Web.Services
                     };
                 }
 
+                var optionss = new QueryEntityOptions<User>().AddSortOption(true, y => y.Id);
+                var entities = await _unitOfWork.Users.GetAllAsync(optionss);
+
+                var id = 1;
+
+                if(entities.Count > 0)
+                {
+                    id = entities[0].Id;
+                    id++;
+                }
+
                 var newUser = new User()
                 {
+                    Id = id,
                     Role = Role.User,
                     Name = model.Name,
                     Email = model.Email,
