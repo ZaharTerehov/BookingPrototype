@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Booking.ApplicationCore.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,7 @@ namespace Booking.ApplicationCore.Constants
 {
     public static class ApplicationConstants
     {
-        public const int ApartmentsPageSize = 2;
+        public const PageSize ApartmentsPageSize = PageSize.TwoElements;
 
 
     }

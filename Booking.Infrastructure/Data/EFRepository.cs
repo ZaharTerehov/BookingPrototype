@@ -33,8 +33,7 @@ namespace Booking.Infrastructure.Data
             return await _dbBookingContext.Set<T>().IncludeFields(options.IncludeOptions)
                                             .FilterEntities(options.FilterOption)
                                             .OrderEntityBy(options.SortOptions)
-                                            .Skip((options.CurrentPage -1)*options.PageSize)
-                                            .Take(options.PageSize)
+                                            .SkipTakeEntities(options.CurrentPage, options.PageSize)
                                             .ToListAsync();            
         }
 
@@ -43,8 +42,7 @@ namespace Booking.Infrastructure.Data
             return await _dbBookingContext.Set<T>().FilterEntities(options.FilterOption)
                                             .OrderEntityBy(options.SortOptions)
                                             .SelectEntities(options.SelectOption)
-                                            .Skip((options.CurrentPage -1)*options.PageSize)
-                                            .Take(options.PageSize)
+                                            .SkipTakeEntities(options.CurrentPage, options.PageSize)
                                             .ToListAsync();
         }
 

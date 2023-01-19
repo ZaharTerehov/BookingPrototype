@@ -22,16 +22,14 @@ namespace Booking.Web.Controllers
         }
         public async Task<IActionResult> Index(int  page = 1)
         {
-            var apartmentsViewModel = await _apartmentViewModelService.GetApartmentsAsync(page);
+            var pNS = new {PageNum = page, PageSize = ApplicationConstants.ApartmentsPageSize };
 
-            var countApartments = apartmentsViewModel.Count();
+            var apartmentsViewModel = await _apartmentViewModelService.GetApartmentsAsync(pNS.PageNum, pNS.PageSize);
 
-            PageViewModel pageViewModel = 
-                new PageViewModel(countApartments, page, ApplicationConstants.ApartmentsPageSize);
             ApartmentIndexViewModel viewModel = new ApartmentIndexViewModel
             {
-                PageViewModel = pageViewModel,
-                Apartments =apartmentsViewModel
+                PageViewModel = new PageViewModel(apartmentsViewModel.Count(), pNS.PageNum, pNS.PageSize),
+                Apartments = apartmentsViewModel
             };
 
             return View(viewModel);
