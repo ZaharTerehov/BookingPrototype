@@ -14,7 +14,6 @@ namespace Booking.Infrastructure.Data
         public DbSet<Country> Countries { get; set; }
         public DbSet<City> Cities { get; set; }
         public DbSet<Apartment> Apartments { get; set; }
-
         public DbSet<User> Users { get; set; }
 
         public BookingContext(DbContextOptions<BookingContext> options) : base(options) { }

@@ -58,6 +58,18 @@ namespace Booking.Infrastructure.Data.Migrations
                 table: "Apartments",
                 type: "datetime2",
                 nullable: true);
+
+            migrationBuilder.AddColumn<DateTime>(
+                name: "DateCreated",
+                table: "Users",
+                type: "datetime2",
+                nullable: true);
+
+            migrationBuilder.AddColumn<DateTime>(
+                name: "DateUpdated",
+                table: "Users",
+                type: "datetime2",
+                nullable: true);
         }
 
         /// <inheritdoc />
@@ -94,6 +106,14 @@ namespace Booking.Infrastructure.Data.Migrations
             migrationBuilder.DropColumn(
                 name: "DateUpdated",
                 table: "Apartments");
+
+            migrationBuilder.DropColumn(
+                name: "DateCreated",
+                table: "Users");
+
+            migrationBuilder.DropColumn(
+                name: "DateUpdated",
+                table: "Users");
         }
     }
 }
