@@ -9,6 +9,7 @@ using Booking.Web.Interfaces;
 using Booking.Web.Models;
 using Microsoft.AspNetCore.Http.HttpResults;
 using NuGet.ContentModel;
+using System.Collections.Generic;
 using System.Security.Claims;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -33,7 +34,9 @@ namespace Booking.Web.Services
                 var options = new QueryEntityOptions<User>().SetFilterOption(y => y.Email == model.Email);
                 var users = await _unitOfWork.Users.GetAllAsync(options);
 
-                if (users.Count > 0)
+                var user = users.FirstOrDefault();
+
+                if (user != null)
                 {
                     return new BaseResponse<ClaimsIdentity>()
                     {
@@ -41,14 +44,14 @@ namespace Booking.Web.Services
                     };
                 }
 
-                var optionss = new QueryEntityOptions<User>().AddSortOption(true, y => y.Id);
-                var entities = await _unitOfWork.Users.GetAllAsync(optionss);
+                options = new QueryEntityOptions<User>().AddSortOption(true, y => y.Id);
+                users = await _unitOfWork.Users.GetAllAsync(options);
 
                 var id = 1;
 
-                if(entities.Count > 0)
+                if(users.Count > 0)
                 {
-                    id = entities[0].Id;
+                    id = users[0].Id;
                     id++;
                 }
 
