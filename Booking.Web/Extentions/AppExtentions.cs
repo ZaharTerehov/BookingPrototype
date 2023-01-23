@@ -6,15 +6,19 @@ namespace Booking.Web.Extentions
     {
         public static IList<SelectListItem> SetSelectedValue(this IList<SelectListItem> collection, int? id)
         {
-            var item = collection.FirstOrDefault(item => item.Value.Equals(id.ToString()));
-            if (item is not null)
-                item.Selected = true;
+            if (id != null)
+            {
+                var item = collection.FirstOrDefault(item => item.Value != null && item.Value.Equals(id.ToString()));
+                if (item is not null)
+                    item.Selected = true;
+            }
+            
             return collection;
         }
 
-        public static IList<SelectListItem> AddAllItem(this IList<SelectListItem> collection)
+        public static IList<SelectListItem> AddAllItem(this IList<SelectListItem> collection, bool itemAllSelected = true)
         {
-            var allItem = new SelectListItem() { Value = null, Text = "All", Selected = true };
+            var allItem = new SelectListItem() { Value = null, Text = "All", Selected = itemAllSelected };
             collection.Insert(0, allItem);
             return collection;
         }

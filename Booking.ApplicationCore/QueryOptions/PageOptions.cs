@@ -1,16 +1,20 @@
 ﻿using Booking.ApplicationCore.Enums;
-using System.Drawing.Printing;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Booking.Web.Models
+namespace Booking.ApplicationCore.QueryOptions
 {
-    public class PageViewModel
+    public class PageOptions
     {
-        public int CurrentPage { get; private set; }
-        public PageSize PageSize { get; private set; } 
+        public int CurrentPage { get; set; }
+        public PageSize PageSize { get; set; }
 
-        public int CurrentElementsCount { get; private set; }   
+        public int CurrentElementsCount { get; set; }
 
-        public PageViewModel(int count, int currentPage, PageSize pageSize)
+        public PageOptions(int count, int currentPage, PageSize pageSize)
         {
             CurrentPage = currentPage;
             CurrentElementsCount = count;

@@ -48,7 +48,7 @@ namespace Booking.Web.Services
                                                                         Name = item.Name,
                                                                         CountryName = item.Country.Name
                                                                     });
-            var cities = await _unitOfWork.Cities.GetAllViewModelAsync(options);
+            var cities = await _unitOfWork.Cities.GetAllDtoAsync(options);
 
             var vm = new CityIndexViewModel()
             {

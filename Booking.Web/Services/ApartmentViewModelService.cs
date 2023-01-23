@@ -6,6 +6,7 @@ using Booking.ApplicationCore.QueryOptions;
 using Booking.Web.Extentions;
 using Booking.Web.Interfaces;
 using Booking.Web.Models;
+using Booking.Web.Services.QueryOptions;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Booking.Web.Services
@@ -42,11 +43,13 @@ namespace Booking.Web.Services
             await _unitOfWork.Apartments.DeleteAsync(existingApartment);
         }
 
-        public async Task<List<ApartmentViewModel>> GetApartmentsAsync(int? countryId, int currentPage, PageSize pageSize)
+        public async Task<List<ApartmentViewModel>> GetApartmentsAsync(ApartmentQueryOptions apartmentOptions)
         {
-            var options = new QueryEntityOptions<Apartment>().AddSortOption(false, y => y.Price)
-                .SetCurentPageAndPageSize(currentPage, pageSize);
-            var entities = await _unitOfWork.Apartments.GetAllAsync(options);
+            var queryOptions = new QueryEntityOptions<Apartment>().AddSortOption(false, y => y.Price)
+                .SetFilterOption(x => (!apartmentOptions.ApartmentTypeFilterApplied.HasValue 
+                                  || x.ApartmentTypeId == apartmentOptions.ApartmentTypeFilterApplied))
+                .SetCurentPageAndPageSize(apartmentOptions.PageOptions);
+            var entities = await _unitOfWork.Apartments.GetAllAsync(queryOptions);
             var apartment = _mapper.Map<List<ApartmentViewModel>>(entities);
             return apartment;
         }        
@@ -75,19 +78,19 @@ namespace Booking.Web.Services
                 throw exception;
             }
 
-            Apartment.ApartmentDetails details = new Apartment.ApartmentDetails(viewModel.Name, viewModel.Description,viewModel.Price, viewModel.Picture, viewModel.ApatrmentTypeFilterApplied);
+            Apartment.ApartmentDetails details = new Apartment.ApartmentDetails(viewModel.Name, viewModel.Description,viewModel.Price, viewModel.Picture, viewModel.ApartmentTypeFilterApplied);
             existingApartment.UpdateDetails(details);
             await _unitOfWork.Apartments.UpdateAsync(existingApartment);
         }
 
-        public async Task<IList<SelectListItem>> GetApartmentTypes(bool filter)
+        public async Task<IList<SelectListItem>> GetApartmentTypes(bool filter, bool itemAllSelected = true)
         {
             var options = new QueryEntityOptions<ApartmentType>().AddSortOption(false, y => y.Name);
             var entities = await _unitOfWork.ApartmentTypes.GetAllAsync(options);
             var apartmentTypes = _mapper.Map<List<SelectListItem>>(entities);
             if (filter)
             {
-                apartmentTypes.AddAllItem();
+                apartmentTypes.AddAllItem(itemAllSelected);
             }
 
             return apartmentTypes;
