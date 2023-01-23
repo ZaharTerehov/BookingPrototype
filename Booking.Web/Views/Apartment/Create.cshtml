@@ -20,6 +20,13 @@
             </div>
             <div class="col-12">
                 <div class="input-group mb-3">
+                    <label class="input-group-text" for="selectApartmentType">ApartmentType</label>
+                    <select class="form-select" id="selectApartmentType" asp-for="@Model.ApartmentTypeFilterApplied"
+                            asp-items="@Model.ApartmentTypes"></select>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="input-group mb-3">
                     <span class="input-group-text w-10" id="inputGroup-sizing-name">Description</span>
                     <input asp-for="Description" type="text" class="form-control"
                         aria-describedby="inputGroup-sizing-name">

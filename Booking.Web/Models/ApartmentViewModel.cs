@@ -1,4 +1,6 @@
-﻿namespace Booking.Web.Models
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+
+namespace Booking.Web.Models
 {
     public sealed class ApartmentViewModel
     {
@@ -10,5 +12,8 @@
         public decimal Price { get; set; }
 
         public string Picture { get; set; }
+
+        public IList<SelectListItem>? ApartmentTypes { get; set; }
+        public int? ApartmentTypeFilterApplied { get; set; }
     }
 }

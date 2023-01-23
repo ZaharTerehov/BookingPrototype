@@ -33,16 +33,16 @@ namespace Booking.Infrastructure.Data
             return await _dbBookingContext.Set<T>().IncludeFields(options.IncludeOptions)
                                             .FilterEntities(options.FilterOption)
                                             .OrderEntityBy(options.SortOptions)
-                                            .SkipTakeEntities(options.CurrentPage, options.PageSize)
+                                            .SkipTakeEntities(options.PageOptions.CurrentPage, options.PageOptions.PageSize)
                                             .ToListAsync();            
         }
 
-        public async Task<IList<TVM>> GetAllViewModelAsync<TVM>(QueryViewModelOption<T, TVM> options) where TVM : class
+        public async Task<IList<Dto>> GetAllDtoAsync<Dto>(QueryViewModelOption<T, Dto> options) where Dto : class
         {
             return await _dbBookingContext.Set<T>().FilterEntities(options.FilterOption)
                                             .OrderEntityBy(options.SortOptions)
                                             .SelectEntities(options.SelectOption)
-                                            .SkipTakeEntities(options.CurrentPage, options.PageSize)
+                                            .SkipTakeEntities(options.PageOptions.CurrentPage, options.PageOptions.PageSize)
                                             .ToListAsync();
         }
 

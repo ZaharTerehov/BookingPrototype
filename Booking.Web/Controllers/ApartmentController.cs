@@ -6,6 +6,12 @@ using Booking.Web.Services;
 using Elfie.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using System.Drawing.Printing;
+using Booking.Web.Extentions;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Booking.ApplicationCore.QueryOptions;
+using Booking.Web.Services.QueryOptions;
+using Microsoft.Extensions.Options;
+using Booking.ApplicationCore.Models;
 
 namespace Booking.Web.Controllers
 {
@@ -14,22 +20,26 @@ namespace Booking.Web.Controllers
         private readonly IApartmentViewModelService _apartmentViewModelService;
         private readonly IMapper _mapper;
         private readonly ILogger _logger;
-        public ApartmentController(IMapper mapper, IApartmentViewModelService apartmentViewModelService, ILogger<ApartmentController> logger)
+        public ApartmentController(IMapper mapper, IApartmentViewModelService apartmentViewModelService, 
+            ILogger<ApartmentController> logger)
         {
             _apartmentViewModelService= apartmentViewModelService;
             _mapper=mapper;
             _logger=logger;
         }
-        public async Task<IActionResult> Index(int  page = 1)
-        {
-            var pNS = new {PageNum = page, PageSize = ApplicationConstants.ApartmentsPageSize };
-
-            var apartmentsViewModel = await _apartmentViewModelService.GetApartmentsAsync(pNS.PageNum, pNS.PageSize);
-
-            ApartmentIndexViewModel viewModel = new ApartmentIndexViewModel
+        public async Task<IActionResult> Index(ApartmentQueryOptions options/*, int  page = 1*/)
+        {            
+            //options = options ?? new ApartmentQueryOptions();
+            //options.PageOptions.CurrentPage = page;
+            var apartmentViewModels = await _apartmentViewModelService.GetApartmentsAsync(options);
+            options.PageOptions.CurrentElementsCount = apartmentViewModels.Count;
+            ApartmentIndexViewModel viewModel = new ApartmentIndexViewModel()
             {
-                PageViewModel = new PageViewModel(apartmentsViewModel.Count(), pNS.PageNum, pNS.PageSize),
-                Apartments = apartmentsViewModel
+                Options = options,
+                ApartmentTypes = (await _apartmentViewModelService
+                                                    .GetApartmentTypes(true, options.ApartmentTypeFilterApplied == null))
+                                                    .SetSelectedValue(options.ApartmentTypeFilterApplied),
+                Apartments = apartmentViewModels
             };
 
             return View(viewModel);
@@ -38,7 +48,9 @@ namespace Booking.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            return View(new ApartmentViewModel());
+            var newApartment = new ApartmentViewModel();
+            newApartment.ApartmentTypes = (List<SelectListItem>?)await _apartmentViewModelService.GetApartmentTypes(false);
+            return View(newApartment);
         }
 
         [HttpPost]
@@ -47,7 +59,6 @@ namespace Booking.Web.Controllers
         {
             try
             {
-                var apartment = _mapper.Map<ApartmentViewModel>(viewModel);
                 await _apartmentViewModelService.CreateApartmentAsync(viewModel);
                 return RedirectToAction(nameof(Index));
             }
@@ -93,7 +104,7 @@ namespace Booking.Web.Controllers
             {
                 return RedirectToAction("Index");
             }
-
+            result.ApartmentTypes = (await _apartmentViewModelService.GetApartmentTypes(false)).SetSelectedValue(result.ApartmentTypeFilterApplied);
             return View(result);
         }
 

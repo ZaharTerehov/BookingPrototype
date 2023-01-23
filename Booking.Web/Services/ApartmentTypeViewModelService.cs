@@ -2,8 +2,10 @@
 using Booking.ApplicationCore.Interfaces;
 using Booking.ApplicationCore.Models;
 using Booking.ApplicationCore.QueryOptions;
+using Booking.Web.Extentions;
 using Booking.Web.Interfaces;
 using Booking.Web.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Serilog;
 using System.Diagnostics.Metrics;
 
@@ -19,7 +21,7 @@ namespace Booking.Web.Services
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
-
+        
         public async Task<ApartmentTypeViewModel> GetApartmentTypeViewModelByIdAsync(int id)
         {
             var apartmentType = await _unitOfWork.ApartmentTypes.GetByIdAsync(id);

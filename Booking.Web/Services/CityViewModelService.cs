@@ -48,7 +48,7 @@ namespace Booking.Web.Services
                                                                         Name = item.Name,
                                                                         CountryName = item.Country.Name
                                                                     });
-            var cities = await _unitOfWork.Cities.GetAllViewModelAsync(options);
+            var cities = await _unitOfWork.Cities.GetAllDtoAsync(options);
 
             var vm = new CityIndexViewModel()
             {
@@ -75,7 +75,7 @@ namespace Booking.Web.Services
             return dto;
         }
 
-        public async Task<IEnumerable<SelectListItem>> GetCountries(bool filter)
+        public async Task<IList<SelectListItem>> GetCountries(bool filter)
         {
             //_logger.LogInformation("GetBrands call");
             var options = new QueryEntityOptions<Country>().AddSortOption(false, y => y.Name);
