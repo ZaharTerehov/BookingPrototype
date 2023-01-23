@@ -1,0 +1,56 @@
+﻿@model IEnumerable<Booking.Web.Models.CountryViewModel>
+
+@{
+    ViewData["Title"] = "Country";
+}
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-6">
+            <h2 class="text-primary text-uppercase">Country List</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a class="btn btn-outline-primary" asp-action="Create">
+                <i class="bi bi-file-earmark-plus"></i> &nbsp; Create new
+            </a>
+        </div>
+    </div>
+    <br />
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>
+                    Country Name
+                </th>
+                <th width="170px">
+                    Modification
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @item.Name
+                    </td>
+                    <td align="left">
+                        <div>
+                            <a asp-controller="Country" asp-action="Edit" asp-route-id="@item.Id"
+                            class="btn btn-secondary btn-sm">
+                                <i class="bi bi-pencil-square"></i>
+                                Edit
+                            </a>
+                            <a asp-controller="Country" asp-action="Delete" asp-route-id="@item.Id"
+                            class="btn btn-secondary btn-sm">
+                                <i class="bi bi-trash"></i>
+                                Delete
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,29 @@
+﻿@model Booking.Web.Models.CountryViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="text_action">Creation Country</h2>
+        </div>
+        <form asp-action="Create">
+            <div class="col-12">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="inputGroup-sizing-name">Name</span>
+                    <input asp-for="Name" type="text" class="form-control" aria-describedby="inputGroup-sizing-name">
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 150px;">Create</button>
+            <a asp-controller=Country asp-action="Index" class="btn btn-outline-primary" style="width:150px">
+                Cancel
+            </a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

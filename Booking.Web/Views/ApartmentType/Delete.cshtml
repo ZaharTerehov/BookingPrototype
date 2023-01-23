@@ -1,0 +1,27 @@
+﻿@model Booking.Web.Models.ApartmentTypeViewModel
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="text_action">Delete Apartment type</h2>
+            <h3 class="text_action">Are you sure you want to delete this?</h3>
+        </div>
+        <div class="col-12">
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="inputGroup-sizing-name">Name</span>
+                <input asp-for="Name" type="text" disabled class="form-control"
+                    aria-describedby="inputGroup-sizing-name">
+            </div>
+        </div>
+        <form asp-action="Delete">
+            <button type="submit" class="btn btn-primary" style="width: 150px;">Delete</button>
+            <a asp-controller="ApartmentType" asp-action="Index" class="btn btn-outline-primary" style="width:150px">
+                Cancel
+            </a>
+        </form>
+    </div>
+</div>

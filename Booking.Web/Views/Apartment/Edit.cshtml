@@ -1,0 +1,48 @@
+﻿@model Booking.Web.Models.ApartmentViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="text_action">Edit Apartment</h2>
+        </div>
+        <form asp-action="Edit">
+            <div class="col-12">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="inputGroup-sizing-name">Name</span>
+                    <input asp-for="Name" type="text" class="form-control" aria-describedby="inputGroup-sizing-name">
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="inputGroup-sizing-name">Description</span>
+                    <input asp-for="Description" type="text" class="form-control"
+                        aria-describedby="inputGroup-sizing-name">
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="inputGroup-sizing-name">Price</span>
+                    <input asp-for="Price" class="form-control" aria-describedby="inputGroup-sizing-name">
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="inputGroup-sizing-name">Picture</span>
+                    <input asp-for="Picture" class="form-control" aria-describedby="inputGroup-sizing-name">
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 150px;">Edit</button>
+            <a asp-controller="Apartment" asp-action="Index" class="btn btn-outline-primary" style="width:150px">
+                Cancel
+            </a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

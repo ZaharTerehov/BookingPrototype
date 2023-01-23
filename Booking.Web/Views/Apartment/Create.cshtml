@@ -1,0 +1,50 @@
+﻿@model Booking.Web.Models.ApartmentViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="text_action">Creation Apartament</h2>
+        </div>
+        <form asp-action="Create">
+            <div class="col-12">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend w-10">
+                        <span class="input-group-text w-100" id="inputGroup-sizing-name">Name</span>
+                    </div>
+                    <input asp-for="Name" type="text" class="form-control" aria-describedby="inputGroup-sizing-name">
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="input-group mb-3">
+                    <span class="input-group-text w-10" id="inputGroup-sizing-name">Description</span>
+                    <input asp-for="Description" type="text" class="form-control"
+                        aria-describedby="inputGroup-sizing-name">
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="input-group mb-3">
+                    <span class="input-group-text w-10" id="inputGroup-sizing-name">Price</span>
+                    <input asp-for="Price" class="form-control" aria-describedby="inputGroup-sizing-name">
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="input-group mb-3">
+                    <span class="input-group-text w-10" id="inputGroup-sizing-name">Picture</span>
+                    <input asp-for="Picture" type="text" class="form-control" aria-describedby="inputGroup-sizing-name">
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 150px;">Create</button>
+            <a asp-controller=Apartment asp-action="Index" class="btn btn-outline-primary" style="width:150px">
+                Cancel
+            </a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
