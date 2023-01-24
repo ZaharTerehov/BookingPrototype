@@ -34,9 +34,7 @@ namespace Booking.Web.Services
                 var options = new QueryEntityOptions<User>().SetFilterOption(y => y.Email == model.Email);
                 var users = await _unitOfWork.Users.GetAllAsync(options);
 
-                var user = users.FirstOrDefault();
-
-                if (user != null)
+                if (users.Count > 0)
                 {
                     return new BaseResponse<ClaimsIdentity>()
                     {
@@ -47,6 +45,7 @@ namespace Booking.Web.Services
                 options = new QueryEntityOptions<User>().AddSortOption(true, y => y.Id);
                 users = await _unitOfWork.Users.GetAllAsync(options);
 
+                //delete
                 var id = 1;
 
                 if(users.Count > 0)
