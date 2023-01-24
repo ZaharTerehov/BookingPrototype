@@ -63,7 +63,7 @@ namespace Booking.Web.Services
                     Surname = model.Surname,
                     DateOfBirth = model.DateOfBirth,
                     NumberPhone = model.NumberPhone,
-                    Password = HashPasswordHelper.HashPassword(model.Password),
+                    Password = HashPasswordHelper.HashPassword(model.Email + model.Password),
                 };
 
                 await _unitOfWork.Users.CreateAsync(newUser);
