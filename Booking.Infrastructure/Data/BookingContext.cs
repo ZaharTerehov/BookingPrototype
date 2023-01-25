@@ -10,6 +10,7 @@ namespace Booking.Infrastructure.Data
 {
     public class BookingContext : DbContext
     {
+        public DbSet<Reservation> Reservations { get; set; }
         public DbSet<ApartmentType> ApartmentTypes { get; set; }
         public DbSet<Country> Countries { get; set; }
         public DbSet<City> Cities { get; set; }

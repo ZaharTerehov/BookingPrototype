@@ -59,16 +59,16 @@ namespace Booking.Infrastructure.Data
                 logger.LogInformation("Seed database Apartments complete");
             }
 
-            if (!await bookingContext.Users.AnyAsync())
-            {
-                logger.LogInformation("Table User is empty");
+            //if (!await bookingContext.Users.AnyAsync())
+            //{
+            //    logger.LogInformation("Table User is empty");
 
-                await bookingContext.Apartments.AddRangeAsync(GetInitialApartments());
+            //    await bookingContext.Apartments.AddRangeAsync(GetInitialApartments());
 
-                await bookingContext.SaveChangesAsync();
+            //    await bookingContext.SaveChangesAsync();
 
-                logger.LogInformation("Seed database User complete");
-            }
+            //    logger.LogInformation("Seed database User complete");
+            //}
         }
 
         private static IEnumerable<ApartmentType> GetInitialApartmentTypes()
