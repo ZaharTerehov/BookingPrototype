@@ -18,10 +18,15 @@ namespace Booking.Web.Services
             _mapper=mapper;
         }
 
+        public Task CreateApartmentTypeAsync(ReservationViewModel viewModel)
+        {
+            throw new NotImplementedException();
+        }
+
         //var options = new QueryEntityOptions<ApartmentType>().AddSortOption(false, x => x.Name);
         //var entities = await _unitOfWork.ApartmentTypes.GetAllAsync(options);
 
-        public Task<List<ReservationViewModel>> GetReservationsAsync()
+        public async Task<List<ReservationViewModel>> GetReservationsAsync()
         {
             var options = new QueryEntityOptions<Reservation>().AddSortOption(false, x => x.DateCreated);
             var reservationsList = _unitOfWork.Reservations.GetAllAsync(options);

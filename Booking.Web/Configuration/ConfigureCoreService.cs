@@ -16,6 +16,7 @@ namespace Booking.Web.Configuration
             services.AddScoped(typeof(IApartmentTypeViewModelService),typeof(ApartmentTypeViewModelService));
             services.AddScoped(typeof(ICountryViewModelService), typeof(CountryViewModelService));
             services.AddScoped(typeof(IAccountServiceViewModelService), typeof(RegisterViewModelService));
+            services.AddScoped(typeof(IReservationViewModerService), typeof(ReservationViewModelService));
             return services;
         }
 
