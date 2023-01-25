@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Booking.ApplicationCore.Interfaces;
 using Booking.ApplicationCore.Models;
+using Booking.Web.Attributes.Filters;
 using Booking.Web.Interfaces;
 using Booking.Web.Models;
 using Booking.Web.Services;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Booking.Web.Controllers
 {
+    [TypeFilter(typeof(AppExceptionFilter))]
     public class ApartmentTypeController : Controller
     {
         private readonly IApartmentTypeViewModelService _apartmentTypeViewModelService;        
@@ -25,6 +27,7 @@ namespace Booking.Web.Controllers
 
         public async Task <IActionResult> Index()
         {
+            throw new Exception();
             var apartmentsViewModel = await _apartmentTypeViewModelService.GetApartmentTypesAsync();
             return View(apartmentsViewModel);
         }
