@@ -25,6 +25,7 @@ namespace Booking.ApplicationCore.QueryOptions
             _filterOption = filterOption;          
             return this;
         }
+
         public QueryEntityOptions<TEntity> AddIncludeOption(Expression<Func<TEntity, object>> includeOption)
         {
             _includeOptions = _includeOptions ?? new List<Expression<Func<TEntity, object>>>();
