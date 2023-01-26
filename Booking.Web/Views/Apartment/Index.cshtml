@@ -90,6 +90,9 @@
                 Name
             </th>
             <th>
+                City
+            </th>
+            <th>
                 Description
             </th>
             <th>
@@ -107,6 +110,9 @@
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CityName)
                 </td>
                 <td style="width:500px">
                     @Html.DisplayFor(modelItem => item.Description)

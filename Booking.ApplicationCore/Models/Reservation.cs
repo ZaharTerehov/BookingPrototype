@@ -17,20 +17,10 @@ namespace Booking.ApplicationCore.Models
         public DateTime ArrivalDateTime { get; set; }
         public DateTime DepartureDateTime { get; set; }
 
-        [StringLength(50)]
-        public string Room { get; set; }
-        public int NumberOfPeople { get; set; }
-
         [NotMapped]
         public string ArrivalDate => ArrivalDateTime.ToString("MM/dd/yyyy");
-
-        [NotMapped]
-        public string ArrivalTime => ArrivalDateTime.ToString("hh:mm tt");
-
         [NotMapped]
         public string DepartureDate => DepartureDateTime.ToString("MM/dd/yyyy");
 
-        [NotMapped]
-        public string DepartureTime => DepartureDateTime.ToString("hh:mm tt");
     }
 }

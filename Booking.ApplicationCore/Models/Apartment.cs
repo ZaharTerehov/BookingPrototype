@@ -15,6 +15,8 @@ namespace Booking.ApplicationCore.Models
         public decimal Price { get; set; }
 
         public string Picture { get; set; }
+        public City? City { get; set; }
+        public int? CityId { get; set; }
 
         public int? ApartmentTypeId { get; set; }
         public ApartmentType? ApartmentType { get; set; }
@@ -26,6 +28,7 @@ namespace Booking.ApplicationCore.Models
             Description = details.Description;
             Price = details.Price;
             Picture = details.Picture;
+            CityId = details.CityId;
             ApartmentTypeId = details.ApartmentTypeId;
         }
 
@@ -37,16 +40,18 @@ namespace Booking.ApplicationCore.Models
             public decimal Price { get; }
 
             public string? Picture { get;  }
+            public int? CityId { get; }
             public int? ApartmentTypeId { get;  }
 
             public ApartmentDetails(string? name, string? description, decimal price, string? picture, int? apartmentTypeId)
             {
-
                 Name = name;
                 Description = description;
                 Price = price;
                 Picture = picture;
                 ApartmentTypeId = apartmentTypeId;
+
+                //TODO add option to change for City 
             }
         }
     }

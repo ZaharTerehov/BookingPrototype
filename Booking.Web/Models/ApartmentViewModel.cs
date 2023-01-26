@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Booking.ApplicationCore.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Booking.Web.Models
 {
@@ -12,6 +13,7 @@ namespace Booking.Web.Models
         public decimal Price { get; set; }
 
         public string Picture { get; set; }
+        public string CityName { get; set; }
 
         public IList<SelectListItem>? ApartmentTypes { get; set; }
         public int? ApartmentTypeFilterApplied { get; set; }

@@ -48,6 +48,7 @@ namespace Booking.Web.Services
             var queryOptions = new QueryEntityOptions<Apartment>().AddSortOption(false, y => y.Price)
                 .SetFilterOption(x => (!apartmentOptions.ApartmentTypeFilterApplied.HasValue 
                                   || x.ApartmentTypeId == apartmentOptions.ApartmentTypeFilterApplied))
+                .AddIncludeOption(x => x.City)
                 .SetCurentPageAndPageSize(apartmentOptions.PageOptions);
             var entities = await _unitOfWork.Apartments.GetAllAsync(queryOptions);
             var apartment = _mapper.Map<List<ApartmentViewModel>>(entities);
