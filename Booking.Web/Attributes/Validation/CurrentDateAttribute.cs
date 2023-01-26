@@ -13,16 +13,14 @@ namespace Booking.Web.Attributes.Validation
 
         public override bool IsValid(object? value)
         {
-            DateTime _Begin = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 0, 0, 0);
+            DateTime begin = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 0, 0, 0);
 
-            DateTime.TryParse(value.ToString(), out var result);
-
-            if (result < _Begin)
+            if (DateTime.TryParse(value.ToString(), out var result))
             {
-                return false;
-            }
+                return result < begin;
+            }            
 
-            return true;
+            return false;
         }
     }
 }
