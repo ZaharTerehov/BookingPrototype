@@ -90,7 +90,7 @@ namespace Booking.Web.Services
             }
 
             Apartment.ApartmentDetails details = new Apartment.ApartmentDetails(viewModel.Name, viewModel.Description,viewModel.Price, 
-                                                viewModel.Picture, viewModel.ApartmentTypeFilterApplied, viewModel.CityFilterApplied);
+                                                viewModel.Picture, viewModel.ApartmentTypeFilterApplied, viewModel.CityFilterApplied,viewModel.Address, viewModel.PeopleNumber);
             existingApartment.UpdateDetails(details);
             await _unitOfWork.Apartments.UpdateAsync(existingApartment);
         }

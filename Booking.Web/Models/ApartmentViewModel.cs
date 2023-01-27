@@ -14,6 +14,8 @@ namespace Booking.Web.Models
 
         public string Picture { get; set; }
         public string CityName { get; set; }
+        public string Address { get; set; }
+        public byte PeopleNumber { get; set; }
 
         public IList<SelectListItem>? ApartmentTypes { get; set; }
         public int? ApartmentTypeFilterApplied { get; set; }
