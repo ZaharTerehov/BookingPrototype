@@ -27,18 +27,17 @@ namespace Booking.Web.Controllers
             _mapper=mapper;
             _logger=logger;
         }
-        public async Task<IActionResult> Index(ApartmentQueryOptions options/*, int  page = 1*/)
+        public async Task<IActionResult> Index(ApartmentQueryOptions options)
         {            
-            //options = options ?? new ApartmentQueryOptions();
-            //options.PageOptions.CurrentPage = page;
             var apartmentViewModels = await _apartmentViewModelService.GetApartmentsAsync(options);
             options.PageOptions.CurrentElementsCount = apartmentViewModels.Count;
             ApartmentIndexViewModel viewModel = new ApartmentIndexViewModel()
             {
                 Options = options,
-                ApartmentTypes = (await _apartmentViewModelService
-                                                    .GetApartmentTypes(true, options.ApartmentTypeFilterApplied == null))
-                                                    .SetSelectedValue(options.ApartmentTypeFilterApplied),
+                ApartmentTypes = (await _apartmentViewModelService.GetApartmentTypes(true, options.ApartmentTypeFilterApplied == null))
+                                                                  .SetSelectedValue(options.ApartmentTypeFilterApplied),
+                Cities = (await _apartmentViewModelService.GetCities(true, options.CityFilterApplied == null))
+                                                          .SetSelectedValue(options.CityFilterApplied),
                 Apartments = apartmentViewModels
             };
 
@@ -49,7 +48,8 @@ namespace Booking.Web.Controllers
         public async Task<IActionResult> Create()
         {
             var newApartment = new ApartmentViewModel();
-            newApartment.ApartmentTypes = (List<SelectListItem>?)await _apartmentViewModelService.GetApartmentTypes(false);
+            newApartment.ApartmentTypes = await _apartmentViewModelService.GetApartmentTypes(false);
+            newApartment.Cities = await _apartmentViewModelService.GetCities(false);
             return View(newApartment);
         }
 
@@ -105,6 +105,7 @@ namespace Booking.Web.Controllers
                 return RedirectToAction("Index");
             }
             result.ApartmentTypes = (await _apartmentViewModelService.GetApartmentTypes(false)).SetSelectedValue(result.ApartmentTypeFilterApplied);
+            result.Cities = (await _apartmentViewModelService.GetCities(false)).SetSelectedValue(result.CityFilterApplied);
             return View(result);
         }
 

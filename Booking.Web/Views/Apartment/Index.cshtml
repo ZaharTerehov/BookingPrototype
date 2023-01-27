@@ -9,16 +9,19 @@
         <div class="col-3">
             <h2 class="text_action">Available apartments</h2>
         </div>
-        <div class="col-3">            
+        <div class="col-6">            
             <form method="get" >
                 <div class="input-group mb-3">
-                    <label class="input-group-text" for="selectCountry">Country</label>
-                    <select class="form-select" id="selectCountry" asp-for="@Model.Options.ApartmentTypeFilterApplied"
-                            asp-items="@Model.ApartmentTypes" onchange="this.form.submit()"></select>                    
+                    <label class="input-group-text" for="selecApartmentType">Type</label>
+                    <select class="form-select" id="selecApartmentType" asp-for="@Model.Options.ApartmentTypeFilterApplied"
+                            asp-items="@Model.ApartmentTypes" onchange="this.form.submit()"></select>
+                    <label class="input-group-text" for="selectCity">City</label>
+                    <select class="form-select" id="selectCity" asp-for="@Model.Options.CityFilterApplied"
+                            asp-items="@Model.Cities" onchange="this.form.submit()"></select>
                 </div>
             </form>
         </div>
-        <div class="col-6 text-end">
+        <div class="col-3 text-end">
             <a class="btn btn-outline-primary" asp-action="Create">
                 <i class="bi bi-file-earmark-plus"></i> &nbsp; Create new
             </a>

@@ -17,5 +17,8 @@ namespace Booking.Web.Models
 
         public IList<SelectListItem>? ApartmentTypes { get; set; }
         public int? ApartmentTypeFilterApplied { get; set; }
+
+        public IList<SelectListItem>? Cities { get; set; }
+        public int? CityFilterApplied { get; set; }
     }
 }

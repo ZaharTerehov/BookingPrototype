@@ -8,13 +8,14 @@ namespace Booking.Web.Interfaces
 {
     public interface IApartmentViewModelService
     {
-        Task<List<ApartmentViewModel>> GetApartmentsAsync(ApartmentQueryOptions options);
+        Task<IList<ApartmentViewModel>> GetApartmentsAsync(ApartmentQueryOptions options);
 
         Task CreateApartmentAsync(ApartmentViewModel viewModel);
         Task UpdateApartmentAsync(ApartmentViewModel viewModel);
         Task DeleteApartmentAsync(ApartmentViewModel viewModel);
         Task<ApartmentViewModel> GetApartmentViewModelByIdAsync(int id);
         Task<IList<SelectListItem>> GetApartmentTypes(bool filter, bool itemAllSelected = true);
+        Task<IList<SelectListItem>> GetCities(bool filter, bool itemAllSelected = true);
 
     }
 }

@@ -31,12 +31,12 @@ namespace Booking.ApplicationCore.QueryOptions
             return this;
         }
 
-        public QueryViewModelOption<TEntity, TVM> SetCurentPageAndPageSize(int currentPage, PageSize pageSize)
+        public QueryViewModelOption<TEntity, TVM> SetCurentPageAndPageSize(PageOptions options)
         {
-            PageOptions.PageSize = pageSize;
-            if (currentPage > 0)
+            PageOptions.PageSize = options.PageSize;
+            if (options.CurrentPage > 0)
             {
-                PageOptions.CurrentPage = currentPage;
+                PageOptions.CurrentPage = options.CurrentPage;
             }
             return this;
         }

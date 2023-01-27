@@ -13,7 +13,7 @@ namespace Booking.Infrastructure.Data.DBExtentions
     {
         public static IQueryable<TEntity> IncludeFields<TEntity>(this DbSet<TEntity> entities, IList<Expression<Func<TEntity, object>>> includeOptions) where TEntity : class
         {
-            if (includeOptions != null)
+            if (includeOptions != null && includeOptions.Count > 0)
             {
                 var firstOption = includeOptions.First();
                 var query = entities.Include(firstOption);

@@ -22,9 +22,9 @@ namespace Booking.Infrastructure.Data
             _dbBookingContext= bookingContext;
         }
 
-        public async Task<T?> GetByIdAsync(int id)
+        public async Task<T?> GetByIdAsync(int id, params Expression<Func<T, object>>[] includes)
         {
-            var entities = await _dbBookingContext.Set<T>().FindAsync(id);
+            var entities = await _dbBookingContext.Set<T>().IncludeFields(includes).FirstOrDefaultAsync(x => x.Id == id);
             return entities;
         }
 

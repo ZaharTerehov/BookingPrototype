@@ -8,6 +8,7 @@ namespace Booking.Web.Models
     {
         public IList<ApartmentViewModel>? Apartments { get; set; }
         public IList<SelectListItem>? ApartmentTypes { get; set; }
+        public IList<SelectListItem>? Cities { get; set; }
         public ApartmentQueryOptions? Options { get; set; }
         //public PageOptions? PageOptions { get; set; }                
         //public int? ApartmentTypeFilterApplied { get; set; }

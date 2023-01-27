@@ -18,6 +18,13 @@
             </div>
             <div class="col-12">
                 <div class="input-group mb-3">
+                    <label class="input-group-text" for="selectCity">City</label>
+                    <select class="form-select" id="selectCity" asp-for="@Model.CityFilterApplied"
+                            asp-items="@Model.Cities"></select>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="input-group mb-3">
                     <label class="input-group-text" for="selectApartmentType">ApartmentType</label>
                     <select class="form-select" id="selectApartmentType" asp-for="@Model.ApartmentTypeFilterApplied"
                             asp-items="@Model.ApartmentTypes"></select>

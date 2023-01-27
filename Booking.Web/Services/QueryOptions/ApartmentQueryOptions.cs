@@ -8,6 +8,7 @@ namespace Booking.Web.Services.QueryOptions
     {
         public PageOptions PageOptions { get; set; }
         public int? ApartmentTypeFilterApplied { get; set; }
+        public int? CityFilterApplied { get; set; }
 
         public ApartmentQueryOptions()
         {

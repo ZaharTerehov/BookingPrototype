@@ -19,6 +19,13 @@
         </div>
         <div class="col-12">
             <div class="input-group mb-3">
+                <span class="input-group-text" id="inputGroup-sizing-name">City</span>
+                <input asp-for="CityName" type="text" disabled class="form-control"
+                       aria-describedby="inputGroup-sizing-name">
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="input-group mb-3">
                 <span class="input-group-text" id="inputGroup-sizing-name">Description</span>
                 <input asp-for="Description" type="text" disabled class="form-control"
                     aria-describedby="inputGroup-sizing-name">
@@ -36,7 +43,7 @@
         </div>
         <form asp-action="Delete">
             <button type="submit" class="btn btn-primary" style="width: 150px;">Delete</button>
-            <a asp-controller="Country" asp-action="Index" class="btn btn-outline-primary" style="width:150px">
+            <a asp-controller="Apartment" asp-action="Index" class="btn btn-outline-primary" style="width:150px">
                 Cancel
             </a>
         </form>
