@@ -34,6 +34,20 @@
             </div>
             <div class="col-12">
                 <div class="input-group mb-3">
+                    <span class="input-group-text" id="inputGroup-sizing-name">People Number</span>
+                    <input asp-for="PeopleNumber" type="number" min="1" max="10" class="form-control"
+                           aria-describedby="inputGroup-sizing-name">
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="input-group mb-3">
+                    <span class="input-group-text w-10" id="inputGroup-sizing-name">Address</span>
+                    <input asp-for="Address" type="text" class="form-control"
+                        aria-describedby="inputGroup-sizing-name">
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="input-group mb-3">
                     <span class="input-group-text w-10" id="inputGroup-sizing-name">Description</span>
                     <input asp-for="Description" type="text" class="form-control"
                         aria-describedby="inputGroup-sizing-name">
