@@ -48,12 +48,13 @@ namespace Booking.Web.Services
             var queryOptions = new QueryViewModelOption<Apartment, ApartmentViewModel>().AddSortOption(false, y => y.Price)
                 .SetFilterOption(x => 
                 (!apartmentOptions.ApartmentTypeFilterApplied.HasValue || x.ApartmentTypeId == apartmentOptions.ApartmentTypeFilterApplied) &&
-                (!apartmentOptions.CityFilterApplied.HasValue || x.CityId == apartmentOptions.CityFilterApplied))                
+                (!apartmentOptions.CityFilterApplied.HasValue || x.CityId == apartmentOptions.CityFilterApplied) &&
+                 x.PeopleNumber >= apartmentOptions.NeedPeopleNumber)                
                 .AddSelectOption(x => new ApartmentViewModel 
                 {
                     Id = x.Id,
                     Name = x.Name,
-                    Description = x.Description,
+                    Description = $"{x.Address}. Total people number {x.PeopleNumber}. {x.Description}",
                     Price= x.Price,
                     Picture= x.Picture,
                     CityName = x.City.Name
