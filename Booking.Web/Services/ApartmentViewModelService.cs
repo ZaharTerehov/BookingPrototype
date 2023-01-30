@@ -49,7 +49,10 @@ namespace Booking.Web.Services
                 .SetFilterOption(x => 
                 (!apartmentOptions.ApartmentTypeFilterApplied.HasValue || x.ApartmentTypeId == apartmentOptions.ApartmentTypeFilterApplied) &&
                 (!apartmentOptions.CityFilterApplied.HasValue || x.CityId == apartmentOptions.CityFilterApplied) &&
-                 x.PeopleNumber >= apartmentOptions.NeedPeopleNumber)                
+                 x.PeopleNumber >= apartmentOptions.NeedPeopleNumber &&
+                 (string.IsNullOrEmpty(apartmentOptions.SearchText) ||
+                 (x.Name.Contains(apartmentOptions.SearchText) || x.City.Name.Contains(apartmentOptions.SearchText)
+                                                                || x.Description.Contains(apartmentOptions.SearchText))))                
                 .AddSelectOption(x => new ApartmentViewModel 
                 {
                     Id = x.Id,

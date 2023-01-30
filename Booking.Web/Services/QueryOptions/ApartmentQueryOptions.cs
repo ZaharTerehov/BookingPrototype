@@ -12,7 +12,7 @@ namespace Booking.Web.Services.QueryOptions
         public int? CityFilterApplied { get; set; }
         [Range(1,10)]
         public int? NeedPeopleNumber { get; set; }
-
+        public string? SearchText { get; set; }
         public ApartmentQueryOptions()
         {
             NeedPeopleNumber = 1;

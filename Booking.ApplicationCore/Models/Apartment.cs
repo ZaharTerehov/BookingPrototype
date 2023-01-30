@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Booking.ApplicationCore.Constants;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace Booking.ApplicationCore.Models
         public decimal Price { get; set; }
         public string Picture { get; set; }
         public string Address { get; set; }
-        [Range(1, 10)]
+        [Range(ApplicationConstants.MinPeopleNumber, ApplicationConstants.MaxPeopleNumber)]
         public byte PeopleNumber { get; set; }
 
         public City? City { get; set; }

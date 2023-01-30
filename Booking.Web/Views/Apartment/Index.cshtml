@@ -6,28 +6,34 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-3">
+        <div class="col-6">
             <h2 class="text_action">Available apartments</h2>
+        </div>        
+        <div class="col-6 text-end">
+            <a class="btn btn-outline-primary" asp-action="Create">
+                <i class="bi bi-file-earmark-plus"></i> &nbsp; Create new
+            </a>
         </div>
-        <div class="col-6">            
-            <form method="get" >
-                <div class="input-group mb-3">
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <form method="get">
+                <div class="input-group mb-3 mt-3">
+                    <input asp-for="@Model.Options.SearchText" type="text" class="form-control" placeholder="Enter text to search" aria-label="Enter text to search">
+                    <div class="input-group-append">
+                        <button class="btn btn-secondary" type="submit">Search</button>
+                    </div>
                     <label class="input-group-text" for="selecApartmentType">Type</label>
                     <select class="form-select" id="selecApartmentType" asp-for="@Model.Options.ApartmentTypeFilterApplied"
                             asp-items="@Model.ApartmentTypes" onchange="this.form.submit()"></select>
                     <label class="input-group-text" for="selectCity">City</label>
                     <select class="form-select" id="selectCity" asp-for="@Model.Options.CityFilterApplied"
                             asp-items="@Model.Cities" onchange="this.form.submit()"></select>
-                    <span class="input-group-text" id="inputGroup-sizing-name">People Number</span>
+                    <span class="input-group-text">People Number</span>
                     <input asp-for="@Model.Options.NeedPeopleNumber" type="number" min="1" max="10" class="form-control"
-                           aria-describedby="inputGroup-sizing-name" onchange="this.form.submit()">
+                           aria-describedby="inputGroup-sizing-name" onchange="this.form.submit()">                    
                 </div>
             </form>
-        </div>
-        <div class="col-3 text-end">
-            <a class="btn btn-outline-primary" asp-action="Create">
-                <i class="bi bi-file-earmark-plus"></i> &nbsp; Create new
-            </a>
         </div>
     </div>
     <div class="row">        
@@ -37,6 +43,7 @@
                 <input type="hidden" name="apartmentTypeFilterApplied" value="@Model.Options.ApartmentTypeFilterApplied" />
                 <input type="hidden" name="cityFilterApplied" value="@Model.Options.CityFilterApplied" />
                 <input type="hidden" name="needPeopleNumber" value="@Model.Options.NeedPeopleNumber" />
+                <input type="hidden" name="searchText" value="@Model.Options.SearchText" />
                 @if (Model.Options.PageOptions.HasPreviousPage)
                 {
                     <input class="btn btn-dark btn-sm" type="submit" value="Prev" />
@@ -67,6 +74,7 @@
                 <input type="hidden" name="apartmentTypeFilterApplied" value="@Model.Options.ApartmentTypeFilterApplied" />
                 <input type="hidden" name="cityFilterApplied" value="@Model.Options.CityFilterApplied" />
                 <input type="hidden" name="needPeopleNumber" value="@Model.Options.NeedPeopleNumber" />
+                <input type="hidden" name="searchText" value="@Model.Options.SearchText" />
                 @if (Model.Options.PageOptions.HasNextPage)
                 {
                     <input class="btn btn-dark btn-sm" type="submit" value="Next" />
