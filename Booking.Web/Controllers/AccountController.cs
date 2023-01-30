@@ -1,12 +1,13 @@
-﻿using Booking.ApplicationCore.Enum;
-using Booking.Web.Models;
-using Booking.ApplicationCore.Interfaces;
+﻿using Booking.Web.Models;
+using Microsoft.AspNetCore.Mvc;
+using Booking.Web.Interfaces;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
-using Booking.ApplicationCore.Models;
-using Booking.Web.Interfaces;
+using NuGet.Common;
+using Microsoft.AspNetCore.Http;
+using System.Net.Http.Headers;
+using Newtonsoft.Json.Linq;
+using Azure;
 
 namespace Booking.Web.Controllers
 {
@@ -32,7 +33,8 @@ namespace Booking.Web.Controllers
 
                 if (response.StatusCode == ApplicationCore.Enum.StatusCode.OK)
                 {
-                    return RedirectToAction("Index", "Apartment");
+                    Authenticate(response.Data);
+					return RedirectToAction("Index", "City");
                 }
 
                 ModelState.AddModelError("", response.Description);
@@ -40,5 +42,40 @@ namespace Booking.Web.Controllers
 
             return View(model);
         }
+
+        [HttpGet]
+        public IActionResult Login() => View();
+
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var response = await _accountService.Login(model);
+
+                if(response.StatusCode == ApplicationCore.Enum.StatusCode.OK)
+                {
+                    Authenticate(response.Data);
+
+
+					return RedirectToAction("Index", "City");
+				}
+
+                ModelState.AddModelError("", response?.Description);
+			}
+
+            return View(model);
+        }
+
+        private IActionResult Authenticate(string jwtToken)
+        {
+			HttpContext.Response.Cookies.Append("Booking.Application.Id", jwtToken,
+            new CookieOptions
+            {
+	            MaxAge = TimeSpan.FromMinutes(60)
+            });
+
+            return Ok();
+		}
     }
 }
