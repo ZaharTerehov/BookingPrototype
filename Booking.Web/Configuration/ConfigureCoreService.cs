@@ -1,7 +1,10 @@
 ﻿using Booking.ApplicationCore.Interfaces;
 using Booking.Infrastructure.Data;
 using Booking.Web.Interfaces;
+using Booking.Web.Interfaces.Login;
 using Booking.Web.Services;
+using Booking.Web.Services.Account;
+using Microsoft.AspNetCore.Identity;
 
 namespace Booking.Web.Configuration
 {
@@ -15,8 +18,8 @@ namespace Booking.Web.Configuration
             services.AddScoped(typeof(IApartmentViewModelService),typeof(ApartmentViewModelService));
             services.AddScoped(typeof(IApartmentTypeViewModelService),typeof(ApartmentTypeViewModelService));
             services.AddScoped(typeof(ICountryViewModelService), typeof(CountryViewModelService));
-            services.AddScoped(typeof(IAccountServiceViewModelService), typeof(RegisterViewModelService));
-            return services;
+            services.AddScoped(typeof(IAccountServiceViewModelService), typeof(AccountService));
+			return services;
         }
 
     }
