@@ -1,25 +1,21 @@
 ﻿using Booking.ApplicationCore.Enum;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Booking.ApplicationCore.Response
 {
-    public class BaseResponse<T> : IBaseResponse<T>
+    public class BaseResponse
     {
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
-        public StatusCode StatusCode { get; set; }
+        public StatusCode? StatusCode { get; set; }
 
-        public T Data { get; set; }
-    }
+        public string? Data { get; set; }
 
-    public interface IBaseResponse<T>
-    {
-        string Description { get; set; }
-        StatusCode StatusCode { get; }
-        T Data { get; }
+        public BaseResponse(string? description = null, 
+            StatusCode? statusCode = null, string? data = null)
+        { 
+            Description = description;
+            StatusCode = statusCode;
+            Data = data;
+        }
     }
 }
