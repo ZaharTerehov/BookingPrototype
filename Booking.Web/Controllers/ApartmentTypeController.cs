@@ -27,7 +27,7 @@ namespace Booking.Web.Controllers
 
         public async Task <IActionResult> Index()
         {
-            throw new Exception();
+            //throw new Exception();
             var apartmentsViewModel = await _apartmentTypeViewModelService.GetApartmentTypesAsync();
             return View(apartmentsViewModel);
         }
@@ -48,12 +48,12 @@ namespace Booking.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(ApartmentTypeViewModel viewModel)
         {
-            try
-            {
+            if (ModelState.IsValid)
+            { 
                 await _apartmentTypeViewModelService.UpdateApartmentType(viewModel);
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            else
             {
                 return View();
             }
@@ -69,15 +69,14 @@ namespace Booking.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ApartmentTypeViewModel viewModel)
         {
-            try
+            if (ModelState.IsValid)
             {
                 var apartment = _mapper.Map<ApartmentTypeViewModel>(viewModel);
                 await _apartmentTypeViewModelService.CreateApartmentTypeAsync(viewModel);
                 return RedirectToAction(nameof(Index));
             }
-            catch (Exception ex)
+            else
             {
-                _logger.LogError(ex.Message, ex);
                return View();
             }
         }
@@ -98,12 +97,12 @@ namespace Booking.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(ApartmentTypeViewModel viewModel)
         {
-            try
+            if (ModelState.IsValid)
             {
                 await _apartmentTypeViewModelService.DeleteApartmentTypeAsync(viewModel);
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            else
             {
                 return View();
             }

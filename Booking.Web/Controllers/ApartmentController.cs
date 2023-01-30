@@ -12,9 +12,11 @@ using Booking.ApplicationCore.QueryOptions;
 using Booking.Web.Services.QueryOptions;
 using Microsoft.Extensions.Options;
 using Booking.ApplicationCore.Models;
+using Booking.Web.Attributes.Filters;
 
 namespace Booking.Web.Controllers
 {
+    [TypeFilter(typeof(AppExceptionFilter))]
     public class ApartmentController : Controller
     {
         private readonly IApartmentViewModelService _apartmentViewModelService;
@@ -57,14 +59,13 @@ namespace Booking.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ApartmentViewModel viewModel)
         {
-            try
+            if (ModelState.IsValid)
             {
                 await _apartmentViewModelService.CreateApartmentAsync(viewModel);
                 return RedirectToAction(nameof(Index));
             }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message, ex);
+            else
+            {                
                 return View();
             }
         }
@@ -85,12 +86,12 @@ namespace Booking.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(ApartmentViewModel viewModel)
         {
-            try
+            if (ModelState.IsValid)
             {
                 await _apartmentViewModelService.DeleteApartmentAsync(viewModel);
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            else
             {
                 return View();
             }
@@ -113,12 +114,12 @@ namespace Booking.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(ApartmentViewModel viewModel)
         {
-            try
+            if (ModelState.IsValid)
             {
                 await _apartmentViewModelService.UpdateApartmentAsync(viewModel);
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            else
             {
                 return View();
             }

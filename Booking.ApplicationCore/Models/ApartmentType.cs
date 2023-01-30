@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -9,6 +10,8 @@ namespace Booking.ApplicationCore.Models
 {
     public sealed class ApartmentType : BaseModel
     {
+        [Required]
+        [StringLength(100)]
         public string Name { get; set; }
 
         public void UpdateDetails(ApartmentTypeDetails details)
