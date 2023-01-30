@@ -14,11 +14,11 @@ namespace Booking.Web.Models
         [Required]
         public string Description { get; set; }
         [Required]
-        [Range(0, double.MaxValue)]
+        [Range(1, double.MaxValue)]
         public decimal Price { get; set; }
         [Required]
         public string Picture { get; set; }
-        public string CityName { get; set; }
+        public string? CityName { get; set; }
         [Required]
         public string Address { get; set; }
         [Required]

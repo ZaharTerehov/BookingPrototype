@@ -97,15 +97,8 @@ namespace Booking.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(ApartmentTypeViewModel viewModel)
         {
-            if (ModelState.IsValid)
-            {
-                await _apartmentTypeViewModelService.DeleteApartmentTypeAsync(viewModel);
-                return RedirectToAction(nameof(Index));
-            }
-            else
-            {
-                return View();
-            }
+            await _apartmentTypeViewModelService.DeleteApartmentTypeAsync(viewModel);
+            return RedirectToAction(nameof(Index));            
         }
     }
 }

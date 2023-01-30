@@ -10,7 +10,7 @@ namespace Booking.Web.Models
         [Required]
         [StringLength(100)]
         public string Name { get; set; }
-        public string CountryName { get; set; }
+        public string? CountryName { get; set; }
         public IList<SelectListItem>? Countries { get; set; }
         [Required]
         public int? CountryFilterApplied { get; set; }
