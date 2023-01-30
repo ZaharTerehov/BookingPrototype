@@ -102,15 +102,8 @@ namespace Booking.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(CityViewModel viewModel)
         {
-            if (ModelState.IsValid)
-            {
-                await _cityViewModelService.DeleteCityAsync(viewModel);
-                return RedirectToAction(nameof(Index));
-            }
-            else
-            {
-                return View();
-            }
+            await _cityViewModelService.DeleteCityAsync(viewModel);
+            return RedirectToAction(nameof(Index));
         }
     }
 }

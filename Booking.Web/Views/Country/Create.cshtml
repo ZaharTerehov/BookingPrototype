@@ -11,9 +11,12 @@
         </div>
         <form asp-action="Create">
             <div class="col-12">
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="inputGroup-sizing-name">Name</span>
-                    <input asp-for="Name" type="text" class="form-control" aria-describedby="inputGroup-sizing-name">
+                <div class="input-group">
+                    <span class="input-group-text w-10" id="input-name">Name</span>
+                    <input asp-for="Name" type="text" class="form-control" aria-describedby="input-name">
+                </div>
+                <div class="mb-3">
+                    <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
             </div>
             <button type="submit" class="btn btn-primary" style="width: 150px;">Create</button>
