@@ -22,15 +22,19 @@
                                 <div asp-validation-summary="All" style="font-size:23px; font-family:Impact" class="text-danger text-center"></div>
                                 <div class="form-group">
                                     <input asp-for="Email" class="form-control textbox-dg font-weight-bold text-center" placeholder="Email" type="email">
+                                    <span asp-validation-for="Email"/>
                                 </div>
                                 <div class="form-group">
                                     <input asp-for="Name" class="form-control textbox-dg font-weight-bold text-center" placeholder="Name" type="text">
+                                    <span asp-validation-for="Name"/>
                                 </div>
                                 <div class="form-group">
                                     <input asp-for="Surname" class="form-control textbox-dg font-weight-bold text-center" placeholder="Surname" type="text">
+                                    <span asp-validation-for="Surname" />
                                 </div>
                                 <div class="form-group">
                                     <input asp-for="NumberPhone" class="form-control textbox-dg font-weight-bold text-center" placeholder="NumberPhone" type="number">
+                                    <span asp-validation-for="NumberPhone"/>
                                 </div>
                                 <div class="form-group" data-provide="datepicker">
                                     <input asp-for="DateOfBirth" type="text" id="datepicker" class="form-control textbox-dg font-weight-bold text-center" placeholder="DateOfBirth">
@@ -40,12 +44,14 @@
                                 </div>
                                 <div class="form-group">
                                     <input autocomplete="new-password" asp-for="Password" placeholder="Password" class="form-control textbox-dg font-weight-bold text-center" type="password">
+                                    <span asp-validation-for="Password" />
                                 </div>
                                 <span class="text-black" style="font-size: small; font-family:'Comic Sans MS'">
                                     The password must be more than 6 characters long and contain only Latin characters
                                 </span>
                                 <div class="form-group">
                                     <input autocomplete="new-password" asp-for="PasswordConfirm" placeholder="PasswordConfirm" class="form-control textbox-dg font-weight-bold text-center" type="password">
+                                    <span asp-validation-for="PasswordConfirm" />
                                 </div>
                                 <button class="btn btn-success btn-lg float-right" type="submit">Register</button>
                             </form>
