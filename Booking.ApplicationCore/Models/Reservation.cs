@@ -10,11 +10,16 @@ namespace Booking.ApplicationCore.Models
 {
     public class Reservation : BaseModel
     {
+        [Required]
         [StringLength(100)]
         public string Name { get; set; }
+        [Required]
         [StringLength(100)]
+        [EmailAddress]
         public string Email { get; set; }
+        [Required]
         public DateTime ArrivalDateTime { get; set; }
+        [Required]
         public DateTime DepartureDateTime { get; set; }
 
         [NotMapped]

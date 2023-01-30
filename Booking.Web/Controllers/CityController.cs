@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Booking.ApplicationCore.Interfaces;
 using Booking.ApplicationCore.Models;
+using Booking.Web.Attributes.Filters;
 using Booking.Web.Extentions;
 using Booking.Web.Interfaces;
 using Booking.Web.Models;
@@ -10,6 +11,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Booking.Web.Controllers
 {
+    [TypeFilter(typeof(AppExceptionFilter))]
     public class CityController : Controller
     {
         private readonly IMapper _mapper;
@@ -44,14 +46,13 @@ namespace Booking.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CityViewModel viewModel)
         {
-            try
+            if (ModelState.IsValid)
             {
                 await _cityViewModelService.CreateCityAsync(viewModel);
                 return RedirectToAction(nameof(Index));
             }
-            catch (Exception ex)
+            else
             {
-                _logger.LogError(ex.Message, ex);
                 return View();
             }
         }
@@ -74,12 +75,12 @@ namespace Booking.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(CityViewModel viewModel)
         {
-            try
+            if (ModelState.IsValid)
             {
                 await _cityViewModelService.UpdateCity(viewModel);
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            else
             {
                 return View();
             }
@@ -101,12 +102,12 @@ namespace Booking.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(CityViewModel viewModel)
         {
-            try
+            if (ModelState.IsValid)
             {
                 await _cityViewModelService.DeleteCityAsync(viewModel);
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            else
             {
                 return View();
             }

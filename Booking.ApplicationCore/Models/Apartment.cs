@@ -10,17 +10,25 @@ namespace Booking.ApplicationCore.Models
 {
     public sealed class Apartment : BaseModel
     {
+        [Required]
+        [StringLength(100)]
         public string Name { get; set; }
+        [Required]
         public string Description { get; set; }
+        [Required]
+        [Range(0, double.MaxValue)]
         public decimal Price { get; set; }
+        [Required]
         public string Picture { get; set; }
+        [Required]
         public string Address { get; set; }
+        [Required]
         [Range(ApplicationConstants.MinPeopleNumber, ApplicationConstants.MaxPeopleNumber)]
         public byte PeopleNumber { get; set; }
 
         public City? City { get; set; }
         public int? CityId { get; set; }
-        
+
         public ApartmentType? ApartmentType { get; set; }
         public int? ApartmentTypeId { get; set; }
 
@@ -43,9 +51,9 @@ namespace Booking.ApplicationCore.Models
 
             public decimal Price { get; }
 
-            public string? Picture { get;  }
+            public string? Picture { get; }
             public int? CityId { get; }
-            public int? ApartmentTypeId { get;  }
+            public int? ApartmentTypeId { get; }
             public string? Address { get; }
             public byte PeopleNumber { get; }
 
@@ -57,7 +65,7 @@ namespace Booking.ApplicationCore.Models
                 Price = price;
                 Picture = picture;
                 ApartmentTypeId = apartmentTypeId;
-                CityId= cityId;
+                CityId = cityId;
                 Address = address;
                 PeopleNumber = peopleNumber;
             }
