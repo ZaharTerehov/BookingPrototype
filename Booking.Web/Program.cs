@@ -1,8 +1,19 @@
 using Booking.Infrastructure.Data;
 using Booking.Web.Configuration;
+using Booking.Web.Extentions;
+using Booking.Web.Services.Account;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication.OAuth;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.IdentityModel.Tokens;
 using Serilog;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +33,17 @@ builder.Services.AddCoreServices();
 
 //AutoMapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+
+//JwtToken
+var sectionJwtSettings = builder.Configuration.GetSection("JwtSettings");
+var options = sectionJwtSettings.Get<JwtOptions>();
+
+var jwtOptions = new JwtOptions(options.SigningKey, options.Issuer, options.Audience, options.TokenExpiryInMinutes);
+
+builder.Services.AddJwtAuthentication(jwtOptions);
+
+builder.Services.Configure<JwtOptions>(sectionJwtSettings);
 
 var app = builder.Build();
 
@@ -52,10 +74,20 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+// Improves cookie security
+app.UseCookiePolicy(new CookiePolicyOptions
+{
+	MinimumSameSitePolicy = SameSiteMode.Strict,
+	HttpOnly = HttpOnlyPolicy.Always,
+	Secure = CookieSecurePolicy.Always
+});
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseSecureJwt();
 
 app.UseAuthentication();
 app.UseAuthorization();
