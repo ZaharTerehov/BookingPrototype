@@ -5,20 +5,19 @@ namespace Booking.Web.Attributes.Validation
     [AttributeUsage(AttributeTargets.Property)]
     public class DepartureDateAttribute: ValidationAttribute
     {
+        private string ArrivalDateFieldName { get; init; }
         public DepartureDateAttribute(string departureDateFieldName)
         {
-            departureDateFieldName = departureDateFieldName;
-        }
-
-        private string DepartureDateFieldName { get; set; }
+            ArrivalDateFieldName = departureDateFieldName;
+        }        
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            DateTime earlierDate = (DateTime)value;
+            DateTime departureDate = (DateTime)value;
 
-            DateTime laterDate = (DateTime)validationContext.ObjectType.GetProperty(DepartureDateFieldName).GetValue(validationContext.ObjectInstance, null);
+            DateTime arrivalDate = (DateTime)validationContext.ObjectType.GetProperty(ArrivalDateFieldName).GetValue(validationContext.ObjectInstance, null);
 
-            if (laterDate.Subtract(earlierDate).TotalDays > 0)
+            if (departureDate.Subtract(arrivalDate).TotalDays > 0)
             {
                 return ValidationResult.Success;
             }
