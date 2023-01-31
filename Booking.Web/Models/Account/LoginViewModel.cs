@@ -4,9 +4,8 @@ namespace Booking.Web.Models;
 
 public class LoginViewModel 
 {
-    [Required(ErrorMessage = "Enter your name")]
-    [MaxLength(20, ErrorMessage = "")]
-    [MinLength(20, ErrorMessage = "")]
+    [Required(ErrorMessage = "Enter your email")]
+    [Display(Name = "Login")]
     public string Login { get; set; }
     
     [Required(ErrorMessage = "Enter your password")]
