@@ -33,21 +33,27 @@ namespace Booking.Web.Controllers
             return View(new ReservationViewModel());
         }
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create(ReservationViewModel viewModel) 
-        //{
-        //    try
-        //    {
-        //        var reservation = _mapper.Map<ReservationViewModel>(viewModel);
-        //        await _reservationViewModelService.CreateReservationAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError(ex.Message,ex);
-        //        throw View();
-        //    }
-        //}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(ReservationViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var reservation = _mapper.Map<ReservationViewModel>(viewModel);
+                return RedirectToAction(nameof(Index));
+            }
+            return View(viewModel);
+            //try
+            //{
+            //    var reservation = _mapper.Map<ReservationViewModel>(viewModel);
+            //    await _reservationViewModelService.CreateReservationAsync();
+            //    return RedirectToAction(nameof(Index));
+            //}
+            //catch (Exception ex)
+            //{
+            //    _logger.LogError(ex.Message, ex);
+            //    throw View();
+            //}
+        }
     }
 }

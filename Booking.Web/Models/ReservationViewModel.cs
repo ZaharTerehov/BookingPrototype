@@ -16,9 +16,9 @@ namespace Booking.Web.Models
         public string Email { get; set; }
         [Required]
         [CurrentDate]
-        public DateTime? ArrivalDate { get; set; } = new DateTime();
+        public DateTime? ArrivalDate { get; set; } = DateTime.Now;
         [Required]
         [DepartureDate("ArrivalDate")]
-        public DateTime DepartureDate { get; set; }
+        public DateTime DepartureDate { get; set; } = DateTime.Now;
     }
 }
