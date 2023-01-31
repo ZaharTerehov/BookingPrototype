@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Booking.Web.Attributes.Filters;
 using Booking.Web.Interfaces;
 using Booking.Web.Models;
 using Booking.Web.Services;
@@ -6,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Booking.Web.Controllers
 {
+    [TypeFilter(typeof(AppExceptionFilter))]
     public class CountryController : Controller
     {
         private readonly ICountryViewModelService _countryViewModelService;
@@ -43,12 +45,12 @@ namespace Booking.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(CountryViewModel viewModel)
         {
-            try
+            if (ModelState.IsValid)
             {
                 await _countryViewModelService.UpdateCountry(viewModel);
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            else
             {
                 return View();
             }
@@ -64,15 +66,14 @@ namespace Booking.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CountryViewModel viewModel)
         {
-            try
+            if (ModelState.IsValid)
             {
                 var apartment = _mapper.Map<CountryViewModel>(viewModel);
                 await _countryViewModelService.CreateCountryAsync(viewModel);
                 return RedirectToAction(nameof(Index));
             }
-            catch (Exception ex)
+            else
             {
-                _logger.LogError(ex.Message, ex);
                 return View();
             }
         }
@@ -93,15 +94,8 @@ namespace Booking.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(CountryViewModel viewModel)
         {
-            try
-            {
-                await _countryViewModelService.DeleteCountryAsync(viewModel);
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            await _countryViewModelService.DeleteCountryAsync(viewModel);
+            return RedirectToAction(nameof(Index));
         }
     }
 }

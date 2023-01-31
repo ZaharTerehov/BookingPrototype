@@ -13,14 +13,8 @@ namespace Booking.ApplicationCore.QueryOptions
     {
         protected IList<SortOption<TEntity>> _sortOptions;
         public IList<SortOption<TEntity>> SortOptions { get { return _sortOptions; } }
-
         protected Expression<Func<TEntity, bool>> _filterOption;
         public Expression<Func<TEntity, bool>> FilterOption { get { return _filterOption; } }
-
-        public PageSize PageSize { get; set; } = PageSize.AllElements;
-
-        public int CurrentPage { get; protected set; } = 1;
-
-
+        public PageOptions PageOptions { get; set; } = new PageOptions(1, 1, PageSize.AllElements);
     }
 }

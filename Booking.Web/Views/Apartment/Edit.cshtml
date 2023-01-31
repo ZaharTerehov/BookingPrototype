@@ -11,28 +11,74 @@
         </div>
         <form asp-action="Edit">
             <div class="col-12">
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="inputGroup-sizing-name">Name</span>
-                    <input asp-for="Name" type="text" class="form-control" aria-describedby="inputGroup-sizing-name">
+                <div class="input-group">
+                    <span class="input-group-text w-10" id="input-name">Name</span>
+                    <input asp-for="Name" type="text" class="form-control" aria-describedby="input-name">
+                </div>
+                <div class="mb-3">
+                    <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
             </div>
             <div class="col-12">
                 <div class="input-group mb-3">
-                    <span class="input-group-text" id="inputGroup-sizing-name">Description</span>
+                    <label class="input-group-text w-10" for="selectCity">City</label>
+                    <select class="form-select" id="selectCity" asp-for="@Model.CityFilterApplied"
+                            asp-items="@Model.Cities"></select>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="input-group mb-3">
+                    <label class="input-group-text w-10" for="selectApartmentType">ApartmentType</label>
+                    <select class="form-select" id="selectApartmentType" asp-for="@Model.ApartmentTypeFilterApplied"
+                            asp-items="@Model.ApartmentTypes"></select>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="input-group">
+                    <span class="input-group-text w-10" id="input-peopleNumber">People Number</span>
+                    <input asp-for="PeopleNumber" type="number" min="1" max="10" class="form-control"
+                           aria-describedby="input-peopleNumber">
+                </div>
+                <div class="mb-3">
+                    <span asp-validation-for="PeopleNumber" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="input-group">
+                    <span class="input-group-text w-10" id="input-address">Address</span>
+                    <input asp-for="Address" type="text" class="form-control"
+                           aria-describedby="input-address">
+                </div>
+                <div class="mb-3">
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="input-group">
+                    <span class="input-group-text w-10" id="input-description">Description</span>
                     <input asp-for="Description" type="text" class="form-control"
-                        aria-describedby="inputGroup-sizing-name">
+                           aria-describedby="input-description">
+                </div>
+                <div class="mb-3">
+                    <span asp-validation-for="Description" class="text-danger"></span>
                 </div>
             </div>
             <div class="col-12">
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="inputGroup-sizing-name">Price</span>
-                    <input asp-for="Price" class="form-control" aria-describedby="inputGroup-sizing-name">
+                <div class="input-group">
+                    <span class="input-group-text w-10" id="input-price">Price</span>
+                    <input asp-for="Price" class="form-control" aria-describedby="input-price">
+                </div>
+                <div class="mb-3">
+                    <span asp-validation-for="Price" class="text-danger"></span>
                 </div>
             </div>
             <div class="col-12">
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="inputGroup-sizing-name">Picture</span>
-                    <input asp-for="Picture" class="form-control" aria-describedby="inputGroup-sizing-name">
+                <div class="input-group">
+                    <span class="input-group-text w-10" id="input-picture">Picture</span>
+                    <input asp-for="Picture" class="form-control" aria-describedby="input-picture">
+                </div>
+                <div class="mb-3">
+                    <span asp-validation-for="Picture" class="text-danger"></span>
                 </div>
             </div>
             <button type="submit" class="btn btn-primary" style="width: 150px;">Edit</button>

@@ -25,6 +25,7 @@ namespace Booking.ApplicationCore.QueryOptions
             _filterOption = filterOption;          
             return this;
         }
+
         public QueryEntityOptions<TEntity> AddIncludeOption(Expression<Func<TEntity, object>> includeOption)
         {
             _includeOptions = _includeOptions ?? new List<Expression<Func<TEntity, object>>>();
@@ -32,27 +33,27 @@ namespace Booking.ApplicationCore.QueryOptions
             return this;
         }
 
-        public QueryEntityOptions<TEntity> SetCurentPageAndPageSize(int currentPage, PageSize pageSize)
-        {
-            PageSize = pageSize;
-            if (currentPage > 0)
+        public QueryEntityOptions<TEntity> SetCurentPageAndPageSize(PageOptions options)
+        {            
+            PageOptions.PageSize = options.PageSize;
+            if (options.CurrentPage > 0)
             {
-                CurrentPage = currentPage;
+                PageOptions.CurrentPage = options.CurrentPage;
             }
             return this;
         }
 
         public QueryEntityOptions<TEntity> NextPage()
         {
-            CurrentPage++;
+            PageOptions.CurrentPage++;
             return this;
         }
 
         public QueryEntityOptions<TEntity> PrevPage()
         {
-            if (CurrentPage > 1)
+            if (PageOptions.CurrentPage > 1)
             {
-                CurrentPage--;
+                PageOptions.CurrentPage--;
             }
             return this;
         }

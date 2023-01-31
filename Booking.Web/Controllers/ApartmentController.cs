@@ -6,30 +6,41 @@ using Booking.Web.Services;
 using Elfie.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using System.Drawing.Printing;
+using Booking.Web.Extentions;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Booking.ApplicationCore.QueryOptions;
+using Booking.Web.Services.QueryOptions;
+using Microsoft.Extensions.Options;
+using Booking.ApplicationCore.Models;
+using Booking.Web.Attributes.Filters;
 
 namespace Booking.Web.Controllers
 {
+    [TypeFilter(typeof(AppExceptionFilter))]
     public class ApartmentController : Controller
     {
         private readonly IApartmentViewModelService _apartmentViewModelService;
         private readonly IMapper _mapper;
         private readonly ILogger _logger;
-        public ApartmentController(IMapper mapper, IApartmentViewModelService apartmentViewModelService, ILogger<ApartmentController> logger)
+        public ApartmentController(IMapper mapper, IApartmentViewModelService apartmentViewModelService, 
+            ILogger<ApartmentController> logger)
         {
             _apartmentViewModelService= apartmentViewModelService;
             _mapper=mapper;
             _logger=logger;
         }
-        public async Task<IActionResult> Index(int  page = 1)
-        {
-            var pNS = new {PageNum = page, PageSize = ApplicationConstants.ApartmentsPageSize };
-
-            var apartmentsViewModel = await _apartmentViewModelService.GetApartmentsAsync(pNS.PageNum, pNS.PageSize);
-
-            ApartmentIndexViewModel viewModel = new ApartmentIndexViewModel
+        public async Task<IActionResult> Index(ApartmentQueryOptions options)
+        {            
+            var apartmentViewModels = await _apartmentViewModelService.GetApartmentsAsync(options);
+            options.PageOptions.CurrentElementsCount = apartmentViewModels.Count;
+            ApartmentIndexViewModel viewModel = new ApartmentIndexViewModel()
             {
-                PageViewModel = new PageViewModel(apartmentsViewModel.Count(), pNS.PageNum, pNS.PageSize),
-                Apartments = apartmentsViewModel
+                Options = options,
+                ApartmentTypes = (await _apartmentViewModelService.GetApartmentTypes(true, options.ApartmentTypeFilterApplied == null))
+                                                                  .SetSelectedValue(options.ApartmentTypeFilterApplied),
+                Cities = (await _apartmentViewModelService.GetCities(true, options.CityFilterApplied == null))
+                                                          .SetSelectedValue(options.CityFilterApplied),
+                Apartments = apartmentViewModels
             };
 
             return View(viewModel);
@@ -38,22 +49,23 @@ namespace Booking.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            return View(new ApartmentViewModel());
+            var newApartment = new ApartmentViewModel();
+            newApartment.ApartmentTypes = await _apartmentViewModelService.GetApartmentTypes(false);
+            newApartment.Cities = await _apartmentViewModelService.GetCities(false);
+            return View(newApartment);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ApartmentViewModel viewModel)
         {
-            try
+            if (ModelState.IsValid)
             {
-                var apartment = _mapper.Map<ApartmentViewModel>(viewModel);
                 await _apartmentViewModelService.CreateApartmentAsync(viewModel);
                 return RedirectToAction(nameof(Index));
             }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message, ex);
+            else
+            {                
                 return View();
             }
         }
@@ -74,12 +86,12 @@ namespace Booking.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(ApartmentViewModel viewModel)
         {
-            try
+            if (ModelState.IsValid)
             {
                 await _apartmentViewModelService.DeleteApartmentAsync(viewModel);
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            else
             {
                 return View();
             }
@@ -93,7 +105,8 @@ namespace Booking.Web.Controllers
             {
                 return RedirectToAction("Index");
             }
-
+            result.ApartmentTypes = (await _apartmentViewModelService.GetApartmentTypes(false)).SetSelectedValue(result.ApartmentTypeFilterApplied);
+            result.Cities = (await _apartmentViewModelService.GetCities(false)).SetSelectedValue(result.CityFilterApplied);
             return View(result);
         }
 
@@ -101,12 +114,12 @@ namespace Booking.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(ApartmentViewModel viewModel)
         {
-            try
+            if (ModelState.IsValid)
             {
                 await _apartmentViewModelService.UpdateApartmentAsync(viewModel);
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            else
             {
                 return View();
             }

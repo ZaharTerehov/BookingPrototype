@@ -6,16 +6,97 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-4">
-            <h2 class="text_action"> Available apartments</h2>
-        </div>
         <div class="col-6">
-
-        </div>
-        <div class="col-2" text-end>
+            <h2 class="text_action">Available apartments</h2>
+        </div>        
+        <div class="col-6 text-end">
             <a class="btn btn-outline-primary" asp-action="Create">
                 <i class="bi bi-file-earmark-plus"></i> &nbsp; Create new
             </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <form method="get">
+                <div class="input-group mb-3 mt-3">
+                    <input asp-for="@Model.Options.SearchText" type="text" class="form-control" placeholder="Enter text to search" aria-label="Enter text to search">
+                    <div class="input-group-append">
+                        <button class="btn btn-secondary" type="submit">Search</button>
+                    </div>
+                    <label class="input-group-text" for="selecApartmentType">Type</label>
+                    <select class="form-select" id="selecApartmentType" asp-for="@Model.Options.ApartmentTypeFilterApplied"
+                            asp-items="@Model.ApartmentTypes" onchange="this.form.submit()"></select>
+                    <label class="input-group-text" for="selectCity">City</label>
+                    <select class="form-select" id="selectCity" asp-for="@Model.Options.CityFilterApplied"
+                            asp-items="@Model.Cities" onchange="this.form.submit()"></select>
+                    <span class="input-group-text">People Number</span>
+                    <input asp-for="@Model.Options.NeedPeopleNumber" type="number" min="1" max="10" class="form-control"
+                           aria-describedby="inputGroup-sizing-name" onchange="this.form.submit()">                    
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row">        
+        <div class ="col-6">
+            <form method="get">
+                <input type="hidden" name="pageOptions.CurrentPage" value="@(Model.Options.PageOptions.CurrentPage - 1)" />
+                <input type="hidden" name="apartmentTypeFilterApplied" value="@Model.Options.ApartmentTypeFilterApplied" />
+                <input type="hidden" name="cityFilterApplied" value="@Model.Options.CityFilterApplied" />
+                <input type="hidden" name="needPeopleNumber" value="@Model.Options.NeedPeopleNumber" />
+                <input type="hidden" name="searchText" value="@Model.Options.SearchText" />
+                @if (Model.Options.PageOptions.HasPreviousPage)
+                {
+                    <input class="btn btn-dark btn-sm" type="submit" value="Prev" />
+                }
+                else
+                {
+                    <input class="btn btn-dark btn-sm" disabled type="submit" value="Prev" />
+                }
+            </form>
+            @*@if (Model.Options.PageOptions.HasPreviousPage)
+            {
+                <a asp-action="Index" asp-route-apartmentTypeFilterApplied="@Model.Options.ApartmentTypeFilterApplied"
+                    asp-route-pageOptions.CurrentPage="@(Model.Options.PageOptions.CurrentPage - 1)"
+               class="btn btn-outline-dark btn-sm">
+                    <i class="bi bi-skip-backward-fill"></i>Prev
+                </a>
+            }
+            else
+            {
+                <a class="btn btn-outline-dark btn-sm" style="pointer-events: none">
+                    <i class="bi bi-skip-backward-fill"></i>Prev
+                </a>
+            }*@
+        </div>
+        <div class="col-6 text-end">
+            <form method="get">
+                <input type="hidden" name="pageOptions.CurrentPage" value="@(Model.Options.PageOptions.CurrentPage + 1)" />
+                <input type="hidden" name="apartmentTypeFilterApplied" value="@Model.Options.ApartmentTypeFilterApplied" />
+                <input type="hidden" name="cityFilterApplied" value="@Model.Options.CityFilterApplied" />
+                <input type="hidden" name="needPeopleNumber" value="@Model.Options.NeedPeopleNumber" />
+                <input type="hidden" name="searchText" value="@Model.Options.SearchText" />
+                @if (Model.Options.PageOptions.HasNextPage)
+                {
+                    <input class="btn btn-dark btn-sm" type="submit" value="Next" />
+                }
+                else
+                {
+                    <input class="btn btn-dark btn-sm" disabled type="submit" value="Next" />
+                }
+            </form>
+    @*        @if (Model.Options.PageOptions.HasNextPage)
+            {
+                <a asp-action="Index" asp-route-apartmentTypeFilterApplied="@Model.Options.ApartmentTypeFilterApplied"
+                    asp-route-pageOptions.CurrentPage="@(Model.Options.PageOptions.CurrentPage + 1)"
+                    class="btn btn-outline-dark btn-sm">Next<i class="bi bi-skip-forward-fill"></i>
+                </a>
+            }
+            else
+            {
+                <a class="btn btn-outline-dark btn-sm" style="pointer-events: none">
+                    Next<i class="bi bi-skip-forward-fill"></i>
+                </a>
+            }*@
         </div>
     </div>
 </div>
@@ -25,6 +106,9 @@
         <tr>
             <th>
                 Name
+            </th>
+            <th>
+                City
             </th>
             <th>
                 Description
@@ -44,6 +128,9 @@
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CityName)
                 </td>
                 <td style="width:500px">
                     @Html.DisplayFor(modelItem => item.Description)
@@ -75,23 +162,5 @@
                 </td>
             </tr>
         }
-
-        @if (Model.PageViewModel.HasPreviousPage)
-        {
-            <a asp-action="Index" asp-route-page="@(Model.PageViewModel.CurrentPage - 1)"
-            class="btn btn-outline-dark btn-sm">
-                <i class="bi bi-skip-backward-fill"></i>
-                Назад
-            </a>
-        }
-        @if (Model.PageViewModel.HasNextPage)
-        {
-            <a asp-action="Index" asp-route-page="@(Model.PageViewModel.CurrentPage + 1)"
-            class="btn btn-outline-dark btn-sm">
-                Вперед
-                <i class="bi bi-skip-forward-fill"></i>
-            </a>
-        }
-
     </tbody>
 </table>

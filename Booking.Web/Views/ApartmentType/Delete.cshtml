@@ -9,12 +9,12 @@
         <div class="col-12">
             <h2 class="text_action">Delete Apartment type</h2>
             <h3 class="text_action">Are you sure you want to delete this?</h3>
-        </div>
+        </div>        
         <div class="col-12">
             <div class="input-group mb-3">
-                <span class="input-group-text" id="inputGroup-sizing-name">Name</span>
-                <input asp-for="Name" type="text" disabled class="form-control"
-                    aria-describedby="inputGroup-sizing-name">
+                <span class="input-group-text w-10" id="input-name">Name</span>
+                <input asp-for="Name" name="Name"  type="text" disabled class="form-control"
+                    aria-describedby="input-name">
             </div>
         </div>
         <form asp-action="Delete">

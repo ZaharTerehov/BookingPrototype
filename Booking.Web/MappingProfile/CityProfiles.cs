@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Booking.ApplicationCore.Models;
 using Booking.Web.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Booking.Web.MappingProfile
 {
@@ -18,6 +19,10 @@ namespace Booking.Web.MappingProfile
                 .ForMember(dto => dto.Id, opt => opt.MapFrom(entity => entity.Id))
                 .ForMember(dto => dto.Name, opt => opt.MapFrom(entity => entity.Name))
                 .ForMember(dto => dto.CountryId, opt => opt.MapFrom(entity => entity.CountryFilterApplied));
+
+            CreateMap<City, SelectListItem>()
+              .ForMember(dto => dto.Value, opt => opt.MapFrom(entity => entity.Id))
+              .ForMember(dto => dto.Text, opt => opt.MapFrom(entity => entity.Name));
         }
     }
 }

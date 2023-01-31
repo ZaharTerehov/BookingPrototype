@@ -31,27 +31,27 @@ namespace Booking.ApplicationCore.QueryOptions
             return this;
         }
 
-        public QueryViewModelOption<TEntity, TVM> SetCurentPageAndPageSize(int currentPage, PageSize pageSize)
+        public QueryViewModelOption<TEntity, TVM> SetCurentPageAndPageSize(PageOptions options)
         {
-            PageSize = pageSize;
-            if (currentPage > 0)
+            PageOptions.PageSize = options.PageSize;
+            if (options.CurrentPage > 0)
             {
-                CurrentPage = currentPage;
+                PageOptions.CurrentPage = options.CurrentPage;
             }
             return this;
         }
 
         public QueryViewModelOption<TEntity, TVM> NextPage()
         {
-            CurrentPage++;
+            PageOptions.CurrentPage++;
             return this;
         }
 
         public QueryViewModelOption<TEntity, TVM> PrevPage()
         {
-            if (CurrentPage > 1)
+            if (PageOptions.CurrentPage > 1)
             {
-                CurrentPage--;
+                PageOptions.CurrentPage--;
             }
             return this;
         }
