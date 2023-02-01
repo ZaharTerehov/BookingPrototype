@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Booking.Web.Interfaces;
 using Booking.Web.Models;
+using Booking.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Booking.Web.Controllers
@@ -8,16 +9,19 @@ namespace Booking.Web.Controllers
     public class ReservationController : Controller
     {
         private readonly IReservationViewModerService _reservationViewModelService;
+        private readonly IApartmentViewModelService _apartmentViewModelService;
         private readonly ILogger<ReservationController> _logger;
         private readonly IMapper _mapper;
 
         public ReservationController(IMapper mapper,
             IReservationViewModerService reservationViewModelService,
-            ILogger<ReservationController> logger)
+            ILogger<ReservationController> logger, 
+            IApartmentViewModelService apartmentViewModelService)
         {
             _reservationViewModelService = reservationViewModelService;
             _logger = logger;
             _mapper = mapper;
+            _apartmentViewModelService=apartmentViewModelService;
         }
 
         public async Task<IActionResult> Index()
@@ -27,10 +31,18 @@ namespace Booking.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Create() 
-        { 
-            
-            return View(new ReservationViewModel());
+        public async Task<IActionResult> CreateAsync(int id)
+        {
+            var chosenApartment = await _apartmentViewModelService.GetApartmentViewModelByIdAsync(id);
+            var newReservation = new ReservationViewModel();
+
+            var reservationCreateViewModel = new ReservationCreateViewModel
+            {
+                ApartmentViewModel = chosenApartment,
+                ReservationViewModel = newReservation
+            };
+
+            return View(reservationCreateViewModel);
         }
 
         [HttpPost]

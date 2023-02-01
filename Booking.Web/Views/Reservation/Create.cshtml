@@ -1,4 +1,4 @@
-﻿@model Booking.Web.Models.ReservationViewModel
+﻿@model Booking.Web.Models.ReservationCreateViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -8,30 +8,60 @@
 
 <h4>ReservationViewModel</h4>
 <hr />
+@*<div>
+   <td>
+            @Html.DisplayFor(modelItem => Model.ApartmentViewModel.Name)
+    </td>
+    <td>
+            @Html.DisplayFor(modelItem => Model.ApartmentViewModel.CityName)
+    </td>
+    <td style="width:500px">
+            @Html.DisplayFor(modelItem => Model.ApartmentViewModel.Description)
+    </td>
+    <td>
+        <img style="border-radius:10px; border:1px solid #ddd" width="150px"
+             src="@Html.DisplayFor(modelItem => Model.ApartmentViewModel.Picture)" />
+    </td>
+</div>*@
+<div class="container">
+   <div class="row">
+        <div class="col">
+            @Html.DisplayFor(modelItem => Model.ApartmentViewModel.Name)<br />
+            City: @Html.DisplayFor(modelItem => Model.ApartmentViewModel.CityName)
+        </div>
+        <div class="col-6">
+            @Html.DisplayFor(modelItem => Model.ApartmentViewModel.Description)
+        </div>
+        <div class="col">
+            <img style="border-radius:10px; border:1px solid #ddd" width="150px"
+                 src="@Html.DisplayFor(modelItem => Model.ApartmentViewModel.Picture)" />
+        </div>
+    </div>
+</div>
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create"> 
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+                <label asp-for="ReservationViewModel.Name" class="control-label"></label>
+                <input asp-for="ReservationViewModel.Name" class="form-control" />
+                <span asp-validation-for="ReservationViewModel.Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
+                <label asp-for="ReservationViewModel.Email" class="control-label"></label>
+                <input asp-for="ReservationViewModel.Email" class="form-control" />
+                <span asp-validation-for="ReservationViewModel.Email" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ArrivalDate" class="control-label"></label>
+                <label asp-for="ReservationViewModel.ArrivalDate" class="control-label"></label>
                 @*<input asp-for="ArrivalDate" class="form-control" />*@
-                <input type="date" asp-for="ArrivalDate" class="form-control" />
-                <span asp-validation-for="ArrivalDate" class="text-danger"></span>
+                <input type="date" asp-for="ReservationViewModel.ArrivalDate" class="form-control" />
+                <span asp-validation-for="ReservationViewModel.ArrivalDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DepartureDate" class="control-label"></label>
-                <input type="date" asp-for="DepartureDate" class="form-control" />
-                <span asp-validation-for="DepartureDate" class="text-danger"></span>
+                <label asp-for="ReservationViewModel.DepartureDate" class="control-label"></label>
+                <input type="date" asp-for="ReservationViewModel.DepartureDate" class="form-control" />
+                <span asp-validation-for="ReservationViewModel.DepartureDate" class="text-danger"></span>
             </div>
             @*<div class="form-group">
                 <label asp-for="ArrivalDateTime" class="control-label"></label>
@@ -51,7 +81,8 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a class="btn btn-primary" asp-action="Index" asp-controller="Apartment">Back to List</a>
+    @*<a asp-action="Index">Back to List</a>*@
 </div>
 
 @section Scripts {
