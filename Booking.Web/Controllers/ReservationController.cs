@@ -26,7 +26,7 @@ namespace Booking.Web.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var reservationsList = await _reservationViewModelService.GetReservationsAsync();
+            var reservationsList = await _reservationViewModelService.GetAllReservationsAsync();
             return View(reservationsList);
         }
 
@@ -34,15 +34,18 @@ namespace Booking.Web.Controllers
         public async Task<IActionResult> CreateAsync(int id)
         {
             var chosenApartment = await _apartmentViewModelService.GetApartmentViewModelByIdAsync(id);
+            ViewBag.ApartmentInfo = chosenApartment;
             var newReservation = new ReservationViewModel();
 
-            var reservationCreateViewModel = new ReservationCreateViewModel
-            {
-                ApartmentViewModel = chosenApartment,
-                ReservationViewModel = newReservation
-            };
+            //var reservationCreateViewModel = new ReservationCreateViewModel
+            //{
+            //    ApartmentViewModel = chosenApartment,
+            //    ReservationViewModel = newReservation
+            //};
 
-            return View(reservationCreateViewModel);
+            //return View(reservationCreateViewModel);
+
+            return View(newReservation);
         }
 
         [HttpPost]
@@ -51,10 +54,15 @@ namespace Booking.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var reservation = _mapper.Map<ReservationViewModel>(viewModel);
-                return RedirectToAction(nameof(Index));
+                //var reservation = _mapper.Map<ReservationViewModel>(viewModel.ReservationViewModel);
+                await _reservationViewModelService.CreateReservationAsync(viewModel);
+                return RedirectToAction("Index", "Apartment");
             }
-            return View(viewModel);
+            else
+            {
+                _logger.LogInformation("Model for member {Name} was incorrect",  viewModel.Name);
+                return View(viewModel);
+            }
             //try
             //{
             //    var reservation = _mapper.Map<ReservationViewModel>(viewModel);
@@ -66,6 +74,34 @@ namespace Booking.Web.Controllers
             //    _logger.LogError(ex.Message, ex);
             //    throw View();
             //}
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var result = await _reservationViewModelService.GetReservationByIdAsync(id);
+            if (result == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            return View(result);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(ReservationViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                await _reservationViewModelService.DeleteApartmentAsync(viewModel);
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                return View();
+            }
         }
     }
 }
