@@ -1,4 +1,5 @@
-﻿using Booking.Web.Interfaces;
+﻿using Booking.ApplicationCore.Enum;
+using Booking.Web.Interfaces;
 using Booking.Web.Interfaces.Login;
 using Booking.Web.Middleware;
 using Booking.Web.Services;
@@ -67,6 +68,12 @@ namespace Booking.Web.Extentions
 				    RequireExpirationTime = true,
                     ValidateLifetime = true
                 };
+            });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("User", policy => policy.RequireRole(nameof(Role.User)));
+                options.AddPolicy("Admin", policy => policy.RequireRole(nameof(Role.Admin)));
             });
 
             return services;
