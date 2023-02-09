@@ -2,16 +2,16 @@
 
 namespace Booking.ApplicationCore.Response
 {
-    public class BaseResponse
+    public class BaseResponse<T> where T : class
     {
         public string? Description { get; set; }
 
         public StatusCode? StatusCode { get; set; }
 
-        public string? Data { get; set; }
+        public T? Data { get; set; }
 
-        public BaseResponse(string? description = null, 
-            StatusCode? statusCode = null, string? data = null)
+        public BaseResponse(T? data = null, string? description = null,
+            StatusCode? statusCode = null)
         { 
             Description = description;
             StatusCode = statusCode;
