@@ -2,8 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Booking.Web.Interfaces;
 using Booking.Web.Services.Account;
-using Microsoft.AspNetCore.Authorization;
-using Newtonsoft.Json.Linq;
 
 namespace Booking.Web.Controllers
 {
