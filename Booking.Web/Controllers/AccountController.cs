@@ -1,13 +1,7 @@
 ﻿using Booking.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Booking.Web.Interfaces;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using NuGet.Common;
-using Microsoft.AspNetCore.Http;
-using System.Net.Http.Headers;
-using Newtonsoft.Json.Linq;
-using Azure;
+using Booking.Web.Services.Account;
 
 namespace Booking.Web.Controllers
 {
@@ -33,7 +27,7 @@ namespace Booking.Web.Controllers
 
                 if (response.StatusCode == ApplicationCore.Enum.StatusCode.OK)
                 {
-                    Authenticate(response.Data);
+                    SetAccessTokenAndRefreshToken(response.Data);
 					return RedirectToAction("Index", "City");
                 }
 
@@ -55,8 +49,7 @@ namespace Booking.Web.Controllers
 
                 if(response.StatusCode == ApplicationCore.Enum.StatusCode.OK)
                 {
-                    Authenticate(response.Data);
-
+                    await SetAccessTokenAndRefreshToken(response.Data);
 
 					return RedirectToAction("Index", "City");
 				}
@@ -67,12 +60,18 @@ namespace Booking.Web.Controllers
             return View(model);
         }
 
-        private IActionResult Authenticate(string jwtToken)
+        private async Task<IActionResult> SetAccessTokenAndRefreshToken(JwtTokenResult jwtToken)
         {
-			HttpContext.Response.Cookies.Append("Booking.Application.Id", jwtToken,
+			HttpContext.Response.Cookies.Append("Booking.Application.Id", jwtToken.AccessToken,
             new CookieOptions
             {
-	            MaxAge = TimeSpan.FromMinutes(60)
+                Expires = jwtToken.RefreshToken.Expires
+            });
+
+            HttpContext.Response.Cookies.Append("Booking.Application.IdR",jwtToken.RefreshToken.Token,
+            new CookieOptions
+            {
+                Expires = jwtToken.RefreshToken.Expires
             });
 
             return Ok();
