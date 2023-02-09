@@ -1,5 +1,7 @@
-﻿using Booking.Web.Interfaces.Login;
+﻿using Booking.Web.Interfaces;
+using Booking.Web.Interfaces.Login;
 using Booking.Web.Middleware;
+using Booking.Web.Services;
 using Booking.Web.Services.Account;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -33,10 +35,10 @@ namespace Booking.Web.Extentions
         public static IServiceCollection AddJwtAuthentication(this IServiceCollection services,
             JwtOptions tokenOptions)
         {
-			services.AddScoped<IJwtProvider, JwtProvider>(serviceProvider =>
-	            new JwtProvider(tokenOptions));
+			services.AddScoped<ITokenService, TokenService>(serviceProvider =>
+	            new TokenService(tokenOptions));
 
-			services.AddAuthentication(options =>
+            services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme =
                     JwtBearerDefaults.AuthenticationScheme;
