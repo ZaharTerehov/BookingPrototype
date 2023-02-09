@@ -2,18 +2,10 @@ using Booking.Infrastructure.Data;
 using Booking.Web.Configuration;
 using Booking.Web.Extentions;
 using Booking.Web.Services.Account;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Microsoft.IdentityModel.Tokens;
 using Serilog;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
+using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,18 +26,26 @@ builder.Services.AddCoreServices();
 //AutoMapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-
 //JwtToken
 var sectionJwtSettings = builder.Configuration.GetSection("JwtSettings");
 var options = sectionJwtSettings.Get<JwtOptions>();
 
-var jwtOptions = new JwtOptions(options.SigningKey, options.Issuer, options.Audience, options.TokenExpiryInMinutes);
+var jwtOptions = new JwtOptions(options.SigningKey, options.Issuer, options.Audience, 
+    options.AccessTokenExpiryInMinutes, options.RefreshTokenExpiryInMinutes);
 
 builder.Services.AddJwtAuthentication(jwtOptions);
 
 builder.Services.Configure<JwtOptions>(sectionJwtSettings);
 
 var app = builder.Build();
+
+app.UseStatusCodePages(async context => {
+    var request = context.HttpContext.Request;
+    var response = context.HttpContext.Response;
+
+    if (response.StatusCode == (int)HttpStatusCode.Unauthorized)
+        response.Redirect("/Account/Login");
+});
 
 app.Logger.LogInformation("Database migraion running...");
 using (var scope = app.Services.CreateScope())
