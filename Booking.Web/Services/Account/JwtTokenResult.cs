@@ -4,6 +4,8 @@
 	{
 		public string AccessToken { get; internal set; }
 
-		public TimeSpan Expires { get; set; }
+		public DateTime AccessTokenExpires { get; set; }
+
+		public RefreshToken RefreshToken { get; set; }
 	}
 }

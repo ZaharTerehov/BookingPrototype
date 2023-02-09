@@ -8,6 +8,7 @@ using Booking.ApplicationCore.Response;
 using Booking.Web.Interfaces;
 using Booking.Web.Models;
 using Booking.Web.Interfaces.Login;
+using Booking.Web.Services.Account;
 
 namespace Booking.Web.Services
 {
@@ -16,16 +17,16 @@ namespace Booking.Web.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        private readonly IJwtProvider _jwtProvider;
+        private readonly ITokenService _jwtProvider;
 
-        public AccountService(IMapper mapper, IUnitOfWork unitOfWork, IJwtProvider jwtProvider)
+        public AccountService(IMapper mapper, IUnitOfWork unitOfWork, ITokenService jwtProvider)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
             _jwtProvider = jwtProvider;
         }
 
-        public async ValueTask<BaseResponse> Register(RegisterViewModel model)
+        public async Task<BaseResponse<JwtTokenResult>> Register(RegisterViewModel model)
         {
             try
             {
@@ -34,26 +35,14 @@ namespace Booking.Web.Services
 
                 if (users.Count > 0)
                 {
-                    return new BaseResponse()
+                    return new BaseResponse<JwtTokenResult>()
                     {
                         Description = "There is already a user with this login",
                     };
                 }
 
-                var optionsId = new QueryEntityOptions<User>().AddSortOption(true, y => y.Id);
-                var entities = await _unitOfWork.Users.GetAllAsync(optionsId);
-
-                var id = 1;
-
-                if (entities.Count > 0)
-                {
-                    id = entities[0].Id;
-                    id++;
-                }
-
                 var newUser = new User()
                 {
-					Id = id,
 					Role = Role.User,
                     Name = model.Name,
                     Email = model.Email,
@@ -62,20 +51,24 @@ namespace Booking.Web.Services
                     NumberPhone = model.NumberPhone,
                     Password = HashPasswordHelper.HashPassword(model.Password),
                 };
+                
+                var result = await Authenticate(newUser);
+
+                newUser.RefreshToken = result.RefreshToken.Token;
+                newUser.RefreshTokenExpiryInMinutes = result.RefreshToken.Expires;
 
                 await _unitOfWork.Users.CreateAsync(newUser);
-                var result = Authenticate(newUser);
 
-                return new BaseResponse()
+                return new BaseResponse<JwtTokenResult>()
                 {
                     Data = result,
-                    Description = result,
+                    Description = result.AccessToken,
                     StatusCode = StatusCode.OK
                 };
             }
             catch (Exception ex)
             {
-                return new BaseResponse()
+                return new BaseResponse<JwtTokenResult>()
                 {
                     Description = ex.Message,
                     StatusCode = StatusCode.InternalServerError
@@ -83,29 +76,41 @@ namespace Booking.Web.Services
             }
         }
 
-        public async ValueTask<BaseResponse> Login(LoginViewModel model)
+        public async Task<BaseResponse<JwtTokenResult>> Login(LoginViewModel model)
         {
             try
             {
                 var options = new QueryEntityOptions<User>().SetFilterOption(y => y.Email == model.Login);
-                var user = await _unitOfWork.Users.GetAllAsync(options);
+                var users = await _unitOfWork.Users.GetAllAsync(options);
 
-                if (user is null)
+                if (users is null)
                 {
-                    return new BaseResponse("User is not found", StatusCode.InternalServerError, "");
+                    return new BaseResponse<JwtTokenResult>()
+                    {
+                        Description = "User is not found",
+                        StatusCode = StatusCode.InternalServerError
+                    };
                 }
 
-                if (user[0].Password != HashPasswordHelper.HashPassword(model.Password))
+                var user = users.First();
+
+                if (user.Password != HashPasswordHelper.HashPassword(model.Password))
                 {
-                    return new BaseResponse()
+                    return new BaseResponse<JwtTokenResult>()
                     {
                         Description = "Invalid password or login"
                     };
                 }
 
-                var result = Authenticate(user[0]);
+                var result = await Authenticate(user);
 
-                return new BaseResponse()
+                var existingUser = await _unitOfWork.Users.GetByIdAsync(user.Id);
+
+                existingUser.UpdateRefreshToken(result.RefreshToken.Token, result.RefreshToken.Expires);
+
+                await _unitOfWork.Users.UpdateAsync(existingUser);
+
+                return new BaseResponse<JwtTokenResult>()
                 {
                     Data = result,
                     StatusCode = StatusCode.OK
@@ -113,7 +118,7 @@ namespace Booking.Web.Services
             }
             catch (Exception ex)
             {
-                return new BaseResponse()
+                return new BaseResponse<JwtTokenResult>()
                 {
                     Description = ex.Message,
                     StatusCode = StatusCode.InternalServerError
@@ -121,11 +126,47 @@ namespace Booking.Web.Services
             }
         }
 
-        private string Authenticate(User user)
+        private async Task<JwtTokenResult> Authenticate(User user)
         {
-            var tokenResult = _jwtProvider.Generate(user);
+            var tokenResult = await _jwtProvider.GenerateAccessToken(user);
 
-            return tokenResult.AccessToken;
+            var refreshToken = await _jwtProvider.GenerateRefreshToken();
+
+            return new JwtTokenResult()
+            {
+                AccessToken = tokenResult.AccessToken,
+                AccessTokenExpires = tokenResult.AccessTokenExpires,
+                RefreshToken = refreshToken,
+            };
+        }
+
+        public Task<bool> CheckValidUser(string accessToken)
+        {
+            return _jwtProvider.ValidateAccessToken(accessToken);
+        }
+
+        public async Task<string> UpdateUserValidity(string novalidToken, string refreshToken)
+        {
+            var principal = await _jwtProvider.GetPrincipalFromExpiredToken(novalidToken);
+
+            string email = principal.Claims.First(claim => claim.Type == "sub").Value;
+
+            var options = new QueryEntityOptions<User>().SetFilterOption(y => y.Email == email);
+            var users = await _unitOfWork.Users.GetAllAsync(options);
+            var user = users.First();
+
+            if (user.RefreshToken == refreshToken && user.RefreshTokenExpiryInMinutes > DateTime.Now)
+            {
+                var tokenResult = await _jwtProvider.GenerateAccessToken(user);
+
+                var existingUser = await _unitOfWork.Users.GetByIdAsync(user.Id);
+
+                return tokenResult.AccessToken;
+            }
+            else
+            {
+                return string.Empty;
+            }
         }
     }
 }
