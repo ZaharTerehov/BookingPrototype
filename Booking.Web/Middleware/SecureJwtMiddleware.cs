@@ -14,8 +14,8 @@ namespace Booking.Web.Middleware
 		public async Task InvokeAsync(HttpContext context,
             IAccountServiceViewModelService accountServiceViewModelService) 
 		{
-            var token = context.Request.Cookies["Booking.Application.Id"];
-            var refreshToken = context.Request.Cookies["Booking.Application.IdR"];
+            var token = context.Request.Cookies[accountServiceViewModelService.LocationAccessToken];
+            var refreshToken = context.Request.Cookies[accountServiceViewModelService.LocationRefreshToken];
 
             if (!string.IsNullOrEmpty(token))
             {
@@ -27,7 +27,7 @@ namespace Booking.Web.Middleware
 
                     if(validToken != string.Empty)
                     {
-                        context.Response.Cookies.Append("Booking.Application.Id", validToken.ToString(),
+                        context.Response.Cookies.Append(accountServiceViewModelService.LocationAccessToken, validToken.ToString(),
                         new CookieOptions
                         {
                             Expires = DateTime.Now.AddMinutes(10)

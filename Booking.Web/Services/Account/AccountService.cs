@@ -19,6 +19,9 @@ namespace Booking.Web.Services
 
         private readonly ITokenService _jwtProvider;
 
+        public string LocationAccessToken { get; init; } = "Booking.Application.Id";
+        public string LocationRefreshToken { get; init; } = "Booking.Application.IdR";
+
         public AccountService(IMapper mapper, IUnitOfWork unitOfWork, ITokenService jwtProvider)
         {
             _mapper = mapper;

@@ -6,6 +6,9 @@ namespace Booking.Web.Interfaces
 {
     public interface IAccountServiceViewModelService
     {
+        public string LocationAccessToken { get; init; }
+        public string LocationRefreshToken { get; init; }
+
         Task<BaseResponse<JwtTokenResult>> Register(RegisterViewModel model);
 
 		Task<BaseResponse<JwtTokenResult>> Login(LoginViewModel model);
