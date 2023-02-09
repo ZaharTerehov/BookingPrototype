@@ -6,7 +6,7 @@ namespace Booking.Web.Attributes.Validation
     [AttributeUsage(AttributeTargets.Property)]
     public class CurrentDateAttribute : ValidationAttribute
     {
-        public CurrentDateAttribute()
+        public CurrentDateAttribute() : base() 
         {
             ErrorMessage = "Error! Date must be greater than today!";
         }
@@ -17,7 +17,7 @@ namespace Booking.Web.Attributes.Validation
 
             if (DateTime.TryParse(value.ToString(), out var result))
             {
-                return result < begin;
+                return result >= begin;
             }            
 
             return false;
