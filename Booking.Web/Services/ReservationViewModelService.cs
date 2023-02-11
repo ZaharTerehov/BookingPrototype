@@ -51,15 +51,15 @@ namespace Booking.Web.Services
 
         public async Task DeleteApartmentAsync(ReservationViewModel viewModel)
         {
-            var existingReservation = await _unitOfWork.Reservations.GetByIdAsync(viewModel.Id);
-            if (existingReservation is null)
-            {
-                var exception = new Exception($"Reservation with id = {viewModel.Id} was not found");
+            //var existingReservation = await _unitOfWork.Reservations.GetByIdAsync(viewModel.Id);
+            //if (existingReservation is null)
+            //{
+            //    var exception = new Exception($"Reservation with id = {viewModel.Id} was not found");
 
-                throw exception;
-            }
+            //    throw exception;
+            //}
 
-            await _unitOfWork.Reservations.DeleteAsync(existingReservation);
+            //await _unitOfWork.Reservations.DeleteAsync(existingReservation);
         } 
     }
 }

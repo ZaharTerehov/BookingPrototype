@@ -4,26 +4,24 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>All reservations</h1>
 
-@*<p>
-    <a asp-action="Create">Create New</a>
-</p>*@
-
+<div class="col-6">
+    <h2 class="text_action">Current reservations list</h2>
+</div>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                Client's name
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Email)
+                Client's email
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ArrivalDate)
+                Check in
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DepartureDate)
+                Ckeck out
             </th>
             <th></th>
         </tr>
@@ -38,19 +36,17 @@
                 @Html.DisplayFor(modelItem => item.Email)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ArrivalDate)
+                @Html.DisplayFor(modelItem => item.CheckInInfo)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DepartureDate)
+                @Html.DisplayFor(modelItem => item.CheckOutInfo)
             </td>
             <td>
-                <a asp-controller="Reservation" asp-action="Edit" asp-route-id="@item.Id"
-                    class="btn btn-secondary btn-sm">
-                    <i class="bi bi-pencil-square"></i>
-                    Edit
-                </a>
-                    <a asp-controller="Reservation" asp-action="Delete" asp-route-id="@item.Name"
-            class="btn btn-secondary btn-sm">
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @*@Html.ActionLink("Delete", "Delete", new {  id=item.Id })*@
+                <a asp-controller="Reservation" asp-action="Delete" asp-route-id="@item.Id"
+                class="btn btn-secondary btn-sm">
                     <i class="bi bi-trash"></i>
                     Delete
                 </a>

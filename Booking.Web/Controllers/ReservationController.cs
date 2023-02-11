@@ -31,19 +31,11 @@ namespace Booking.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> CreateAsync(int id)
+        public async Task<IActionResult> Create(int apartmentId)
         {
-            var chosenApartment = await _apartmentViewModelService.GetApartmentViewModelByIdAsync(id);
-            ViewBag.ApartmentInfo = chosenApartment;
-            var newReservation = new ReservationViewModel();
+            var chosenApartment = await _apartmentViewModelService.GetApartmentViewModelByIdAsync(apartmentId);
 
-            //var reservationCreateViewModel = new ReservationCreateViewModel
-            //{
-            //    ApartmentViewModel = chosenApartment,
-            //    ReservationViewModel = newReservation
-            //};
-
-            //return View(reservationCreateViewModel);
+            var newReservation = new ReservationViewModel() { ApartmentInfo = chosenApartment };
 
             return View(newReservation);
         }
@@ -54,7 +46,6 @@ namespace Booking.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                //var reservation = _mapper.Map<ReservationViewModel>(viewModel.ReservationViewModel);
                 await _reservationViewModelService.CreateReservationAsync(viewModel);
                 return RedirectToAction("Index", "Apartment");
             }
@@ -63,17 +54,7 @@ namespace Booking.Web.Controllers
                 _logger.LogInformation("Model for member {Name} was incorrect",  viewModel.Name);
                 return View(viewModel);
             }
-            //try
-            //{
-            //    var reservation = _mapper.Map<ReservationViewModel>(viewModel);
-            //    await _reservationViewModelService.CreateReservationAsync();
-            //    return RedirectToAction(nameof(Index));
-            //}
-            //catch (Exception ex)
-            //{
-            //    _logger.LogError(ex.Message, ex);
-            //    throw View();
-            //}
+
         }
 
         [HttpGet]
@@ -93,15 +74,24 @@ namespace Booking.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(ReservationViewModel viewModel)
         {
-            if (ModelState.IsValid)
-            {
-                await _reservationViewModelService.DeleteApartmentAsync(viewModel);
-                return RedirectToAction(nameof(Index));
-            }
-            else
-            {
-                return View();
-            }
+            //TODO Add walidation
+
+            #region Validation
+            //if (ModelState.IsValid)
+            //{
+            //    await _reservationViewModelService.DeleteApartmentAsync(viewModel);
+            //    return RedirectToAction(nameof(Index));
+            //}
+            //else
+            //{
+            //    return View();
+            //}
+            #endregion
+
+            await _reservationViewModelService.DeleteApartmentAsync(viewModel);
+            return RedirectToAction(nameof(Index));
         }
+
+
     }
 }

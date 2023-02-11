@@ -4,51 +4,22 @@
     ViewData["Title"] = "Create";
 }
 
-<h2>@ViewBag.ApartmentInfo.Name</h2>
-<hr />
-@*<div>
-   <td>
-            @Html.DisplayFor(modelItem => Model.ApartmentViewModel.Name)
-    </td>
-    <td>
-            @Html.DisplayFor(modelItem => Model.ApartmentViewModel.CityName)
-    </td>
-    <td style="width:500px">
-            @Html.DisplayFor(modelItem => Model.ApartmentViewModel.Description)
-    </td>
-    <td>
-        <img style="border-radius:10px; border:1px solid #ddd" width="150px"
-             src="@Html.DisplayFor(modelItem => Model.ApartmentViewModel.Picture)" />
-    </td>
-</div>*@
+<h2>@Model.ApartmentInfo.Name</h2>
+
 <table class="table">
     <thead>
         <tr>
             <td align="left" valign="top">
-                @ViewBag.ApartmentInfo.Description
+                @Model.ApartmentInfo.Description
             </td>
             <td>
                 <img style="border-radius:10px; border:1px solid #ddd" width="400px"
-                     src=@ViewBag.ApartmentInfo.Picture />
+                     src=@Model.ApartmentInfo.Picture />
             </td>
         </tr>
     </thead>
 </table>
-@*<div class="container">
-   <div class="row">
-        <div class="col">
-            @Html.DisplayFor(modelItem => Model.Name)<br />
-            City: @Html.DisplayFor(modelItem => Model.CityName)
-        </div>
-        <div class="col-6">
-            @Html.DisplayFor(modelItem => Model.ApartmentViewModel.Description)
-        </div>
-        <div class="col">
-            <img style="border-radius:10px; border:1px solid #ddd" width="150px"
-                 src="@Html.DisplayFor(modelItem => Model.Picture)" />
-        </div>
-    </div>
-</div>*@
+
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create"> 
@@ -66,29 +37,19 @@
                 </div>
             </div>
             <div>
-                <div class="form-group">
+                <div class="md-form md-outline input-with-post-icon datepicker">
                     <label asp-for="ArrivalDate" class="control-label">Check in</label>
-                    @*<input asp-for="ArrivalDate" class="form-control" />*@
-                    <input type="date" asp-for="ArrivalDate" class="form-control" />
+                    <input type="date" asp-for="ArrivalDate" class="form-control datepicker"/>
                     <span asp-validation-for="ArrivalDate" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="DepartureDate" class="control-label">Check out</label>
-                    <input type="date" asp-for="DepartureDate" class="form-control" />
+                    <input type="date" asp-for="DepartureDate" class="form-control datepicker" />
                     <span asp-validation-for="DepartureDate" class="text-danger"></span>
                 </div>
             </div>
             
-            @*<div class="form-group">
-                <label asp-for="ArrivalDateTime" class="control-label"></label>
-                <input asp-for="ArrivalDateTime" class="form-control" />
-                <span asp-validation-for="ArrivalDateTime" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DepartureDateTime" class="control-label"></label>
-                <input asp-for="DepartureDateTime" class="form-control" />
-                <span asp-validation-for="DepartureDateTime" class="text-danger"></span>
-            </div>*@
+
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
@@ -98,9 +59,10 @@
 
 <div>
     <a class="btn btn-primary" asp-action="Index" asp-controller="Apartment">Back to List</a>
-    @*<a asp-action="Index">Back to List</a>*@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
