@@ -10,7 +10,6 @@ using Booking.Web.Models;
 using Booking.Web.Interfaces.Login;
 using Booking.Web.Services.Account;
 using Booking.Web.Interfaces.Account;
-using NuGet.Common;
 
 namespace Booking.Web.Services
 {
