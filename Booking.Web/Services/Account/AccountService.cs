@@ -9,6 +9,8 @@ using Booking.Web.Interfaces;
 using Booking.Web.Models;
 using Booking.Web.Interfaces.Login;
 using Booking.Web.Services.Account;
+using Booking.Web.Interfaces.Account;
+using NuGet.Common;
 
 namespace Booking.Web.Services
 {
@@ -18,21 +20,28 @@ namespace Booking.Web.Services
         private readonly IMapper _mapper;
 
         private readonly ITokenService _jwtProvider;
+        private readonly ICaptchaValidator _captchaValidator;
 
         public string LocationAccessToken { get; init; } = "Booking.Application.Id";
         public string LocationRefreshToken { get; init; } = "Booking.Application.IdR";
 
-        public AccountService(IMapper mapper, IUnitOfWork unitOfWork, ITokenService jwtProvider)
+        public AccountService(IMapper mapper, IUnitOfWork unitOfWork, ITokenService jwtProvider, ICaptchaValidator captchaValidator)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
             _jwtProvider = jwtProvider;
+            _captchaValidator = captchaValidator;
         }
 
         public async Task<BaseResponse<JwtTokenResult>> Register(RegisterViewModel model)
         {
             try
             {
+                var captchaValidation = await СheckСaptchaTokenForValidity(model.ReCaptcha);
+
+                if (captchaValidation.StatusCode != StatusCode.OK)
+                    return captchaValidation;
+
                 var optionsEmail = new QueryEntityOptions<User>().SetFilterOption(y => y.Email == model.Email);
                 var users = await _unitOfWork.Users.GetAllAsync(optionsEmail);
 
@@ -79,10 +88,33 @@ namespace Booking.Web.Services
             }
         }
 
+        public async Task<BaseResponse<JwtTokenResult>> СheckСaptchaTokenForValidity(string token)
+        {
+            if (!await _captchaValidator.IsCaptchaPassedAsync(token))
+            {
+                return new BaseResponse<JwtTokenResult>()
+                {
+                    Description = "Captcha validation failed",
+                    StatusCode = StatusCode.InternalServerError
+                };
+            }
+
+            return new BaseResponse<JwtTokenResult>()
+            {
+                Description = "Captcha is valid",
+                StatusCode = StatusCode.OK
+            };
+        }
+
         public async Task<BaseResponse<JwtTokenResult>> Login(LoginViewModel model)
         {
             try
             {
+                var captchaValidation = await СheckСaptchaTokenForValidity(model.ReCaptcha);
+
+                if (captchaValidation.StatusCode != StatusCode.OK)
+                    return captchaValidation;
+
                 var options = new QueryEntityOptions<User>().SetFilterOption(y => y.Email == model.Login);
                 var users = await _unitOfWork.Users.GetAllAsync(options);
 
