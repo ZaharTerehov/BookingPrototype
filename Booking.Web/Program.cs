@@ -1,6 +1,8 @@
+using AspNetCore.ReCaptcha;
 using Booking.Infrastructure.Data;
 using Booking.Web.Configuration;
 using Booking.Web.Extentions;
+using Booking.Web.Models.Account;
 using Booking.Web.Services.Account;
 using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.EntityFrameworkCore;
@@ -25,6 +27,9 @@ builder.Services.AddCoreServices();
 
 //AutoMapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+builder.Services.Configure<CaptchaConfig>(builder.Configuration.GetSection("ReCaptcha"));
+builder.Services.AddHttpClient();
 
 //JwtToken
 var sectionJwtSettings = builder.Configuration.GetSection("JwtSettings");

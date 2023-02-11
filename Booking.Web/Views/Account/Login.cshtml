@@ -5,6 +5,20 @@
     ViewBag.Title = "Login Page";
 }
 
+@using Booking.Web.Models.Account
+@inject IOptions<CaptchaConfig> CaptchaConfig
+
+<script src="https://www.google.com/recaptcha/api.js?render=@CaptchaConfig.Value.SiteKey"></script>
+<script>
+    $(function () {
+        grecaptcha.ready(function () {
+            grecaptcha.execute('@CaptchaConfig.Value.SiteKey', { action: 'submit' }).then(function (token) {
+                document.getElementById("captchaToken").value = token;
+            });
+        });
+    });
+</script>
+
 <div style="padding: 40px;"></div>
 
 <div class="container py-5">
@@ -28,6 +42,7 @@
                                     <input autocomplete="new-password" asp-for="Password" placeholder="Password" class="form-control textbox-dg font-weight-bold text-center" type="password">
                                     <span asp-validation-for="Password" />
                                 </div>
+                                <input type="hidden" asp-for="ReCaptcha" id="captchaToken" />
                                 <button class="btn btn-success btn-lg float-right" type="submit">Login</button>
                             </form>
                         </div>
