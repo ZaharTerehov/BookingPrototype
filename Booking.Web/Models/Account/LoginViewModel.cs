@@ -11,4 +11,7 @@ public class LoginViewModel
     [Required(ErrorMessage = "Enter your password")]
     [Display(Name = "Password")]
     public string Password { get; set; }
+
+    [Required]
+    public string ReCaptcha { get; set; }
 }

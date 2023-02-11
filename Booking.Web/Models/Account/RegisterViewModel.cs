@@ -35,5 +35,8 @@ namespace Booking.Web.Models
         [Required(ErrorMessage = "Enter your date of birth")]
         [DataType(DataType.DateTime)]
         public DateTime DateOfBirth { get; set; }
+
+        [Required]
+        public string ReCaptcha { get; set; }
     }
 }
