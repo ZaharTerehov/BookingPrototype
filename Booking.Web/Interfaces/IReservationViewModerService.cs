@@ -4,7 +4,10 @@ namespace Booking.Web.Interfaces
 {
     public interface IReservationViewModerService
     {
-        Task CreateApartmentTypeAsync(ReservationViewModel viewModel);
-        Task<List<ReservationViewModel>> GetReservationsAsync();
+        Task CreateReservationAsync(ReservationViewModel viewModel);
+        Task DeleteApartmentAsync(ReservationViewModel viewModel);
+        Task<List<ReservationViewModel>> GetAllReservationsAsync();
+        Task<ReservationViewModel> GetReservationByIdAsync(int id);
+
     }
 }
