@@ -1,4 +1,4 @@
-﻿@model Booking.Web.Models.ReservationViewModel
+﻿@model Booking.Web.Models.ReservationCreateViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -24,6 +24,7 @@
     <div class="col-md-4">
         <form asp-action="Create"> 
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" name="apartmentId" value="@(Model.ApartmentInfo.Id)" />
             <div>
                 <div class="form-group">
                     <label asp-for="Name" class="control-label">Enter your name</label>

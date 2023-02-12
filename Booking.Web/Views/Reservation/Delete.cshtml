@@ -1,4 +1,4 @@
-﻿@model Booking.Web.Models.ReservationViewModel
+﻿@model Booking.Web.Models.ReservationCreateViewModel
 
 @{
     ViewData["Title"] = "Delete";
@@ -37,7 +37,8 @@
         </dd>
     </dl>
     
-    <form asp-action="Delete">
+    <form asp-action="DeleteReservation">
+        <input type="hidden" name="id" value="@Model.Id"></input>
         <input type="submit" value="Delete" class="btn btn-danger" /> |
         <a asp-action="Index">Back to List</a>
     </form>

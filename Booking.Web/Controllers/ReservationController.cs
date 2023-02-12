@@ -35,7 +35,7 @@ namespace Booking.Web.Controllers
         {
             var chosenApartment = await _apartmentViewModelService.GetApartmentViewModelByIdAsync(apartmentId);
 
-            var newReservation = new ReservationViewModel() { ApartmentInfo = chosenApartment };
+            var newReservation = new ReservationCreateViewModel() { ApartmentInfo = chosenApartment };
 
             return View(newReservation);
         }
@@ -47,7 +47,7 @@ namespace Booking.Web.Controllers
             if (ModelState.IsValid)
             {
                 await _reservationViewModelService.CreateReservationAsync(viewModel);
-                return RedirectToAction("Index", "Apartment");
+                return RedirectToAction("Index", "Reservation");
             }
             else
             {
@@ -72,24 +72,19 @@ namespace Booking.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(ReservationViewModel viewModel)
+        public async Task<IActionResult> DeleteReservation(int id)
         {
-            //TODO Add walidation
-
             #region Validation
-            //if (ModelState.IsValid)
-            //{
-            //    await _reservationViewModelService.DeleteApartmentAsync(viewModel);
-            //    return RedirectToAction(nameof(Index));
-            //}
-            //else
-            //{
-            //    return View();
-            //}
+            if (ModelState.IsValid)
+            {
+                await _reservationViewModelService.DeleteApartmentAsync(id);
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                return View();
+            }
             #endregion
-
-            await _reservationViewModelService.DeleteApartmentAsync(viewModel);
-            return RedirectToAction(nameof(Index));
         }
 
 
