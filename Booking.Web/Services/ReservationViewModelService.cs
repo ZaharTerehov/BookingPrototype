@@ -24,7 +24,7 @@ namespace Booking.Web.Services
             await _unitOfWork.Reservations.CreateAsync(dto);
         }
 
-        public async Task<ReservationViewModel> GetReservationByIdAsync(int id)
+        public async Task<ReservationCreateViewModel> GetReservationByIdAsync(int id)
         {
             var existingReservation = await _unitOfWork.Reservations.GetByIdAsync(id);
             if (existingReservation == null)
@@ -34,32 +34,32 @@ namespace Booking.Web.Services
                 throw exception;
             }
 
-            var dto = _mapper.Map<ReservationViewModel>(existingReservation);
+            var dto = _mapper.Map<ReservationCreateViewModel>(existingReservation);
             return dto;
         }
 
         //var options = new QueryEntityOptions<ApartmentType>().AddSortOption(false, x => x.Name);
         //var entities = await _unitOfWork.ApartmentTypes.GetAllAsync(options);
 
-        public async Task<List<ReservationViewModel>> GetAllReservationsAsync()
+        public async Task<List<ReservationCreateViewModel>> GetAllReservationsAsync()
         {
             var options = new QueryEntityOptions<Reservation>().AddSortOption(false, x => x.Name);
             var reservationsList = await _unitOfWork.Reservations.GetAllAsync(options);
-            var allReservationsList = _mapper.Map<List<ReservationViewModel>>(reservationsList);
+            var allReservationsList = _mapper.Map<List<ReservationCreateViewModel>>(reservationsList);
             return allReservationsList;
         }
 
-        public async Task DeleteApartmentAsync(ReservationViewModel viewModel)
+        public async Task DeleteApartmentAsync(int id)
         {
-            //var existingReservation = await _unitOfWork.Reservations.GetByIdAsync(viewModel.Id);
-            //if (existingReservation is null)
-            //{
-            //    var exception = new Exception($"Reservation with id = {viewModel.Id} was not found");
+            var existingReservation = await _unitOfWork.Reservations.GetByIdAsync(id);
+            if (existingReservation is null)
+            {
+                var exception = new Exception($"Reservation with id = {id} was not found");
 
-            //    throw exception;
-            //}
+                throw exception;
+            }
 
-            //await _unitOfWork.Reservations.DeleteAsync(existingReservation);
+            await _unitOfWork.Reservations.DeleteAsync(existingReservation);
         } 
     }
 }

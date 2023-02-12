@@ -4,6 +4,7 @@ using Booking.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Booking.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(BookingContext))]
-    partial class BookingContextModelSnapshot : ModelSnapshot
+    [Migration("20230212085224_AddApartmentIdToReservation")]
+    partial class AddApartmentIdToReservation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -167,7 +170,7 @@ namespace Booking.Infrastructure.Data.Migrations
                     b.Property<int>("ApartmentId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("ArrivalDate")
+                    b.Property<DateTime>("ArrivalDateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DateCreated")
@@ -176,7 +179,7 @@ namespace Booking.Infrastructure.Data.Migrations
                     b.Property<DateTime?>("DateUpdated")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DepartureDate")
+                    b.Property<DateTime>("DepartureDateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")

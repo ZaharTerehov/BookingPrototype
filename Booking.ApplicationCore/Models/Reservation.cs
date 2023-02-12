@@ -11,6 +11,8 @@ namespace Booking.ApplicationCore.Models
     public class Reservation : BaseModel
     {
         [Required]
+        public int ApartmentId { get; set; }
+        [Required]
         [StringLength(100)]
         public string Name { get; set; }
         [Required]
@@ -18,14 +20,14 @@ namespace Booking.ApplicationCore.Models
         [EmailAddress]
         public string Email { get; set; }
         [Required]
-        public DateTime ArrivalDateTime { get; set; }
+        public DateTime ArrivalDate { get; set; }
         [Required]
-        public DateTime DepartureDateTime { get; set; }
+        public DateTime DepartureDate { get; set; }
 
-        [NotMapped]
-        public string ArrivalDate => ArrivalDateTime.ToString("MM/dd/yyyy");
-        [NotMapped]
-        public string DepartureDate => DepartureDateTime.ToString("MM/dd/yyyy");
+        //[NotMapped]
+        //public string ArrivalDate => ArrivalDateTime.ToString("MM/dd/yyyy");
+        //[NotMapped]
+        //public string DepartureDate => DepartureDateTime.ToString("MM/dd/yyyy");
 
     }
 }
