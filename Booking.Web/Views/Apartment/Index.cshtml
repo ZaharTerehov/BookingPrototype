@@ -99,68 +99,61 @@
             }*@
         </div>
     </div>
+    <div class="row">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>City</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                    <th>Picture</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Apartments)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CityName)
+                        </td>
+                        <td style="width:500px">
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Price)
+                        </td>
+                        <td>
+                            <img style="border-radius:10px; border:1px solid #ddd" width="150px"
+                            src="@Html.DisplayFor(modelItem => item.Picture)" />
+                            @*@Html.DisplayFor(modelItem => item.Picture)*@
+                        </td>
+                        <td>
+                            <a asp-controller="Apartment" asp-action="Edit" asp-route-id="@item.Id"
+                            class="btn btn-secondary btn-sm">
+                                <i class="bi bi-pencil-square"></i>
+                                Edit
+                            </a>
+                            <a asp-controller="Reservation" asp-action="Create" asp-route-ApartmentId="@item.Id"
+                            class="btn btn-secondary btn-sm">
+                                <i class="bi bi-ticket-detailed"></i>
+                                Reserve
+                            </a>
+                            <a asp-controller="Apartment" asp-action="Delete" asp-route-id="@item.Id"
+                            class="btn btn-secondary btn-sm">
+                                <i class="bi bi-trash"></i>
+                                Delete
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Name
-            </th>
-            <th>
-                City
-            </th>
-            <th>
-                Description
-            </th>
-            <th>
-                Price
-            </th>
-            <th>
-                Picture
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.Apartments)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CityName)
-                </td>
-                <td style="width:500px">
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Price)
-                </td>
-                <td>
-                    <img style="border-radius:10px; border:1px solid #ddd" width="150px"
-                    src="@Html.DisplayFor(modelItem => item.Picture)" />
-                    @*@Html.DisplayFor(modelItem => item.Picture)*@
-                </td>
-                <td>
-                    <a asp-controller="Apartment" asp-action="Edit" asp-route-id="@item.Id"
-                    class="btn btn-secondary btn-sm">
-                        <i class="bi bi-pencil-square"></i>
-                        Edit
-                    </a>
-                    <a asp-controller="Reservation" asp-action="Create" asp-route-ApartmentId="@item.Id"
-                    class="btn btn-secondary btn-sm">
-                        <i class="bi bi-ticket-detailed"></i>
-                        Reserve
-                    </a>
-                    <a asp-controller="Apartment" asp-action="Delete" asp-route-id="@item.Id"
-                    class="btn btn-secondary btn-sm">
-                        <i class="bi bi-trash"></i>
-                        Delete
-                    </a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+

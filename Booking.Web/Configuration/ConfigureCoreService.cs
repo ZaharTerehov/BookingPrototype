@@ -19,7 +19,7 @@ namespace Booking.Web.Configuration
             services.AddScoped(typeof(ICountryViewModelService), typeof(CountryViewModelService));
             services.AddScoped(typeof(ICaptchaValidator), typeof(CaptchaValidatorService));
             services.AddScoped(typeof(IAccountServiceViewModelService), typeof(AccountService));
-            services.AddScoped(typeof(IReservationViewModerService), typeof(ReservationViewModelService));
+            services.AddScoped(typeof(IReservationViewModelService), typeof(ReservationViewModelService));
             return services;
         }
 

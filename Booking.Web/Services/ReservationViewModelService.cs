@@ -7,7 +7,7 @@ using Booking.Web.Models;
 
 namespace Booking.Web.Services
 {
-    public class ReservationViewModelService : IReservationViewModerService
+    public class ReservationViewModelService : IReservationViewModelService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -24,9 +24,9 @@ namespace Booking.Web.Services
             await _unitOfWork.Reservations.CreateAsync(dto);
         }
 
-        public async Task<ReservationCreateViewModel> GetReservationByIdAsync(int id)
+        public async Task<ReservationViewModel> GetReservationByIdAsync(int id)
         {
-            var existingReservation = await _unitOfWork.Reservations.GetByIdAsync(id);
+            var existingReservation = await _unitOfWork.Reservations.GetByIdAsync(id, x => x.Apartment);
             if (existingReservation == null)
             {
                 var exception = new Exception($"Reservation with id = {id} was not found");
@@ -34,19 +34,27 @@ namespace Booking.Web.Services
                 throw exception;
             }
 
-            var dto = _mapper.Map<ReservationCreateViewModel>(existingReservation);
+            var dto = _mapper.Map<ReservationViewModel>(existingReservation);
             return dto;
         }
 
-        //var options = new QueryEntityOptions<ApartmentType>().AddSortOption(false, x => x.Name);
-        //var entities = await _unitOfWork.ApartmentTypes.GetAllAsync(options);
-
-        public async Task<List<ReservationCreateViewModel>> GetAllReservationsAsync()
+        public async Task<IList<ReservationViewModel>> GetAllReservationsAsync()
         {
-            var options = new QueryEntityOptions<Reservation>().AddSortOption(false, x => x.Name);
-            var reservationsList = await _unitOfWork.Reservations.GetAllAsync(options);
-            var allReservationsList = _mapper.Map<List<ReservationCreateViewModel>>(reservationsList);
-            return allReservationsList;
+            var options = new QueryViewModelOption<Reservation, ReservationViewModel>()
+                .AddSortOption(false, x => x.Name)
+                .AddSelectOption(x => new ReservationViewModel
+                {
+                    Id = x.Id,
+                    ApartmentName = x.Apartment.Name,
+                    Name = x.Name,
+                    Email = x.Email,
+                    Price = x.Price,
+                    ArrivalDate = x.ArrivalDate,
+                    DepartureDate = x.DepartureDate
+                });
+            var reservationsList = await _unitOfWork.Reservations.GetAllDtoAsync(options);
+            
+            return reservationsList;
         }
 
         public async Task DeleteApartmentAsync(int id)
@@ -60,6 +68,19 @@ namespace Booking.Web.Services
             }
 
             await _unitOfWork.Reservations.DeleteAsync(existingReservation);
-        } 
+        }
+
+        public async Task<ReservationViewModel> GetNewReservationViewModelAsync(int apartmentId)
+        {
+            var chosenApartment = await _unitOfWork.Apartments.GetByIdAsync(apartmentId);
+            var newReservation = _mapper.Map<ReservationViewModel>(chosenApartment);
+            //var newReservation = new ReservationViewModel() 
+            //    {   ApartmentId = apartmentId, 
+            //        ApartmentName = chosenApartment.Name, 
+            //        ApartmentDescription = chosenApartment.Description,
+            //        ApartmentPicture = chosenApartment.Picture,
+            //        Price = chosenApartment.Price };
+            return newReservation;
+        }
     }
 }
