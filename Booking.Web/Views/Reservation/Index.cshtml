@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Booking.Web.Models.ReservationCreateViewModel>
+﻿@model IEnumerable<Booking.Web.Models.ReservationViewModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -18,6 +18,12 @@
                 Client's email
             </th>
             <th>
+                Apartment
+            </th>
+            <th>
+                Price
+            </th>
+            <th>
                 Check in
             </th>
             <th>
@@ -27,31 +33,34 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CheckInInfo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CheckOutInfo)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @*@Html.ActionLink("Delete", "Delete", new {  id=item.Id })*@
-                <a asp-controller="Reservation" asp-action="Delete" asp-route-id="@item.Id"
-                class="btn btn-secondary btn-sm">
-                    <i class="bi bi-trash"></i>
-                    Delete
-                </a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ApartmentName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CheckInInfo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CheckOutInfo)
+                </td>
+                <td>
+                    <a asp-controller="Reservation" asp-action="Delete" asp-route-id="@item.Id"
+                    class="btn btn-secondary btn-sm">
+                        <i class="bi bi-trash"></i>
+                        Delete
+                    </a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
