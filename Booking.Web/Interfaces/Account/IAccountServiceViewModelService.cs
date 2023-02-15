@@ -16,5 +16,7 @@ namespace Booking.Web.Interfaces
         Task<string> UpdateUserValidity(string novalidToken, string refreshToken);
 
         Task<bool> CheckValidUser(string accessToken);
+
+        Task<BaseResponse<JwtTokenResult>> ConfirmEmail(int userId, string token);
     }
 }

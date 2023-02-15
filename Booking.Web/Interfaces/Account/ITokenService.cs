@@ -10,6 +10,8 @@ public interface ITokenService
 
     Task<RefreshToken> GenerateRefreshToken();
 
+    Task<string> GenerateConfirmEmailToken(User user);
+
     Task<bool> ValidateAccessToken(string tokenString);
 
     Task<JwtSecurityToken> GetPrincipalFromExpiredToken(string token);
