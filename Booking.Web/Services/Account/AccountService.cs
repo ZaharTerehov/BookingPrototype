@@ -10,6 +10,8 @@ using Booking.Web.Models;
 using Booking.Web.Interfaces.Login;
 using Booking.Web.Services.Account;
 using Booking.Web.Interfaces.Account;
+using Microsoft.AspNetCore.WebUtilities;
+using System.Text;
 
 namespace Booking.Web.Services
 {
@@ -20,16 +22,19 @@ namespace Booking.Web.Services
 
         private readonly ITokenService _jwtProvider;
         private readonly ICaptchaValidator _captchaValidator;
+        private readonly IEmailSender _emailSender;
 
         public string LocationAccessToken { get; init; } = "Booking.Application.Id";
         public string LocationRefreshToken { get; init; } = "Booking.Application.IdR";
 
-        public AccountService(IMapper mapper, IUnitOfWork unitOfWork, ITokenService jwtProvider, ICaptchaValidator captchaValidator)
+        public AccountService(IMapper mapper, IUnitOfWork unitOfWork, ITokenService jwtProvider, 
+            ICaptchaValidator captchaValidator, IEmailSender emailSender)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
             _jwtProvider = jwtProvider;
             _captchaValidator = captchaValidator;
+            _emailSender = emailSender;
         }
 
         public async Task<BaseResponse<JwtTokenResult>> Register(RegisterViewModel model)
@@ -60,20 +65,23 @@ namespace Booking.Web.Services
                     Surname = model.Surname,
                     DateOfBirth = model.DateOfBirth,
                     NumberPhone = model.NumberPhone,
-                    Password = HashPasswordHelper.HashPassword(model.Password),
+                    Password = HashPasswordHelper.HashPassword(model.Password)
                 };
-                
-                var result = await Authenticate(newUser);
-
-                newUser.RefreshToken = result.RefreshToken.Token;
-                newUser.RefreshTokenExpiryInMinutes = result.RefreshToken.Expires;
 
                 await _unitOfWork.Users.CreateAsync(newUser);
 
+                var token = await GenerateEmailConfirmationToken(newUser);
+
+                newUser.EmailVerificationToken = token.token;
+
+                await _unitOfWork.Users.UpdateAsync(newUser);
+
+                await _emailSender.SendEmailAsync(newUser.Email, "Confirm your email", "Click on the link to confirm email - " + token.link);
+
+
                 return new BaseResponse<JwtTokenResult>()
                 {
-                    Data = result,
-                    Description = result.AccessToken,
+                    Description = "Confirm your email",
                     StatusCode = StatusCode.OK
                 };
             }
@@ -87,7 +95,44 @@ namespace Booking.Web.Services
             }
         }
 
-        public async Task<BaseResponse<JwtTokenResult>> СheckСaptchaTokenForValidity(string token)
+        private async Task<(string link, string token)> GenerateEmailConfirmationToken(User user)
+        {
+            var confirmEmailToken = await _jwtProvider.GenerateConfirmEmailToken(user);
+
+            var validEmailToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(confirmEmailToken));
+
+            return ($"https://localhost:7048/Account/ConfirmEmail?userid={user.Id}&token={validEmailToken}", validEmailToken);
+        }
+
+        public async Task<BaseResponse<JwtTokenResult>> ConfirmEmail(int userId, string token)
+        {
+            var existingUser = await _unitOfWork.Users.GetByIdAsync(userId);
+
+            if(existingUser.EmailVerificationToken == token)
+            {
+                existingUser.EmailIsVerified = true;
+
+                var result = await Authenticate(existingUser);
+
+                existingUser.UpdateRefreshToken(result.RefreshToken.Token, result.RefreshToken.Expires);
+
+                await _unitOfWork.Users.UpdateAsync(existingUser);
+
+                return new BaseResponse<JwtTokenResult>()
+                {
+                    Data = result,
+                    StatusCode = StatusCode.OK
+                };
+            }
+
+            return new BaseResponse<JwtTokenResult>()
+            {
+                Description = "User not found",
+                StatusCode = StatusCode.UserNotFound
+            };
+        }
+
+        private async Task<BaseResponse<JwtTokenResult>> СheckСaptchaTokenForValidity(string token)
         {
             if (!await _captchaValidator.IsCaptchaPassedAsync(token))
             {
@@ -133,6 +178,23 @@ namespace Booking.Web.Services
                     return new BaseResponse<JwtTokenResult>()
                     {
                         Description = "Invalid password or login"
+                    };
+                }
+
+                if(!user.EmailIsVerified)
+                {
+                    var token = await GenerateEmailConfirmationToken(user);
+
+                    user.EmailVerificationToken = token.token;
+
+                    await _unitOfWork.Users.UpdateAsync(user);
+
+                    await _emailSender.SendEmailAsync(user.Email, "Confirm your email", "Click on the link to confirm email - " + token.link);
+
+                    return new BaseResponse<JwtTokenResult>()
+                    {
+                        Description = "Confirm your email",
+                        StatusCode = StatusCode.OK
                     };
                 }
 
