@@ -1,11 +1,14 @@
 using AspNetCore.ReCaptcha;
+using Booking.ApplicationCore.Models;
 using Booking.Infrastructure.Data;
 using Booking.Web.Configuration;
 using Booking.Web.Extentions;
 using Booking.Web.Models.Account;
 using Booking.Web.Services.Account;
 using Microsoft.AspNetCore.CookiePolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using System.Net;
 
@@ -28,6 +31,7 @@ builder.Services.AddCoreServices();
 //AutoMapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+//Captcha
 builder.Services.Configure<CaptchaConfig>(builder.Configuration.GetSection("ReCaptcha"));
 builder.Services.AddHttpClient();
 
