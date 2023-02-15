@@ -25,12 +25,12 @@ namespace Booking.Web.Middleware
                 {
                     var validToken = await accountServiceViewModelService.UpdateUserValidity(token, refreshToken);
 
-                    if(validToken != string.Empty)
+                    if(validToken != null)
                     {
-                        context.Response.Cookies.Append(accountServiceViewModelService.LocationAccessToken, validToken.ToString(),
+                        context.Response.Cookies.Append(accountServiceViewModelService.LocationAccessToken, validToken.AccessToken,
                         new CookieOptions
                         {
-                            Expires = DateTime.Now.AddMinutes(10)
+                            Expires = DateTime.Now.AddMinutes(double.Parse(validToken.AccessTokenExpires))
                         });
 
                         context.Request.Headers.Add("Authorization", "Bearer " + validToken.ToString());

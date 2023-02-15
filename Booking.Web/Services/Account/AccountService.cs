@@ -241,7 +241,7 @@ namespace Booking.Web.Services
             return _jwtProvider.ValidateAccessToken(accessToken);
         }
 
-        public async Task<string> UpdateUserValidity(string novalidToken, string refreshToken)
+        public async Task<JwtTokenResult> UpdateUserValidity(string novalidToken, string refreshToken)
         {
             var principal = await _jwtProvider.GetPrincipalFromExpiredToken(novalidToken);
 
@@ -257,11 +257,11 @@ namespace Booking.Web.Services
 
                 var existingUser = await _unitOfWork.Users.GetByIdAsync(user.Id);
 
-                return tokenResult.AccessToken;
+                return tokenResult;
             }
             else
             {
-                return string.Empty;
+                return null;
             }
         }
     }
