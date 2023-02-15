@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Booking.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(BookingContext))]
-    [Migration("20230209110644_FixUser")]
-    partial class FixUser
+    [Migration("20230214084700_AddInUserEmailVerificationToken")]
+    partial class AddInUserEmailVerificationToken
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -167,7 +167,10 @@ namespace Booking.Infrastructure.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("ArrivalDateTime")
+                    b.Property<int>("ApartmentId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ArrivalDate")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DateCreated")
@@ -176,7 +179,7 @@ namespace Booking.Infrastructure.Data.Migrations
                     b.Property<DateTime?>("DateUpdated")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DepartureDateTime")
+                    b.Property<DateTime>("DepartureDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
@@ -215,6 +218,12 @@ namespace Booking.Infrastructure.Data.Migrations
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("EmailIsVerified")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("EmailVerificationToken")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
