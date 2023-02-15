@@ -24,13 +24,6 @@ namespace Booking.Web.Controllers
             if (ModelState.IsValid)
             {
                 var response = await _accountService.Register(model);
-
-                if (response.StatusCode == ApplicationCore.Enum.StatusCode.OK)
-                {
-                    SetAccessTokenAndRefreshToken(response.Data);
-					return RedirectToAction("Index", "City");
-                }
-
                 ModelState.AddModelError("", response.Description);
             }
 
@@ -50,7 +43,6 @@ namespace Booking.Web.Controllers
                 if(response.StatusCode == ApplicationCore.Enum.StatusCode.OK)
                 {
                     await SetAccessTokenAndRefreshToken(response.Data);
-
 					return RedirectToAction("Index", "City");
 				}
 
@@ -86,5 +78,26 @@ namespace Booking.Web.Controllers
 
             return Ok();
 		}
+
+        [HttpGet]
+        public async Task<IActionResult> ConfirmEmail(string userId, string token)
+        {
+            var result = await _accountService.ConfirmEmail(int.Parse(userId), token);
+
+            if (result.StatusCode == ApplicationCore.Enum.StatusCode.OK)
+            {
+                await SetAccessTokenAndRefreshToken(result.Data);
+                return Content("<html><h1><string>Your email has been verified</strong></h1></html>", "text/html");
+            }
+
+            return BadRequest(result);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> CheckUserForConfirmedEmail()
+        {
+            var token = Request.Cookies[_accountService.LocationAccessToken];
+            return Json(await _accountService.CheckValidUser(token));
+        }
     }
 }
