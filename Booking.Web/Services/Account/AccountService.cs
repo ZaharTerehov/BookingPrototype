@@ -108,7 +108,7 @@ namespace Booking.Web.Services
         {
             var existingUser = await _unitOfWork.Users.GetByIdAsync(userId);
 
-            if(existingUser.EmailVerificationToken == token)
+            if(existingUser != null && existingUser.EmailVerificationToken == token)
             {
                 existingUser.EmailIsVerified = true;
 
@@ -248,21 +248,21 @@ namespace Booking.Web.Services
             string email = principal.Claims.First(claim => claim.Type == "sub").Value;
 
             var options = new QueryEntityOptions<User>().SetFilterOption(y => y.Email == email);
-            var users = await _unitOfWork.Users.GetAllAsync(options);
+            var users = await _unitOfWork.Users.GetAllAsync(options); 
+
+            if (users.Count == 0)
+                return null;
             var user = users.First();
 
-            if (user.RefreshToken == refreshToken && user.RefreshTokenExpiryInMinutes > DateTime.Now)
+            if (user.RefreshToken == refreshToken 
+                && user.RefreshTokenExpiryInMinutes > DateTime.Now)
             {
                 var tokenResult = await _jwtProvider.GenerateAccessToken(user);
-
                 var existingUser = await _unitOfWork.Users.GetByIdAsync(user.Id);
-
                 return tokenResult;
             }
             else
-            {
                 return null;
-            }
         }
     }
 }
