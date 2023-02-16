@@ -8,10 +8,16 @@ namespace Booking.Web.MappingProfile
     {
         public ReservationProfiles()
         {
-            CreateMap<Reservation, ReservationCreateViewModel>();
-            CreateMap<ReservationCreateViewModel, Reservation>();
-            CreateMap<Reservation, ReservationViewModel>();
+            CreateMap<Reservation, ReservationViewModel>()
+                .ForMember(dto => dto.ApartmentName, opt => opt.MapFrom(entity => entity.Apartment.Name))
+                .ForMember(dto => dto.ApartmentPicture, opt => opt.MapFrom(entity => entity.Apartment.Picture))
+                .ForMember(dto => dto.ApartmentDescription, opt => opt.MapFrom(entity => entity.Apartment.Description));
             CreateMap<ReservationViewModel, Reservation>();
+            CreateMap<Apartment, ReservationViewModel>()
+                .ForMember(dto => dto.Name, opt => opt.Ignore())
+                .ForMember(dto => dto.ApartmentName, opt => opt.MapFrom(entity => entity.Name))
+                .ForMember(dto => dto.ApartmentPicture, opt => opt.MapFrom(entity => entity.Picture))
+                .ForMember(dto => dto.ApartmentDescription, opt => opt.MapFrom(entity => entity.Description));
         }
     }
 }

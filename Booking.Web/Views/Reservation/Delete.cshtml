@@ -1,45 +1,57 @@
-﻿@model Booking.Web.Models.ReservationCreateViewModel
+﻿@model Booking.Web.Models.ReservationViewModel
 
 @{
     ViewData["Title"] = "Delete";
 }
 
-<h1>Delete</h1>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>ReservationViewModel</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ArrivalDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ArrivalDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DepartureDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DepartureDate)
-        </dd>
-    </dl>
-    
-    <form asp-action="DeleteReservation">
-        <input type="hidden" name="id" value="@Model.Id"></input>
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
-    </form>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h1>Delete reservation</h1>
+            <h3>Are you sure you want to delete this?</h3>
+        </div>
+        <div class="col-12">
+            <div class="input-group mb-3">
+                <span class="input-group-text w-10" id="inputGroup-sizing-name">Name</span>
+                <input asp-for="Name" type="text" disabled class="form-control"
+                    aria-describedby="inputGroup-sizing-name">
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="input-group mb-3">
+                <span class="input-group-text w-10" id="inputGroup-sizing-email">Email</span>
+                <input asp-for="Email" type="text" disabled class="form-control"
+                    aria-describedby="inputGroup-sizing-email">
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="input-group mb-3">
+                <span class="input-group-text w-10" id="inputGroup-sizing-apartment">Apartment</span>
+                <input asp-for="ApartmentName" type="text" disabled class="form-control"
+                    aria-describedby="inputGroup-sizing-apartment">
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="input-group mb-3">
+                <span class="input-group-text w-10" id="inputGroup-sizing-arrivalDate">ArrivalDate</span>
+                <input asp-for="ArrivalDate" type="text" disabled class="form-control"
+                    aria-describedby="inputGroup-sizing-arrivalDate">
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="input-group mb-3">
+                <span class="input-group-text w-10" id="inputGroup-sizing-departureDate">DepartureDate</span>
+                <input asp-for="DepartureDate" type="text" disabled class="form-control"
+                    aria-describedby="inputGroup-sizing-departureDate">
+            </div>
+        </div>
+        <form asp-action="DeleteReservation">
+            <input type="hidden" name="id" value="@Model.Id"></input>
+            <button type="submit" class="btn btn-primary" style="width: 150px;">Delete</button>
+            <a asp-controller="Reservation" asp-action="Index" class="btn btn-outline-primary" style="width:150px">
+                Cancel
+            </a>
+        </form>
+    </div>
 </div>

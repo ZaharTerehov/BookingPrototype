@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Booking.ApplicationCore.Interfaces;
 using Booking.Web.Interfaces;
 using Booking.Web.Models;
 using Booking.Web.Services;
@@ -8,20 +9,20 @@ namespace Booking.Web.Controllers
 {
     public class ReservationController : Controller
     {
-        private readonly IReservationViewModerService _reservationViewModelService;
-        private readonly IApartmentViewModelService _apartmentViewModelService;
+        private readonly IReservationViewModelService _reservationViewModelService;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<ReservationController> _logger;
         private readonly IMapper _mapper;
 
         public ReservationController(IMapper mapper,
-            IReservationViewModerService reservationViewModelService,
-            ILogger<ReservationController> logger, 
-            IApartmentViewModelService apartmentViewModelService)
+            IReservationViewModelService reservationViewModelService,
+            ILogger<ReservationController> logger,
+            IUnitOfWork unitOfWork)
         {
             _reservationViewModelService = reservationViewModelService;
             _logger = logger;
             _mapper = mapper;
-            _apartmentViewModelService=apartmentViewModelService;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<IActionResult> Index()
@@ -33,9 +34,7 @@ namespace Booking.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Create(int apartmentId)
         {
-            var chosenApartment = await _apartmentViewModelService.GetApartmentViewModelByIdAsync(apartmentId);
-
-            var newReservation = new ReservationCreateViewModel() { ApartmentInfo = chosenApartment };
+            var newReservation = await _reservationViewModelService.GetNewReservationViewModelAsync(apartmentId);
 
             return View(newReservation);
         }
@@ -54,7 +53,6 @@ namespace Booking.Web.Controllers
                 _logger.LogInformation("Model for member {Name} was incorrect",  viewModel.Name);
                 return View(viewModel);
             }
-
         }
 
         [HttpGet]
@@ -86,7 +84,5 @@ namespace Booking.Web.Controllers
             }
             #endregion
         }
-
-
     }
 }
