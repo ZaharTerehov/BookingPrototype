@@ -53,7 +53,7 @@
                     <div class="input-group">
                         <span class="input-group-text w-10" id="arrivalDate">Check in</span>
                         <input type="date" asp-for="ArrivalDateS" class="form-control datepicker"
-                            aria-describedby="arrivalDate" />                        
+                            aria-describedby="arrivalDate" readonly/>                        
                     </div>     
                     <div class="mb-3">
                         <span asp-validation-for="ArrivalDateS" class="text-danger"></span>
@@ -63,7 +63,7 @@
                     <div class="input-group">
                         <span class="input-group-text w-10" id="departureDate">Check out</span>
                         <input type="date" asp-for="DepartureDateS" class="form-control datepicker"
-                               aria-describedby="departureDate" />                        
+                               aria-describedby="departureDate" readonly/>                        
                     </div>
                     <div class="mb-3">
                         <span asp-validation-for="DepartureDateS" class="text-danger"></span>
