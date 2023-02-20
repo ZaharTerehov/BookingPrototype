@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Booking.ApplicationCore.QueryOptions
 {
-    public sealed class QueryViewModelOption<TEntity, TVM> :BaseQueryOptions<TEntity> where TEntity : class where TVM : class 
+    public sealed class QueryViewModelOption<TEntity, TVM> :BaseQueryOptions<TEntity> where TEntity : class //where TVM : class 
     {
         private Expression<Func<TEntity, TVM>> _selectOption;
         public Expression<Func<TEntity, TVM>> SelectOption { get { return _selectOption; } }

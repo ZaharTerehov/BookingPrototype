@@ -12,11 +12,11 @@ using Booking.ApplicationCore.QueryOptions;
 using Booking.Web.Services.QueryOptions;
 using Microsoft.Extensions.Options;
 using Booking.ApplicationCore.Models;
-using Booking.Web.Attributes.Filters;
+using Booking.ApplicationCore.Attributes.Filters;
 
 namespace Booking.Web.Controllers
 {
-    [TypeFilter(typeof(AppExceptionFilter))]
+    //[TypeFilter(typeof(AppExceptionFilter))]
     public class ApartmentController : Controller
     {
         private readonly IApartmentViewModelService _apartmentViewModelService;
@@ -30,7 +30,7 @@ namespace Booking.Web.Controllers
             _logger=logger;
         }
         public async Task<IActionResult> Index(ApartmentQueryOptions options)
-        {            
+        {
             var apartmentViewModels = await _apartmentViewModelService.GetApartmentsAsync(options);
             options.PageOptions.CurrentElementsCount = apartmentViewModels.Count;
             ApartmentIndexViewModel viewModel = new ApartmentIndexViewModel()

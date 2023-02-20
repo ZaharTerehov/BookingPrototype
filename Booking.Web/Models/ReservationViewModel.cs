@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
-using Booking.Web.Attributes.Validation;
+using Booking.ApplicationCore.Attributes.Validation;
 using Booking.ApplicationCore.Models;
 
 namespace Booking.Web.Models
@@ -32,18 +32,10 @@ namespace Booking.Web.Models
 
         [Required]
         [CurrentDate]
-        public DateTime ArrivalDate { get; set; } = DateTime.Now;
+        public string ArrivalDateS { get; set; }
 
         [Required]
-        [DepartureDate("ArrivalDate")]  
-        public DateTime DepartureDate { get; set; } = DateTime.Now.AddDays(1);
-
-        //To display check in/out date without time
-
-        [NotMapped]
-        public string CheckInInfo => ArrivalDate.ToString("dd/MM/yyyy");
-
-        [NotMapped]
-        public string CheckOutInfo => DepartureDate.ToString("dd/MM/yyyy");
+        [DepartureDate("ArrivalDateS")]  
+        public string DepartureDateS { get; set; }     
     }
 }

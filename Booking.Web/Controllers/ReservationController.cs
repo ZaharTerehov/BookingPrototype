@@ -3,6 +3,7 @@ using Booking.ApplicationCore.Interfaces;
 using Booking.Web.Interfaces;
 using Booking.Web.Models;
 using Booking.Web.Services;
+using Booking.Web.Services.QueryOptions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Booking.Web.Controllers
@@ -32,9 +33,9 @@ namespace Booking.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Create(int apartmentId)
+        public async Task<IActionResult> Create(ApartmentReserveOptions reserveOptions)
         {
-            var newReservation = await _reservationViewModelService.GetNewReservationViewModelAsync(apartmentId);
+            var newReservation = await _reservationViewModelService.GetNewReservationViewModelAsync(reserveOptions);
 
             return View(newReservation);
         }

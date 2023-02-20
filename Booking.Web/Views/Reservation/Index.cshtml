@@ -48,10 +48,10 @@
                     @Html.DisplayFor(modelItem => item.Price)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.CheckInInfo)
+                    @Html.DisplayFor(modelItem => item.ArrivalDateS)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.CheckOutInfo)
+                    @Html.DisplayFor(modelItem => item.DepartureDateS)
                 </td>
                 <td>
                     <a asp-controller="Reservation" asp-action="Delete" asp-route-id="@item.Id"

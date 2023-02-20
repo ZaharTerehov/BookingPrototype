@@ -1,22 +1,27 @@
 ﻿using Booking.ApplicationCore.Constants;
 using Booking.ApplicationCore.Enums;
+using Booking.ApplicationCore.Extentions;
 using Booking.ApplicationCore.QueryOptions;
+using Booking.ApplicationCore.Attributes.Validation;
+using Booking.ApplicationCore.Models;
+using Microsoft.VisualBasic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Booking.Web.Services.QueryOptions
 {
-    public class ApartmentQueryOptions
+    public class ApartmentQueryOptions : DateIntervalClass
     {
         public PageOptions PageOptions { get; set; }
         public int? ApartmentTypeFilterApplied { get; set; }
         public int? CityFilterApplied { get; set; }
-        [Range(1,10)]
+        [Range(ApplicationConstants.MinPeopleNumber, ApplicationConstants.MaxPeopleNumber)]
         public int? NeedPeopleNumber { get; set; }
-        public string? SearchText { get; set; }
+        public string? SearchText { get; set; }                
+
         public ApartmentQueryOptions()
-        {
-            NeedPeopleNumber = 1;
-            PageOptions = new PageOptions(0, 1, ApplicationConstants.ApartmentsPageSize);
+        {            
+            NeedPeopleNumber = ApplicationConstants.MinPeopleNumber;
+            PageOptions = new PageOptions(0, ApplicationConstants.FirstPage, ApplicationConstants.ApartmentsPageSize);
         }
     }
 }

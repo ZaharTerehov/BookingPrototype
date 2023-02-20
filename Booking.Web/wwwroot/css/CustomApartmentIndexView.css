@@ -47,22 +47,14 @@ header {
 }
 
 .bk_header__buttons__button {
-    /*width:70px;
-    text-align: center;
-    vertical-align: central;*/
-
     display: inline-block;
-    /*vertical-align: top;*/
     margin: 5px 5px;
     vertical-align: middle;
     padding: 8px 30px;
     border: 3px solid #fff;*/
     font-size: 14px;
     font-weight: 700;
-    /*color: #003580;*/
     color:#fff;
-    /*background-color: #fff;*/
-    /*text-transform: uppercase;*/
     text-decoration: none;
     transition: background .2s linear, color .2s linear;
 }
@@ -95,7 +87,6 @@ header {
     min-width: 50px;
     font-weight: 600;
     text-align: center;
-   /* vertical-align: auto;*/
     display: inline-block;
     color: #fff;
     border: 1px solid #fff;
@@ -158,22 +149,14 @@ header {
     width: 11%;
 }
 
-
-/*
-.btn {
-    display: inline-block;
-    vertical-align: top;
-    padding: 8px 30px;
-    border: 3px solid #fff;
-    font-size: 14px;
-    font-weight: 700;
-    color: #fff;
-    text-transform: uppercase;
-    text-decoration: none;
-    transition: background .2s linear, color .2s linear;
+.people-number-input {
+    max-width:60px;
 }
 
-    .btn:hover {
-        background-color: #fff;
-        color: black;
-    }*/
+.apartment-type-select {
+    max-width: 150px;
+}
+
+.city-select {
+    max-width: 150px;
+}

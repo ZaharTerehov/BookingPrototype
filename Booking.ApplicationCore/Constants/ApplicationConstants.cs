@@ -12,6 +12,8 @@ namespace Booking.ApplicationCore.Constants
         public const PageSize ApartmentsPageSize = PageSize.TwoElements;
         public const int MinPeopleNumber = 1;
         public const int MaxPeopleNumber = 10;
-
+        public const int MinReservedDays = 1;
+        public const int FirstPage = 1;
+        public const int MinDateTimeFormatIndex = 36;
     }
 }

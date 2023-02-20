@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Booking.ApplicationCore.Interfaces;
 using Booking.ApplicationCore.Models;
-using Booking.Web.Attributes.Filters;
+using Booking.ApplicationCore.Attributes.Filters;
 using Booking.Web.Interfaces;
 using Booking.Web.Models;
 using Booking.Web.Services;

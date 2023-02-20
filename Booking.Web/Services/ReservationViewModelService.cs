@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
+using Booking.ApplicationCore.Extentions;
 using Booking.ApplicationCore.Interfaces;
 using Booking.ApplicationCore.Models;
 using Booking.ApplicationCore.QueryOptions;
 using Booking.Web.Interfaces;
 using Booking.Web.Models;
+using Booking.Web.Services.QueryOptions;
 
 namespace Booking.Web.Services
 {
@@ -49,8 +51,8 @@ namespace Booking.Web.Services
                     Name = x.Name,
                     Email = x.Email,
                     Price = x.Price,
-                    ArrivalDate = x.ArrivalDate,
-                    DepartureDate = x.DepartureDate
+                    ArrivalDateS = x.ArrivalDate.ToYYYYMMDDDateFormat(),
+                    DepartureDateS = x.DepartureDate.ToYYYYMMDDDateFormat()
                 });
             var reservationsList = await _unitOfWork.Reservations.GetAllDtoAsync(options);
             
@@ -70,16 +72,12 @@ namespace Booking.Web.Services
             await _unitOfWork.Reservations.DeleteAsync(existingReservation);
         }
 
-        public async Task<ReservationViewModel> GetNewReservationViewModelAsync(int apartmentId)
+        public async Task<ReservationViewModel> GetNewReservationViewModelAsync(ApartmentReserveOptions reserveOptions)
         {
-            var chosenApartment = await _unitOfWork.Apartments.GetByIdAsync(apartmentId);
+            var chosenApartment = await _unitOfWork.Apartments.GetByIdAsync(reserveOptions.ApartmentId);
             var newReservation = _mapper.Map<ReservationViewModel>(chosenApartment);
-            //var newReservation = new ReservationViewModel() 
-            //    {   ApartmentId = apartmentId, 
-            //        ApartmentName = chosenApartment.Name, 
-            //        ApartmentDescription = chosenApartment.Description,
-            //        ApartmentPicture = chosenApartment.Picture,
-            //        Price = chosenApartment.Price };
+            newReservation.ArrivalDateS = reserveOptions.CheckInDateS;
+            newReservation.DepartureDateS = reserveOptions.CheckOutDateS;
             return newReservation;
         }
     }

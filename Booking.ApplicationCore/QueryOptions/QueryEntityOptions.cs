@@ -9,9 +9,17 @@ using System.Threading.Tasks;
 namespace Booking.ApplicationCore.QueryOptions
 {
     public sealed class QueryEntityOptions<TEntity> :BaseQueryOptions<TEntity> where TEntity : class
-    {
+    {        
         private IList<Expression<Func<TEntity, object>>> _includeOptions;
+
+        public string SqlQuery { get; private set; }
         public IList<Expression<Func<TEntity, object>>> IncludeOptions { get { return _includeOptions; } }
+
+        public QueryEntityOptions<TEntity> AddSqlQuery(string sqlQuery)
+        {
+            SqlQuery = sqlQuery;           
+            return this;
+        }
 
         public QueryEntityOptions<TEntity> AddSortOption(bool descending, Expression<Func<TEntity, object>> sortOption)
         {

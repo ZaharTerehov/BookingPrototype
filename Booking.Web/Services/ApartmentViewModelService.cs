@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Booking.ApplicationCore.Enums;
+using Booking.ApplicationCore.Extentions;
 using Booking.ApplicationCore.Interfaces;
 using Booking.ApplicationCore.Models;
 using Booking.ApplicationCore.QueryOptions;
@@ -15,13 +16,18 @@ namespace Booking.Web.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        private readonly IApartmentTypeViewModelService _ApartmentTypeViewModelService;
+        private readonly IApartmentTypeViewModelService _apartmentTypeViewModelService;
+        private readonly IReservationViewModelService _reservationViewModelService;
 
-        public ApartmentViewModelService(IUnitOfWork unitOfWork, IMapper mapper, IApartmentTypeViewModelService ApartmentTypeViewModelService)
+        public ApartmentViewModelService(IUnitOfWork unitOfWork, 
+                                         IMapper mapper, 
+                                         IApartmentTypeViewModelService apartmentTypeViewModelService,
+                                         IReservationViewModelService reservationViewModelService)
         {
             _unitOfWork= unitOfWork;
             _mapper= mapper;
-            _ApartmentTypeViewModelService = ApartmentTypeViewModelService;
+            _apartmentTypeViewModelService = apartmentTypeViewModelService;
+            _reservationViewModelService = reservationViewModelService;
         }
 
         public async Task CreateApartmentAsync(ApartmentViewModel viewModel)
@@ -41,32 +47,39 @@ namespace Booking.Web.Services
             }
 
             await _unitOfWork.Apartments.DeleteAsync(existingApartment);
-        }
+        }     
 
         public async Task<IList<ApartmentViewModel>> GetApartmentsAsync(ApartmentQueryOptions apartmentOptions)
         {
-            var queryOptions = new QueryViewModelOption<Apartment, ApartmentViewModel>().AddSortOption(false, y => y.Price)
+            string checkIn = apartmentOptions.ArrivalDate.ToYYYYMMDDDateFormat();
+            string checkOut = apartmentOptions.DepartureDate.ToYYYYMMDDDateFormat();
+            string query = "SELECT * FROM Apartments a" +
+                            " WHERE a.Id NOT IN " +
+                            "                   (SELECT DISTINCT ApartmentId FROM Reservations r" +
+                                                    $" WHERE  (('{checkIn}' >= r.ArrivalDate AND '{checkIn}' < r.DepartureDate) OR" +
+                                                    $" ('{checkOut}' > r.ArrivalDate AND '{checkOut}' <= r.DepartureDate) OR" +
+                                                    $" ('{checkIn}' <= r.ArrivalDate AND '{checkOut}' >= r.DepartureDate)))";
+
+
+            var queryOptions = new QueryEntityOptions<Apartment>()
+                .AddSqlQuery(query)
+                .AddIncludeOption(x => x.City)
+                .AddSortOption(false, y => y.Price)
                 .SetFilterOption(x => 
-                (!apartmentOptions.ApartmentTypeFilterApplied.HasValue || x.ApartmentTypeId == apartmentOptions.ApartmentTypeFilterApplied) &&
-                (!apartmentOptions.CityFilterApplied.HasValue || x.CityId == apartmentOptions.CityFilterApplied) &&
-                 x.PeopleNumber >= apartmentOptions.NeedPeopleNumber &&
-                 (string.IsNullOrEmpty(apartmentOptions.SearchText) ||
-                 (x.Name.Contains(apartmentOptions.SearchText) || x.City.Name.Contains(apartmentOptions.SearchText)
-                                                                || x.Description.Contains(apartmentOptions.SearchText))))                
-                .AddSelectOption(x => new ApartmentViewModel 
-                {
-                    Id = x.Id,
-                    Name = x.Name,
-                    Description = $"{x.Address}. Total people number {x.PeopleNumber}. {x.Description}",
-                    Price= x.Price,
-                    Picture= x.Picture,
-                    CityName = x.City.Name
-                })
+                    (!apartmentOptions.ApartmentTypeFilterApplied.HasValue || x.ApartmentTypeId == apartmentOptions.ApartmentTypeFilterApplied) &&
+                    (!apartmentOptions.CityFilterApplied.HasValue || x.CityId == apartmentOptions.CityFilterApplied) &&                
+                     x.PeopleNumber >= apartmentOptions.NeedPeopleNumber &&
+                     (
+                        string.IsNullOrEmpty(apartmentOptions.SearchText) ||        (
+                                 x.Name.Contains(apartmentOptions.SearchText) ||
+                                 x.City.Name.Contains(apartmentOptions.SearchText) ||
+                                 x.Description.Contains(apartmentOptions.SearchText))
+                      )
+                      )                
                 .SetCurentPageAndPageSize(apartmentOptions.PageOptions);
-            var entities = await _unitOfWork.Apartments.GetAllDtoAsync(queryOptions);
-            //var apartment = _mapper.Map<List<ApartmentViewModel>>(entities);
-            //return apartment;
-            return entities;
+            var entities = await _unitOfWork.Apartments.GetAllAsync(queryOptions);
+            var viewModelEntities = _mapper.Map<List<ApartmentViewModel>>(entities);
+            return viewModelEntities;
         }        
 
         public async Task<ApartmentViewModel> GetApartmentViewModelByIdAsync(int id)
