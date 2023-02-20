@@ -254,11 +254,9 @@ namespace Booking.Web.Services
                 return null;
             var user = users.First();
 
-            if (user.RefreshToken == refreshToken 
-                && user.RefreshTokenExpiryInMinutes > DateTime.Now)
+            if (user.RefreshToken == refreshToken && user.RefreshTokenExpiryInMinutes > DateTime.Now)
             {
                 var tokenResult = await _jwtProvider.GenerateAccessToken(user);
-                var existingUser = await _unitOfWork.Users.GetByIdAsync(user.Id);
                 return tokenResult;
             }
             else

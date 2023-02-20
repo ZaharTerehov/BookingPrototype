@@ -61,7 +61,6 @@ namespace Booking.Web.Controllers
             return Redirect(Request.Headers["Referer"].ToString());
         }
 
-
         private async Task<IActionResult> SetAccessTokenAndRefreshToken(JwtTokenResult jwtToken)
         {
 			HttpContext.Response.Cookies.Append(_accountService.LocationAccessToken, jwtToken.AccessToken,
