@@ -20,9 +20,13 @@ namespace Booking.ApplicationCore.Models
 
         public Role Role { get; set; }
 
-        public string RefreshToken { get; set; }
+        public string? RefreshToken { get; set; }
 
         public DateTime RefreshTokenExpiryInMinutes { get; set; }
+
+        public bool EmailIsVerified { get; set; } = false;
+
+        public string EmailVerificationToken { get; set; } = string.Empty;
 
         public void UpdateDetails(UserDetails details)
         {

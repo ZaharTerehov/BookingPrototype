@@ -23,17 +23,20 @@ namespace Booking.Web.Middleware
                     context.Request.Headers.Add("Authorization", "Bearer " + token);
                 else
                 {
-                    var validToken = await accountServiceViewModelService.UpdateUserValidity(token, refreshToken);
-
-                    if(validToken != string.Empty)
+                    if (!string.IsNullOrEmpty(refreshToken))
                     {
-                        context.Response.Cookies.Append(accountServiceViewModelService.LocationAccessToken, validToken.ToString(),
-                        new CookieOptions
-                        {
-                            Expires = DateTime.Now.AddMinutes(10)
-                        });
+                        var validToken = await accountServiceViewModelService.UpdateUserValidity(token, refreshToken);
 
-                        context.Request.Headers.Add("Authorization", "Bearer " + validToken.ToString());
+                        if (validToken != null)
+                        {
+                            context.Response.Cookies.Append(accountServiceViewModelService.LocationAccessToken, validToken.AccessToken,
+                            new CookieOptions
+                            {
+                                Expires = validToken.AccessTokenExpires
+                            });
+                            
+                            context.Request.Headers.Add("Authorization", "Bearer " + validToken.AccessToken.ToString());
+                        }
                     }
                 }
 

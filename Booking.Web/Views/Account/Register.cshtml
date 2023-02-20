@@ -35,7 +35,7 @@
                             <form asp-controller="Account" asp-action="Register">
                                 <div asp-validation-summary="All" style="font-size:23px; font-family:Impact" class="text-danger text-center"></div>
                                 <div class="form-group">
-                                    <input asp-for="Email" class="form-control textbox-dg font-weight-bold text-center" placeholder="Email" type="email">
+                                    <input asp-for="Email" id="email" class="form-control textbox-dg font-weight-bold text-center" placeholder="Email" type="email">
                                     <span asp-validation-for="Email"/>
                                 </div>
                                 <div class="form-group">
@@ -78,3 +78,24 @@
     </div>
 </div>
 
+@section Scripts {
+    <script>
+        function fetchdata() {
+            $.ajax({
+                type: "POST",
+                url: "/Account/CheckUserForConfirmedEmail",
+                data: '{}',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    if (result == true)
+                        window.location = "https://localhost:7048/City/Index";
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            setInterval(fetchdata, 2000);
+        });
+    </script>
+}

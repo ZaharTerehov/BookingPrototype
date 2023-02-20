@@ -13,8 +13,10 @@ namespace Booking.Web.Interfaces
 
 		Task<BaseResponse<JwtTokenResult>> Login(LoginViewModel model);
 
-        Task<string> UpdateUserValidity(string novalidToken, string refreshToken);
+        Task<JwtTokenResult> UpdateUserValidity(string novalidToken, string refreshToken);
 
         Task<bool> CheckValidUser(string accessToken);
+
+        Task<BaseResponse<JwtTokenResult>> ConfirmEmail(int userId, string token);
     }
 }
