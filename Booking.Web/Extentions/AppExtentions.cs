@@ -1,4 +1,5 @@
-﻿using Booking.ApplicationCore.Enum;
+﻿using Booking.ApplicationCore.Constants;
+using Booking.ApplicationCore.Enum;
 using Booking.Web.Interfaces;
 using Booking.Web.Interfaces.Login;
 using Booking.Web.Middleware;
@@ -79,6 +80,6 @@ namespace Booking.Web.Extentions
             return services;
         }
 
-        public static IApplicationBuilder UseSecureJwt(this IApplicationBuilder builder) => builder.UseMiddleware<SecureJwtMiddleware>();
+        public static IApplicationBuilder UseSecureJwt(this IApplicationBuilder builder) => builder.UseMiddleware<SecureJwtMiddleware>();        
     }
 }

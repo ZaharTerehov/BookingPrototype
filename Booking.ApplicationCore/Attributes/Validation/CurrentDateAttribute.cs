@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Runtime.CompilerServices;
 
-namespace Booking.Web.Attributes.Validation
+namespace Booking.ApplicationCore.Attributes.Validation
 {
     [AttributeUsage(AttributeTargets.Property)]
     public class CurrentDateAttribute : ValidationAttribute

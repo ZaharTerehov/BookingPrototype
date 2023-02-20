@@ -32,6 +32,7 @@ namespace Booking.ApplicationCore.Models
         public ApartmentType? ApartmentType { get; set; }
         public int? ApartmentTypeId { get; set; }
 
+        public IList<Reservation> Reservations { get; set; }
         public void UpdateDetails(ApartmentDetails details)
         {
             Name = details.Name;
@@ -42,6 +43,7 @@ namespace Booking.ApplicationCore.Models
             ApartmentTypeId = details.ApartmentTypeId;
             Address = details.Address;
             PeopleNumber = details.PeopleNumber;
+            Reservations = new List<Reservation>();
         }
 
         public readonly record struct ApartmentDetails

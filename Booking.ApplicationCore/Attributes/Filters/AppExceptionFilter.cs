@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Booking.Web.Attributes.Filters
+namespace Booking.ApplicationCore.Attributes.Filters
 {
     public sealed class AppExceptionFilter : IExceptionFilter
     {

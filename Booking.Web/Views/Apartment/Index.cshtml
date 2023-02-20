@@ -19,19 +19,23 @@
         <div class="col-12">
             <form method="get">
                 <div class="input-group mb-3 mt-3">
-                    <input asp-for="@Model.Options.SearchText" type="text" class="form-control" placeholder="Enter text to search" aria-label="Enter text to search">
+                    <input asp-for="@Model.Options.SearchText" type="text" class="form-control" placeholder="Text search" aria-label="Enter text to search">
                     <div class="input-group-append">
                         <button class="btn btn-secondary" type="submit">Search</button>
                     </div>
                     <label class="input-group-text" for="selecApartmentType">Type</label>
-                    <select class="form-select" id="selecApartmentType" asp-for="@Model.Options.ApartmentTypeFilterApplied"
+                    <select class="form-select apartment-type-select" id="selecApartmentType" asp-for="@Model.Options.ApartmentTypeFilterApplied"
                             asp-items="@Model.ApartmentTypes" onchange="this.form.submit()"></select>
                     <label class="input-group-text" for="selectCity">City</label>
-                    <select class="form-select" id="selectCity" asp-for="@Model.Options.CityFilterApplied"
+                    <select class="form-select city-select" id="selectCity" asp-for="@Model.Options.CityFilterApplied"
                             asp-items="@Model.Cities" onchange="this.form.submit()"></select>
                     <span class="input-group-text">People Number</span>
-                    <input asp-for="@Model.Options.NeedPeopleNumber" type="number" min="1" max="10" class="form-control"
-                           aria-describedby="inputGroup-sizing-name" onchange="this.form.submit()">                    
+                    <input asp-for="@Model.Options.NeedPeopleNumber" type="number" min="1" max="10" class="form-control people-number-input"
+                           aria-describedby="inputGroup-sizing-name" onchange="this.form.submit()">
+                    <span class="input-group-text">Check in</span>
+                    <input type="date" min="@Model.Options.MinArrivalDate" asp-for="@Model.Options.ArrivalDateS" class="form-control datepicker" onchange="this.form.submit()" />                    
+                    <span class="input-group-text">Check out</span>                    
+                    <input type="date" min="@Model.Options.MinDepartureDate" asp-for="@Model.Options.DepartureDateS" value="@Model.Options.DepartureDateS" class="form-control datepicker" onchange="this.form.submit()" />                    
                 </div>
             </form>
         </div>
@@ -44,6 +48,8 @@
                 <input type="hidden" name="cityFilterApplied" value="@Model.Options.CityFilterApplied" />
                 <input type="hidden" name="needPeopleNumber" value="@Model.Options.NeedPeopleNumber" />
                 <input type="hidden" name="searchText" value="@Model.Options.SearchText" />
+                <input type="hidden" name="ArrivalDateS" value="@Model.Options.ArrivalDateS" />
+                <input type="hidden" name="DepartureDateS" value="@Model.Options.DepartureDateS" />
                 @if (Model.Options.PageOptions.HasPreviousPage)
                 {
                     <input class="btn btn-dark btn-sm" type="submit" value="Prev" />
@@ -53,20 +59,6 @@
                     <input class="btn btn-dark btn-sm" disabled type="submit" value="Prev" />
                 }
             </form>
-            @*@if (Model.Options.PageOptions.HasPreviousPage)
-            {
-                <a asp-action="Index" asp-route-apartmentTypeFilterApplied="@Model.Options.ApartmentTypeFilterApplied"
-                    asp-route-pageOptions.CurrentPage="@(Model.Options.PageOptions.CurrentPage - 1)"
-               class="btn btn-outline-dark btn-sm">
-                    <i class="bi bi-skip-backward-fill"></i>Prev
-                </a>
-            }
-            else
-            {
-                <a class="btn btn-outline-dark btn-sm" style="pointer-events: none">
-                    <i class="bi bi-skip-backward-fill"></i>Prev
-                </a>
-            }*@
         </div>
         <div class="col-6 text-end">
             <form method="get">
@@ -75,6 +67,8 @@
                 <input type="hidden" name="cityFilterApplied" value="@Model.Options.CityFilterApplied" />
                 <input type="hidden" name="needPeopleNumber" value="@Model.Options.NeedPeopleNumber" />
                 <input type="hidden" name="searchText" value="@Model.Options.SearchText" />
+                <input type="hidden" name="ArrivalDateS" value="@Model.Options.ArrivalDateS" />
+                <input type="hidden" name="DepartureDateS" value="@Model.Options.DepartureDateS" />
                 @if (Model.Options.PageOptions.HasNextPage)
                 {
                     <input class="btn btn-dark btn-sm" type="submit" value="Next" />
@@ -84,19 +78,6 @@
                     <input class="btn btn-dark btn-sm" disabled type="submit" value="Next" />
                 }
             </form>
-    @*        @if (Model.Options.PageOptions.HasNextPage)
-            {
-                <a asp-action="Index" asp-route-apartmentTypeFilterApplied="@Model.Options.ApartmentTypeFilterApplied"
-                    asp-route-pageOptions.CurrentPage="@(Model.Options.PageOptions.CurrentPage + 1)"
-                    class="btn btn-outline-dark btn-sm">Next<i class="bi bi-skip-forward-fill"></i>
-                </a>
-            }
-            else
-            {
-                <a class="btn btn-outline-dark btn-sm" style="pointer-events: none">
-                    Next<i class="bi bi-skip-forward-fill"></i>
-                </a>
-            }*@
         </div>
     </div>
     <div class="row">
@@ -130,7 +111,6 @@
                         <td>
                             <img style="border-radius:10px; border:1px solid #ddd" width="150px"
                             src="@Html.DisplayFor(modelItem => item.Picture)" />
-                            @*@Html.DisplayFor(modelItem => item.Picture)*@
                         </td>
                         <td>
                             <a asp-controller="Apartment" asp-action="Edit" asp-route-id="@item.Id"
@@ -138,8 +118,8 @@
                                 <i class="bi bi-pencil-square"></i>
                                 Edit
                             </a>
-                            <a asp-controller="Reservation" asp-action="Create" asp-route-ApartmentId="@item.Id"
-                            class="btn btn-secondary btn-sm">
+                            <a asp-controller="Reservation" asp-action="Create" asp-route-reserveOptions.apartmentId="@item.Id"
+                           asp-route-reserveOptions.checkInDateS="@Model.Options.ArrivalDateS" asp-route-reserveOptions.checkOutDateS="@Model.Options.DepartureDateS" class="btn btn-secondary btn-sm">
                                 <i class="bi bi-ticket-detailed"></i>
                                 Reserve
                             </a>
