@@ -1,4 +1,5 @@
-﻿@model Booking.Web.Models.ApartmentIndexViewModel
+﻿@using Booking.ApplicationCore.Extentions
+@model Booking.Web.Models.ApartmentIndexViewModel
 
 @{
     ViewData["Title"] = "Index";
@@ -8,7 +9,7 @@
     <div class="row">
         <div class="col-6">
             <h2 class="text_action">Available apartments</h2>
-        </div>        
+        </div>
         <div class="col-6 text-end">
             <a class="btn btn-outline-primary" asp-action="Create">
                 <i class="bi bi-file-earmark-plus"></i> &nbsp; Create new
@@ -19,32 +20,40 @@
         <div class="col-12">
             <form method="get">
                 <div class="input-group mb-3 mt-3">
-                    <input asp-for="@Model.Options.SearchText" type="text" class="form-control" placeholder="Text search" aria-label="Enter text to search">
+                    <input asp-for="@Model.Options!.SearchText" type="text" class="form-control"
+                        placeholder="Text search" aria-label="Enter text to search">
                     <div class="input-group-append">
                         <button class="btn btn-secondary" type="submit">Search</button>
                     </div>
                     <label class="input-group-text" for="selecApartmentType">Type</label>
-                    <select class="form-select apartment-type-select" id="selecApartmentType" asp-for="@Model.Options.ApartmentTypeFilterApplied"
-                            asp-items="@Model.ApartmentTypes" onchange="this.form.submit()"></select>
+                    <select class="form-select apartment-type-select" id="selecApartmentType"
+                        asp-for="@Model.Options!.ApartmentTypeFilterApplied" asp-items="@Model.ApartmentTypes"
+                        onchange="this.form.submit()"></select>
                     <label class="input-group-text" for="selectCity">City</label>
-                    <select class="form-select city-select" id="selectCity" asp-for="@Model.Options.CityFilterApplied"
-                            asp-items="@Model.Cities" onchange="this.form.submit()"></select>
+                    <select class="form-select city-select" id="selectCity" asp-for="@Model.Options!.CityFilterApplied"
+                        asp-items="@Model.Cities" onchange="this.form.submit()"></select>
                     <span class="input-group-text">People Number</span>
-                    <input asp-for="@Model.Options.NeedPeopleNumber" type="number" min="1" max="10" class="form-control people-number-input"
-                           aria-describedby="inputGroup-sizing-name" onchange="this.form.submit()">
+                    <input asp-for="@Model.Options!.NeedPeopleNumber" type="number" min="1" max="10"
+                        class="form-control people-number-input" aria-describedby="inputGroup-sizing-name"
+                        onchange="this.form.submit()">
                     <span class="input-group-text">Check in</span>
-                    <input type="date" min="@Model.Options.MinArrivalDate" asp-for="@Model.Options.ArrivalDateS" class="form-control datepicker" onchange="this.form.submit()" />                    
-                    <span class="input-group-text">Check out</span>                    
-                    <input type="date" min="@Model.Options.MinDepartureDate" asp-for="@Model.Options.DepartureDateS" value="@Model.Options.DepartureDateS" class="form-control datepicker" onchange="this.form.submit()" />                    
+                    <input type="date" min="@Model.Options!.MinArrivalDate" asp-for="@Model.Options.ArrivalDateS"
+                        class="form-control datepicker" onchange="this.form.submit()" />
+                    <span class="input-group-text">Check out</span>
+                    <input type="date" min="@Model.Options.MinDepartureDate" asp-for="@Model.Options.DepartureDateS"
+                        value="@Model.Options.DepartureDateS" class="form-control datepicker"
+                        onchange="this.form.submit()" />
                 </div>
             </form>
         </div>
     </div>
-    <div class="row">        
-        <div class ="col-6">
+    <div class="row mb-3">
+        <div class="col-6">
             <form method="get">
-                <input type="hidden" name="pageOptions.CurrentPage" value="@(Model.Options.PageOptions.CurrentPage - 1)" />
-                <input type="hidden" name="apartmentTypeFilterApplied" value="@Model.Options.ApartmentTypeFilterApplied" />
+                <input type="hidden" name="pageOptions.CurrentPage"
+                    value="@(Model.Options.PageOptions.CurrentPage - 1)" />
+                <input type="hidden" name="apartmentTypeFilterApplied"
+                    value="@Model.Options.ApartmentTypeFilterApplied" />
                 <input type="hidden" name="cityFilterApplied" value="@Model.Options.CityFilterApplied" />
                 <input type="hidden" name="needPeopleNumber" value="@Model.Options.NeedPeopleNumber" />
                 <input type="hidden" name="searchText" value="@Model.Options.SearchText" />
@@ -62,8 +71,10 @@
         </div>
         <div class="col-6 text-end">
             <form method="get">
-                <input type="hidden" name="pageOptions.CurrentPage" value="@(Model.Options.PageOptions.CurrentPage + 1)" />
-                <input type="hidden" name="apartmentTypeFilterApplied" value="@Model.Options.ApartmentTypeFilterApplied" />
+                <input type="hidden" name="pageOptions.CurrentPage"
+                    value="@(Model.Options.PageOptions.CurrentPage + 1)" />
+                <input type="hidden" name="apartmentTypeFilterApplied"
+                    value="@Model.Options.ApartmentTypeFilterApplied" />
                 <input type="hidden" name="cityFilterApplied" value="@Model.Options.CityFilterApplied" />
                 <input type="hidden" name="needPeopleNumber" value="@Model.Options.NeedPeopleNumber" />
                 <input type="hidden" name="searchText" value="@Model.Options.SearchText" />
@@ -81,59 +92,39 @@
         </div>
     </div>
     <div class="row">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>City</th>
-                    <th>Description</th>
-                    <th>Price</th>
-                    <th>Picture</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model.Apartments)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Name)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.CityName)
-                        </td>
-                        <td style="width:500px">
-                            @Html.DisplayFor(modelItem => item.Description)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Price)
-                        </td>
-                        <td>
-                            <img style="border-radius:10px; border:1px solid #ddd" width="150px"
-                            src="@Html.DisplayFor(modelItem => item.Picture)" />
-                        </td>
-                        <td>
-                            <a asp-controller="Apartment" asp-action="Edit" asp-route-id="@item.Id"
-                            class="btn btn-secondary btn-sm">
+        @foreach (var item in Model.Apartments!)
+        {
+            <div class="col-3">
+                <div class="card" style="width: 300px; height: 365px">
+                    <img src="@item.Picture" class="card-img-top" alt="photo" style="height: 150px">
+                    <div class="card-body">
+                        <h6 class="card-title">@item.Name!.CardTitle() - &#36;@item.Price</h6>
+                        <p class="card-text">@item.Description!.CardText()</p>                        
+                    </div>
+                    <div class="card-footer d-flex justify-content-evenly">
+                        <a asp-controller="Apartment" asp-action="Edit" asp-route-id="@item.Id"
+                           class="btn btn-secondary btn-sm">
                                 <i class="bi bi-pencil-square"></i>
                                 Edit
-                            </a>
-                            <a asp-controller="Reservation" asp-action="Create" asp-route-reserveOptions.apartmentId="@item.Id"
-                           asp-route-reserveOptions.checkInDateS="@Model.Options.ArrivalDateS" asp-route-reserveOptions.checkOutDateS="@Model.Options.DepartureDateS" class="btn btn-secondary btn-sm">
+                        </a>
+                        <a asp-controller="Reservation" asp-action="Create"
+                           asp-route-reserveOptions.apartmentId="@item.Id"
+                           asp-route-reserveOptions.checkInDateS="@Model.Options.ArrivalDateS"
+                           asp-route-reserveOptions.checkOutDateS="@Model.Options.DepartureDateS"
+                           class="btn btn-secondary btn-sm">
                                 <i class="bi bi-ticket-detailed"></i>
-                                Reserve
-                            </a>
-                            <a asp-controller="Apartment" asp-action="Delete" asp-route-id="@item.Id"
-                            class="btn btn-secondary btn-sm">
+                                Details
+                        </a>
+                        <a asp-controller="Apartment" asp-action="Delete" asp-route-id="@item.Id"
+                           class="btn btn-secondary btn-sm">
                                 <i class="bi bi-trash"></i>
                                 Delete
-                            </a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>    
 </div>
 
 

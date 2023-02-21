@@ -28,7 +28,7 @@ namespace Booking.Web.Services
 
         public async Task<ReservationViewModel> GetReservationByIdAsync(int id)
         {
-            var existingReservation = await _unitOfWork.Reservations.GetByIdAsync(id, x => x.Apartment);
+            var existingReservation = await _unitOfWork.Reservations.GetByIdAsync(id, x => x.Apartment!);
             if (existingReservation == null)
             {
                 var exception = new Exception($"Reservation with id = {id} was not found");
@@ -43,11 +43,11 @@ namespace Booking.Web.Services
         public async Task<IList<ReservationViewModel>> GetAllReservationsAsync()
         {
             var options = new QueryViewModelOption<Reservation, ReservationViewModel>()
-                .AddSortOption(false, x => x.Name)
+                .AddSortOption(false, x => x.Name!)
                 .AddSelectOption(x => new ReservationViewModel
                 {
                     Id = x.Id,
-                    ApartmentName = x.Apartment.Name,
+                    ApartmentName = x.Apartment!.Name,
                     Name = x.Name,
                     Email = x.Email,
                     Price = x.Price,

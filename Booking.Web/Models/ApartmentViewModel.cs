@@ -10,17 +10,17 @@ namespace Booking.Web.Models
         public int Id { get; set; }
         [Required]
         [StringLength(100)]
-        public string Name { get; set; }
+        public string? Name { get; set; }
         [Required]
-        public string Description { get; set; }
+        public string? Description { get; set; }
         [Required]
         [Range(1, double.MaxValue)]
         public decimal Price { get; set; }
-        [Required]
-        public string Picture { get; set; }
+        //[Required]
+        public string? Picture { get; set; }
         public string? CityName { get; set; }
         [Required]
-        public string Address { get; set; }
+        public string? Address { get; set; }
         [Required]
         [Range(ApplicationConstants.MinPeopleNumber, ApplicationConstants.MaxPeopleNumber)]
         public byte PeopleNumber { get; set; } = ApplicationConstants.MinPeopleNumber;

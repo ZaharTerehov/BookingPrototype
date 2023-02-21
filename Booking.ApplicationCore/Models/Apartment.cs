@@ -12,16 +12,16 @@ namespace Booking.ApplicationCore.Models
     {
         [Required]
         [StringLength(100)]
-        public string Name { get; set; }
+        public string? Name { get; set; }
         [Required]
-        public string Description { get; set; }
+        public string? Description { get; set; }
         [Required]
         [Range(0, double.MaxValue)]
         public decimal Price { get; set; }
         [Required]
-        public string Picture { get; set; }
+        public string? Picture { get; set; }
         [Required]
-        public string Address { get; set; }
+        public string? Address { get; set; }
         [Required]
         [Range(ApplicationConstants.MinPeopleNumber, ApplicationConstants.MaxPeopleNumber)]
         public byte PeopleNumber { get; set; }
@@ -32,7 +32,7 @@ namespace Booking.ApplicationCore.Models
         public ApartmentType? ApartmentType { get; set; }
         public int? ApartmentTypeId { get; set; }
 
-        public IList<Reservation> Reservations { get; set; }
+        public IList<Reservation>? Reservations { get; set; }
         public void UpdateDetails(ApartmentDetails details)
         {
             Name = details.Name;

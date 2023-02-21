@@ -12,12 +12,12 @@ namespace Booking.Web.Models
 
         [Required]
         [StringLength(100)]
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         [Required]
         [StringLength(100)]
         [EmailAddress]
-        public string Email { get; set; }
+        public string? Email { get; set; }
 
         [Required]
         public int ApartmentId { get; set; }
@@ -32,10 +32,10 @@ namespace Booking.Web.Models
 
         [Required]
         [CurrentDate]
-        public string ArrivalDateS { get; set; }
+        public string? ArrivalDateS { get; set; }
 
         [Required]
         [DepartureDate("ArrivalDateS")]  
-        public string DepartureDateS { get; set; }     
+        public string? DepartureDateS { get; set; }     
     }
 }

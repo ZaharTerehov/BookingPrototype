@@ -19,15 +19,17 @@ namespace Booking.Web.Controllers
     //[TypeFilter(typeof(AppExceptionFilter))]
     public class ApartmentController : Controller
     {
-        private readonly IApartmentViewModelService _apartmentViewModelService;
-        private readonly IMapper _mapper;
+        private readonly IApartmentViewModelService _apartmentViewModelService;        
         private readonly ILogger _logger;
-        public ApartmentController(IMapper mapper, IApartmentViewModelService apartmentViewModelService, 
-            ILogger<ApartmentController> logger)
+        private readonly IFileService _fileService;
+        public ApartmentController(
+            IApartmentViewModelService apartmentViewModelService, 
+            ILogger<ApartmentController> logger,
+            IFileService fileService)
         {
-            _apartmentViewModelService= apartmentViewModelService;
-            _mapper=mapper;
-            _logger=logger;
+            _apartmentViewModelService = apartmentViewModelService;
+            _logger = logger;
+            _fileService = fileService;
         }
         public async Task<IActionResult> Index(ApartmentQueryOptions options)
         {
@@ -59,6 +61,13 @@ namespace Booking.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ApartmentViewModel viewModel)
         {
+            var files = HttpContext.Request.Form.Files;
+            if (files != null)
+            {
+                _fileService.UploadFiles(files, ApplicationConstants.ImagesDir);
+                viewModel.Picture = _fileService.Files.First();
+            }
+
             if (ModelState.IsValid)
             {
                 await _apartmentViewModelService.CreateApartmentAsync(viewModel);
@@ -84,11 +93,13 @@ namespace Booking.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(ApartmentViewModel viewModel)
+        public async Task<IActionResult> DeleteApartment(int id)
         {
             if (ModelState.IsValid)
             {
-                await _apartmentViewModelService.DeleteApartmentAsync(viewModel);
+                var _apartment = await _apartmentViewModelService.GetApartmentViewModelByIdAsync(id);
+                _fileService.DeleteFile(_apartment.Picture!);
+                await _apartmentViewModelService.DeleteApartmentAsync(id);
                 return RedirectToAction(nameof(Index));
             }
             else
@@ -114,6 +125,14 @@ namespace Booking.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(ApartmentViewModel viewModel)
         {
+            var files = HttpContext.Request.Form.Files;
+            if (files != null)
+            {
+                _fileService.DeleteFile(viewModel.Picture!);
+                _fileService.UploadFiles(files!, ApplicationConstants.ImagesDir);
+                viewModel.Picture = _fileService.Files.First();
+            }
+
             if (ModelState.IsValid)
             {
                 await _apartmentViewModelService.UpdateApartmentAsync(viewModel);

@@ -12,5 +12,15 @@ namespace Booking.ApplicationCore.Extentions
         private const int needFormatIndex = 0;
         public static string ToYYYYMMDDDateFormat(this DateTime date) =>
                                 date.GetDateTimeFormats()[ApplicationConstants.MinDateTimeFormatIndex].Split(" ")[needFormatIndex];
+
+        public static string CardTitle(this string text)
+        {
+            return text.Substring(0, Math.Min(text.Length, ApplicationConstants.CardTitleSimbolCount)) + "...";
+        }
+
+        public static string CardText(this string text)
+        {
+            return text.Substring(0, Math.Min(text.Length, ApplicationConstants.CardTextSimbolCount))+"...";
+        }
     }
 }
