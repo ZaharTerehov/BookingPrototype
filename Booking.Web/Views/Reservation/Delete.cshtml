@@ -47,7 +47,7 @@
             </div>
         </div>
         <form asp-action="DeleteReservation">
-            <input type="hidden" name="id" value="@Model.Id"></input>
+            <input type="hidden" name="id" value="@Model.Id">
             <button type="submit" class="btn btn-primary" style="width: 150px;">Delete</button>
             <a asp-controller="Reservation" asp-action="Index" class="btn btn-outline-primary" style="width:150px">
                 Cancel

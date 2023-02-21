@@ -10,6 +10,7 @@ namespace Booking.ApplicationCore.Enums
     {
         AllElements = 0,
         TwoElements = 2,
+        FourElements = 4,
         FiveElements = 5,
         TenElements = 10,
         TwentyElements = 20

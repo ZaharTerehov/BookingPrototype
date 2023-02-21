@@ -18,10 +18,10 @@ namespace Booking.ApplicationCore.Models
         public decimal Price { get; set; }
         [Required]
         [StringLength(100)]
-        public string Name { get; set; }
+        public string? Name { get; set; }
         [Required]
         [StringLength(100)]
         [EmailAddress]
-        public string Email { get; set; }      
+        public string? Email { get; set; }      
     }
 }

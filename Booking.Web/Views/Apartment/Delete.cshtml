@@ -53,9 +53,10 @@
             </div>
         </div>
         <div class="col-12">
-            <img style="border-radius:10px; border:1px solid #ddd" width="300px" src="@Model.Picture" />
+            <img style="border-radius:10px; border:1px solid #ddd" width="300px" src="~/@Model.Picture" alt="Photo"/>
         </div>
-        <form asp-action="Delete">
+        <form asp-action="DeleteApartment">
+            <input type="hidden" name="id" value="@Model.Id"/>
             <button type="submit" class="btn btn-primary" style="width: 150px;">Delete</button>
             <a asp-controller="Apartment" asp-action="Index" class="btn btn-outline-primary" style="width:150px">
                 Cancel
