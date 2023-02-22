@@ -1,4 +1,5 @@
 ﻿using Booking.ApplicationCore.Enums;
+using Microsoft.AspNetCore.Html;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,5 +19,6 @@ namespace Booking.ApplicationCore.Constants
         public const int CardTextSimbolCount = 130;
         public const int CardTitleSimbolCount = 20;
         public const string ImagesDir = "Images";
+        public const string Currency = "&#36;";
     }
 }

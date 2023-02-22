@@ -43,11 +43,13 @@ namespace Booking.Web.Services
         public async Task<IList<ReservationViewModel>> GetAllReservationsAsync()
         {
             var options = new QueryViewModelOption<Reservation, ReservationViewModel>()
-                .AddSortOption(false, x => x.Name!)
+                .AddSortOption(true, x => x.ArrivalDate!)
                 .AddSelectOption(x => new ReservationViewModel
                 {
                     Id = x.Id,
                     ApartmentName = x.Apartment!.Name,
+                    ApartmentPicture = x.Apartment.Picture,
+                    ApartmentDescription = x.Apartment.Description,
                     Name = x.Name,
                     Email = x.Email,
                     Price = x.Price,
