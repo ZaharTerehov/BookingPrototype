@@ -12,6 +12,10 @@ using Booking.Web.Services.Account;
 using Booking.Web.Interfaces.Account;
 using Microsoft.AspNetCore.WebUtilities;
 using System.Text;
+using Google.Apis.Auth.AspNetCore3;
+using Google.Apis.PeopleService.v1;
+using Google.Apis.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Booking.Web.Services
 {
@@ -27,7 +31,7 @@ namespace Booking.Web.Services
         public string LocationAccessToken { get; init; } = "Booking.Application.Id";
         public string LocationRefreshToken { get; init; } = "Booking.Application.IdR";
 
-        public AccountService(IMapper mapper, IUnitOfWork unitOfWork, ITokenService jwtProvider, 
+        public AccountService(IMapper mapper, IUnitOfWork unitOfWork, ITokenService jwtProvider,
             ICaptchaValidator captchaValidator, IEmailSender emailSender)
         {
             _mapper = mapper;
@@ -78,7 +82,6 @@ namespace Booking.Web.Services
 
                 await _emailSender.SendEmailAsync(newUser.Email, "Confirm your email", "Click on the link to confirm email - " + token.link);
 
-
                 return new BaseResponse<JwtTokenResult>()
                 {
                     Description = "Confirm your email",
@@ -113,10 +116,6 @@ namespace Booking.Web.Services
                 existingUser.EmailIsVerified = true;
 
                 var result = await Authenticate(existingUser);
-
-                existingUser.UpdateRefreshToken(result.RefreshToken.Token, result.RefreshToken.Expires);
-
-                await _unitOfWork.Users.UpdateAsync(existingUser);
 
                 return new BaseResponse<JwtTokenResult>()
                 {
@@ -200,12 +199,6 @@ namespace Booking.Web.Services
 
                 var result = await Authenticate(user);
 
-                var existingUser = await _unitOfWork.Users.GetByIdAsync(user.Id);
-
-                existingUser.UpdateRefreshToken(result.RefreshToken.Token, result.RefreshToken.Expires);
-
-                await _unitOfWork.Users.UpdateAsync(existingUser);
-
                 return new BaseResponse<JwtTokenResult>()
                 {
                     Data = result,
@@ -227,6 +220,9 @@ namespace Booking.Web.Services
             var tokenResult = await _jwtProvider.GenerateAccessToken(user);
 
             var refreshToken = await _jwtProvider.GenerateRefreshToken();
+
+            user.UpdateRefreshToken(refreshToken.Token, refreshToken.Expires);
+            await _unitOfWork.Users.UpdateAsync(user);
 
             return new JwtTokenResult()
             {
@@ -261,6 +257,54 @@ namespace Booking.Web.Services
             }
             else
                 return null;
+        }
+
+        public async Task<JwtTokenResult> LoginWithGoogle([FromServices] IGoogleAuthProvider auth)
+        {
+            var cred = await auth.GetCredentialAsync();
+            var service = new PeopleServiceService(new BaseClientService.Initializer()
+            {
+                HttpClientInitializer = cred
+            });
+
+            var request = service.People.Get("people/me");
+            request.PersonFields = "birthdays,names,emailAddresses,phoneNumbers,photos";
+            var profile = request.Execute();
+
+            var dateOfBirth = new DateTime();
+            var numberPhone = new decimal();
+
+            if (profile.Birthdays != null)
+            {
+                var date = profile.Birthdays[0].Date;
+                dateOfBirth = new DateTime((int)date.Year, (int)date.Month, (int)date.Day);
+            }
+
+            if (profile.PhoneNumbers != null)
+                numberPhone = decimal.Parse(profile.PhoneNumbers[0].CanonicalForm);
+
+            var email = profile.EmailAddresses[0].Value;
+
+            var newUser = new User()
+            {
+                Role = Role.User,
+                Name = profile.Names[0].GivenName,
+                Email = profile.EmailAddresses[0].Value,
+                Surname = profile.Names[0].FamilyName,
+                DateOfBirth = dateOfBirth,
+                NumberPhone = numberPhone,
+                Password = HashPasswordHelper.HashPassword(profile.EmailAddresses[0].Value),
+                EmailIsVerified = true
+            };
+
+            var optionsEmail = new QueryEntityOptions<User>().SetFilterOption(y => y.Email == newUser.Email);
+            var users = await _unitOfWork.Users.GetAllAsync(optionsEmail);
+
+            if (users.Count > 0)
+                return await Authenticate(users.First());
+
+            await _unitOfWork.Users.CreateAsync(newUser);
+            return await Authenticate(newUser);
         }
     }
 }
