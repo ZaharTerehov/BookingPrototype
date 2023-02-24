@@ -1,12 +1,11 @@
 ﻿using Booking.ApplicationCore.Enum;
-using Booking.Web.Interfaces;
 using Booking.Web.Interfaces.Login;
 using Booking.Web.Middleware;
-using Booking.Web.Services;
 using Booking.Web.Services.Account;
+using Google.Apis.Auth.AspNetCore3;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -41,13 +40,16 @@ namespace Booking.Web.Extentions
 
             services.AddAuthentication(options =>
             {
-                options.DefaultAuthenticateScheme =
-                    JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultSignInScheme =
-                    JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme =
-                    JwtBearerDefaults.AuthenticationScheme;
-
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = GoogleOpenIdConnectDefaults.AuthenticationScheme;
+                options.DefaultForbidScheme = GoogleOpenIdConnectDefaults.AuthenticationScheme;
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;               
+            }) 
+            .AddCookie()
+            .AddGoogleOpenIdConnect(options =>
+            {
+                options.ClientId = "795475899726-kbmr7p6nfnssv1q40ddo652ifa9vh0c0.apps.googleusercontent.com";
+                options.ClientSecret = "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";
             })
             .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
             {
