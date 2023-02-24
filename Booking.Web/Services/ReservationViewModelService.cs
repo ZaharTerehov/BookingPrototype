@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
+using Booking.ApplicationCore.Extentions;
 using Booking.ApplicationCore.Interfaces;
 using Booking.ApplicationCore.Models;
 using Booking.ApplicationCore.QueryOptions;
 using Booking.Web.Interfaces;
 using Booking.Web.Models;
+using Booking.Web.Services.QueryOptions;
 
 namespace Booking.Web.Services
 {
@@ -26,7 +28,7 @@ namespace Booking.Web.Services
 
         public async Task<ReservationViewModel> GetReservationByIdAsync(int id)
         {
-            var existingReservation = await _unitOfWork.Reservations.GetByIdAsync(id, x => x.Apartment);
+            var existingReservation = await _unitOfWork.Reservations.GetByIdAsync(id, x => x.Apartment!);
             if (existingReservation == null)
             {
                 var exception = new Exception($"Reservation with id = {id} was not found");
@@ -41,16 +43,18 @@ namespace Booking.Web.Services
         public async Task<IList<ReservationViewModel>> GetAllReservationsAsync()
         {
             var options = new QueryViewModelOption<Reservation, ReservationViewModel>()
-                .AddSortOption(false, x => x.Name)
+                .AddSortOption(true, x => x.ArrivalDate!)
                 .AddSelectOption(x => new ReservationViewModel
                 {
                     Id = x.Id,
-                    ApartmentName = x.Apartment.Name,
+                    ApartmentName = x.Apartment!.Name,
+                    ApartmentPictures = x.Apartment.Pictures,
+                    ApartmentDescription = x.Apartment.Description,
                     Name = x.Name,
                     Email = x.Email,
                     Price = x.Price,
-                    ArrivalDate = x.ArrivalDate,
-                    DepartureDate = x.DepartureDate
+                    ArrivalDateS = x.ArrivalDate.ToYYYYMMDDDateFormat(),
+                    DepartureDateS = x.DepartureDate.ToYYYYMMDDDateFormat()
                 });
             var reservationsList = await _unitOfWork.Reservations.GetAllDtoAsync(options);
             
@@ -70,16 +74,12 @@ namespace Booking.Web.Services
             await _unitOfWork.Reservations.DeleteAsync(existingReservation);
         }
 
-        public async Task<ReservationViewModel> GetNewReservationViewModelAsync(int apartmentId)
+        public async Task<ReservationViewModel> GetNewReservationViewModelAsync(ApartmentReserveOptions reserveOptions)
         {
-            var chosenApartment = await _unitOfWork.Apartments.GetByIdAsync(apartmentId);
+            var chosenApartment = await _unitOfWork.Apartments.GetByIdAsync(reserveOptions.ApartmentId, x => x.Pictures);
             var newReservation = _mapper.Map<ReservationViewModel>(chosenApartment);
-            //var newReservation = new ReservationViewModel() 
-            //    {   ApartmentId = apartmentId, 
-            //        ApartmentName = chosenApartment.Name, 
-            //        ApartmentDescription = chosenApartment.Description,
-            //        ApartmentPicture = chosenApartment.Picture,
-            //        Price = chosenApartment.Price };
+            newReservation.ArrivalDateS = reserveOptions.CheckInDateS;
+            newReservation.DepartureDateS = reserveOptions.CheckOutDateS;
             return newReservation;
         }
     }

@@ -11,7 +11,7 @@ namespace Booking.Infrastructure.Data.DBExtentions
 {
     public static class TEntityListInclude
     {
-        public static IQueryable<TEntity> IncludeFields<TEntity>(this DbSet<TEntity> entities, IList<Expression<Func<TEntity, object>>> includeOptions) where TEntity : class
+        public static IQueryable<TEntity> IncludeFields<TEntity>(this IQueryable<TEntity> entities, IList<Expression<Func<TEntity, object>>> includeOptions) where TEntity : class 
         {
             if (includeOptions != null && includeOptions.Count > 0)
             {

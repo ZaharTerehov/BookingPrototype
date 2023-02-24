@@ -9,7 +9,12 @@
         <div class="col-12">
             <h2 class="text_action">Edit Apartment</h2>
         </div>
-        <form asp-action="Edit">
+        <form asp-action="Edit" enctype="multipart/form-data">
+            @foreach(var picture in Model.Pictures)
+            {
+                <input name="oldPictureUrls" value="@picture.PictureUrl" hidden />
+            }
+            
             <div class="col-12">
                 <div class="input-group">
                     <span class="input-group-text w-10" id="input-name">Name</span>
@@ -73,12 +78,9 @@
                 </div>
             </div>
             <div class="col-12">
-                <div class="input-group">
-                    <span class="input-group-text w-10" id="input-picture">Picture</span>
-                    <input asp-for="Picture" class="form-control" aria-describedby="input-picture">
-                </div>
-                <div class="mb-3">
-                    <span asp-validation-for="Picture" class="text-danger"></span>
+                <div class="input-group mb-3">
+                    <label asp-for="Pictures" class="input-group-text w-10" id="input-picture">Pictures</label>
+                    <input type="file" name="files" class="form-control" multiple />
                 </div>
             </div>
             <button type="submit" class="btn btn-primary" style="width: 150px;">Edit</button>

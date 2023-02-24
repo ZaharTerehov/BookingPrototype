@@ -106,76 +106,76 @@ namespace Booking.Infrastructure.Data
 
         private static IEnumerable<Apartment> GetInitialApartments()
         {
-            return new List<Apartment>
+            var a1 = new Apartment
             {
-                new Apartment
-                {
-                    ApartmentTypeId = 1,
-                    Name = "Sealoft 4 Townhouse",
-                    Description = "Set in Myrtle Beach in the South Carolina region, Sealoft 4 Townhouse features a balcony. " +
+                ApartmentTypeId = 1,
+                Name = "Sealoft 4 Townhouse",
+                Description = "Set in Myrtle Beach in the South Carolina region, Sealoft 4 Townhouse features a balcony. " +
+                   "The air-conditioned accommodation is 300 m from Surfside Beach, " +
+                   "and guests benefit from complimentary WiFi and private parking available on site.",
+                Price = 1230m,
+                CityId = 1,
+                Address = "Minskaya, 56",
+                PeopleNumber = 4,
+            };
+            var a2 = new Apartment
+            {
+                ApartmentTypeId = 1,
+                Name = "Sealoft 4 Townhouse",
+                Description = "Set in Myrtle Beach in the South Carolina region, Sealoft 4 Townhouse features a balcony. " +
                     "The air-conditioned accommodation is 300 m from Surfside Beach, " +
                     "and guests benefit from complimentary WiFi and private parking available on site.",
-                    Price = 1230m,
-                    CityId = 1,
-                    Picture = "https://cf.bstatic.com/xdata/images/hotel/max1280x900/306235173.jpg?k=ca9831e00d69fa3ca98c5888a0071c2772f2be3bd822a0529c45ffbd7e40ffa4&o=&hp=1",
-                    Address = "Minskaya, 56",
-                    PeopleNumber= 4,
-                },
-                new Apartment
-                {
-                    ApartmentTypeId = 1,
-                    Name = "Sealoft 4 Townhouse",
-                    Description = "Set in Myrtle Beach in the South Carolina region, Sealoft 4 Townhouse features a balcony. " +
+                Price = 1200m,
+                CityId = 1,                
+                Address = "Mitskevicha, 25",
+                PeopleNumber = 2,
+            };
+            var a3 = new Apartment
+            {
+                ApartmentTypeId = 1,
+                Name = "Sealoft 4 Townhouse",
+                Description = "Set in Myrtle Beach in the South Carolina region, Sealoft 4 Townhouse features a balcony. " +
                     "The air-conditioned accommodation is 300 m from Surfside Beach, " +
                     "and guests benefit from complimentary WiFi and private parking available on site.",
-                    Price = 1200m,
-                    CityId = 1,
-                    Picture = "https://cf.bstatic.com/xdata/images/hotel/max1280x900/400539840.jpg?k=84ac662766f1bcb34f42669e477ff3e2a2fe49420cede123ea2fa2ccfb011d7d&o=&hp=1",
-                    Address = "Mitskevicha, 25",
-                    PeopleNumber= 2,
-                },
-                new Apartment
-                {
-                    ApartmentTypeId = 1,
-                    Name = "Sealoft 4 Townhouse",
-                    Description = "Set in Myrtle Beach in the South Carolina region, Sealoft 4 Townhouse features a balcony. " +
-                    "The air-conditioned accommodation is 300 m from Surfside Beach, " +
-                    "and guests benefit from complimentary WiFi and private parking available on site.",
-                    Price = 1150m,
-                    CityId = 2,
-                    Picture = "https://cf.bstatic.com/xdata/images/hotel/max1280x900/400539852.jpg?k=9446171beb45d9bd52078e36cad51f33e90401c8b62fcd05ec9facf82f17ad57&o=&hp=1",
-                    Address = "Pier Rishar, 4",
-                    PeopleNumber= 2,
-                },
-                new Apartment
-                {
-                    ApartmentTypeId = 2,
-                    Name = "Villas at Marina Inn at Grande Dunes",
-                    Description = "Offering and indoor and outdoor pool, these self-catering Myrtle Beach villas have a " +
+                Price = 1150m,
+                CityId = 2,
+                Address = "Pier Rishar, 4",
+                PeopleNumber = 2,
+            };
+            var a4 = new Apartment
+            {
+                ApartmentTypeId = 2,
+                Name = "Villas at Marina Inn at Grande Dunes",
+                Description = "Offering and indoor and outdoor pool, these self-catering Myrtle Beach villas have a " +
                     "full kitchen and a balcony with a view. Free WiFi and a free beach transfer service are provided.\r\n\r\n" +
                     "Fully furnished, these villas feature a separate seating area with a cable TV and a sofa. " +
                     "Extras at Villas at Marina Inn at Grande Dunes include a hairdryer, towels, and linen.",
-                    Price = 1450m,
-                    CityId = 3,
-                    Picture = "https://cf.bstatic.com/xdata/images/hotel/max1024x768/195864924.jpg?k=eb9cc2ad6342214068041b01c05c24730536c9948cf769c8f706e594b8d412f5&o=&hp=1",
-                    Address = "Pilsudskego, 114",
-                    PeopleNumber= 4,
-                },
-                new Apartment
-                {
-                    ApartmentTypeId = 3,
-                    Name = "Villa Pastor",
-                    Description = "Set in Cala Anguila, 150 meters from Cala Anguila Beach and 2.5 km from Playa de Porto Cristo, Villa Pastor offers " + 
-                    "air conditioning. This villa with a private pool features a garden and free private parking. Barbecue facilities are provided. " + 
-                    "Free Wi-Fi is provided.\r\n\r\nThe villa has 3 bedrooms, 2 bathrooms, linens, towels, satellite TV, a dining area, a fully " + 
-                    "equipped kitchen and a terrace overlooking the river.\r\n\r\nGuests can take a dip in the outdoor pool.",
-                    Price = 1100m,
-                    CityId = 3,
-                    Picture = "https://cf.bstatic.com/xdata/images/hotel/max1280x900/345550502.jpg?k=e2068b7712ffc925f403cff7572fc0dbbd0cd1d006916b936de539f8be774128&o=&hp=1",
-                    Address = "Sklodowska-Kuri, 56",
-                    PeopleNumber= 3,
-                }
+                Price = 1450m,
+                CityId = 3,
+                Address = "Pilsudskego, 114",
+                PeopleNumber = 4,
             };
+            var a5 = new Apartment
+            {
+                ApartmentTypeId = 3,
+                Name = "Villa Pastor",
+                Description = "Set in Cala Anguila, 150 meters from Cala Anguila Beach and 2.5 km from Playa de Porto Cristo, Villa Pastor offers " +
+                    "air conditioning. This villa with a private pool features a garden and free private parking. Barbecue facilities are provided. " +
+                    "Free Wi-Fi is provided.\r\n\r\nThe villa has 3 bedrooms, 2 bathrooms, linens, towels, satellite TV, a dining area, a fully " +
+                    "equipped kitchen and a terrace overlooking the river.\r\n\r\nGuests can take a dip in the outdoor pool.",
+                Price = 1100m,
+                CityId = 3,
+                Address = "Sklodowska-Kuri, 56",
+                PeopleNumber = 3,
+            };
+
+            a1.Pictures.Add(new ApartmentPicture { PictureUrl = "Images\\1.jpg" });
+            a2.Pictures.Add(new ApartmentPicture { PictureUrl = "Images\\2.jpg" });
+            a3.Pictures.Add(new ApartmentPicture { PictureUrl = "Images\\3.jpg" });
+            a4.Pictures.Add(new ApartmentPicture { PictureUrl = "Images\\4.jpg" });
+            a5.Pictures.Add(new ApartmentPicture { PictureUrl = "Images\\5.jpg" });
+            
+            return new List<Apartment>{a1, a2, a3, a4, a5};
         }
     }
 }

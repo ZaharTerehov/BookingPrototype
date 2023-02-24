@@ -26,7 +26,7 @@ namespace Booking.Web.Controllers
             if (ModelState.IsValid)
             {
                 var response = await _accountService.Register(model);
-                ModelState.AddModelError("", response.Description);
+                ModelState.AddModelError("", response.Description!);
             }
 
             return View(model);
@@ -44,11 +44,11 @@ namespace Booking.Web.Controllers
 
                 if(response.StatusCode == ApplicationCore.Enum.StatusCode.OK)
                 {
-                    await SetAccessTokenAndRefreshToken(response.Data);
+                    await SetAccessTokenAndRefreshToken(response.Data!);
 					return RedirectToAction("Index", "City");
 				}
 
-                ModelState.AddModelError("", response?.Description);
+                ModelState.AddModelError("", response?.Description!);
 			}
 
             return View(model);
@@ -87,7 +87,7 @@ namespace Booking.Web.Controllers
 
             if (result.StatusCode == ApplicationCore.Enum.StatusCode.OK)
             {
-                await SetAccessTokenAndRefreshToken(result.Data);
+                await SetAccessTokenAndRefreshToken(result.Data!);
                 return Content("<html><h1><string>Your email has been verified</strong></h1></html>", "text/html");
             }
 
@@ -98,7 +98,7 @@ namespace Booking.Web.Controllers
         public async Task<JsonResult> CheckUserForConfirmedEmail()
         {
             var token = Request.Cookies[_accountService.LocationAccessToken];
-            return Json(await _accountService.CheckValidUser(token));
+            return Json(await _accountService.CheckValidUser(token!));
         }
 
         [GoogleScopedAuthorize(PeopleServiceService.ScopeConstants.UserinfoProfile)]

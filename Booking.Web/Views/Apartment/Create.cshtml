@@ -9,7 +9,7 @@
         <div class="col-12">
             <h2 class="text_action">Creation Apartament</h2>
         </div>
-        <form asp-action="Create">
+        <form asp-action="Create" enctype="multipart/form-data" class="needs-validation">
             <div class="col-12">
                 <div class="input-group">
                     <div class="input-group-prepend w-10">
@@ -76,11 +76,8 @@
             </div>
             <div class="col-12">
                 <div class="input-group mb-3">
-                    <span class="input-group-text w-10" id="input-picture">Picture</span>
-                    <input asp-for="Picture" type="text" class="form-control" aria-describedby="input-picture">
-                </div>
-                <div class="mb-3">
-                    <span asp-validation-for="Picture" class="text-danger"></span>
+                    <label asp-for="Pictures" class="input-group-text w-10" id="input-picture">Pictures</label>
+                    <input type="file" name="Pictures" class="form-control" required multiple/>
                 </div>
             </div>
             <button type="submit" class="btn btn-primary" style="width: 150px;">Create</button>

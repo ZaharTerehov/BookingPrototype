@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Booking.ApplicationCore.Enums;
+using Booking.ApplicationCore.Extentions;
 using Booking.ApplicationCore.Interfaces;
 using Booking.ApplicationCore.Models;
 using Booking.ApplicationCore.QueryOptions;
@@ -15,13 +16,18 @@ namespace Booking.Web.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        private readonly IApartmentTypeViewModelService _ApartmentTypeViewModelService;
+        private readonly IApartmentTypeViewModelService _apartmentTypeViewModelService;
+        private readonly IReservationViewModelService _reservationViewModelService;
 
-        public ApartmentViewModelService(IUnitOfWork unitOfWork, IMapper mapper, IApartmentTypeViewModelService ApartmentTypeViewModelService)
+        public ApartmentViewModelService(IUnitOfWork unitOfWork, 
+                                         IMapper mapper, 
+                                         IApartmentTypeViewModelService apartmentTypeViewModelService,
+                                         IReservationViewModelService reservationViewModelService)
         {
             _unitOfWork= unitOfWork;
             _mapper= mapper;
-            _ApartmentTypeViewModelService = ApartmentTypeViewModelService;
+            _apartmentTypeViewModelService = apartmentTypeViewModelService;
+            _reservationViewModelService = reservationViewModelService;
         }
 
         public async Task CreateApartmentAsync(ApartmentViewModel viewModel)
@@ -30,48 +36,56 @@ namespace Booking.Web.Services
             await _unitOfWork.Apartments.CreateAsync(dto);
         }
 
-        public async Task DeleteApartmentAsync(ApartmentViewModel viewModel)
+        public async Task DeleteApartmentAsync(int id)
         {
-            var existingApartment = await _unitOfWork.Apartments.GetByIdAsync(viewModel.Id);
+            var existingApartment = await _unitOfWork.Apartments.GetByIdAsync(id, x => x.Pictures);
             if (existingApartment is null)
             {
-                var exception = new Exception($"Apartment {viewModel.Id} was not found");
+                var exception = new Exception($"Apartment {id} was not found");
 
                 throw exception;
             }
 
             await _unitOfWork.Apartments.DeleteAsync(existingApartment);
-        }
+        }     
 
         public async Task<IList<ApartmentViewModel>> GetApartmentsAsync(ApartmentQueryOptions apartmentOptions)
         {
-            var queryOptions = new QueryViewModelOption<Apartment, ApartmentViewModel>().AddSortOption(false, y => y.Price)
+            string checkIn = apartmentOptions.ArrivalDate.ToYYYYMMDDDateFormat();
+            string checkOut = apartmentOptions.DepartureDate.ToYYYYMMDDDateFormat();
+            string query = "SELECT * FROM Apartments a" +
+                            " WHERE a.Id NOT IN " +
+                            "                   (SELECT DISTINCT ApartmentId FROM Reservations r" +
+                                                    $" WHERE  (('{checkIn}' >= r.ArrivalDate AND '{checkIn}' < r.DepartureDate) OR" +
+                                                    $" ('{checkOut}' > r.ArrivalDate AND '{checkOut}' <= r.DepartureDate) OR" +
+                                                    $" ('{checkIn}' <= r.ArrivalDate AND '{checkOut}' >= r.DepartureDate)))";
+
+
+            var queryOptions = new QueryEntityOptions<Apartment>()
+                .AddSqlQuery(query)
+                .AddIncludeOption(x => x.City!)
+                .AddIncludeOption(x => x.Pictures)
+                .AddSortOption(false, y => y.Price)
                 .SetFilterOption(x => 
-                (!apartmentOptions.ApartmentTypeFilterApplied.HasValue || x.ApartmentTypeId == apartmentOptions.ApartmentTypeFilterApplied) &&
-                (!apartmentOptions.CityFilterApplied.HasValue || x.CityId == apartmentOptions.CityFilterApplied) &&
-                 x.PeopleNumber >= apartmentOptions.NeedPeopleNumber &&
-                 (string.IsNullOrEmpty(apartmentOptions.SearchText) ||
-                 (x.Name.Contains(apartmentOptions.SearchText) || x.City.Name.Contains(apartmentOptions.SearchText)
-                                                                || x.Description.Contains(apartmentOptions.SearchText))))                
-                .AddSelectOption(x => new ApartmentViewModel 
-                {
-                    Id = x.Id,
-                    Name = x.Name,
-                    Description = $"{x.Address}. Total people number {x.PeopleNumber}. {x.Description}",
-                    Price= x.Price,
-                    Picture= x.Picture,
-                    CityName = x.City.Name
-                })
+                    (!apartmentOptions.ApartmentTypeFilterApplied.HasValue || x.ApartmentTypeId == apartmentOptions.ApartmentTypeFilterApplied) &&
+                    (!apartmentOptions.CityFilterApplied.HasValue || x.CityId == apartmentOptions.CityFilterApplied) &&                
+                     x.PeopleNumber >= apartmentOptions.NeedPeopleNumber &&
+                     (
+                        string.IsNullOrEmpty(apartmentOptions.SearchText) ||        (
+                                 x.Name!.Contains(apartmentOptions.SearchText) ||
+                                 x.City!.Name!.Contains(apartmentOptions.SearchText) ||
+                                 x.Description!.Contains(apartmentOptions.SearchText))
+                      )
+                      )                
                 .SetCurentPageAndPageSize(apartmentOptions.PageOptions);
-            var entities = await _unitOfWork.Apartments.GetAllDtoAsync(queryOptions);
-            //var apartment = _mapper.Map<List<ApartmentViewModel>>(entities);
-            //return apartment;
-            return entities;
+            var entities = await _unitOfWork.Apartments.GetAllAsync(queryOptions);
+            var viewModelEntities = _mapper.Map<List<ApartmentViewModel>>(entities);
+            return viewModelEntities;
         }        
 
         public async Task<ApartmentViewModel> GetApartmentViewModelByIdAsync(int id)
         {
-            var existingApartment = await _unitOfWork.Apartments.GetByIdAsync(id, x => x.City);
+            var existingApartment = await _unitOfWork.Apartments.GetByIdAsync(id, x => x.City!, x => x.Pictures);
             if (existingApartment == null)
             {
                 var exception = new Exception($"Apartment with id = {id} was not found");
@@ -86,7 +100,7 @@ namespace Booking.Web.Services
 
         public async Task UpdateApartmentAsync(ApartmentViewModel viewModel)
         {
-            var existingApartment = await _unitOfWork.Apartments.GetByIdAsync(viewModel.Id);
+            var existingApartment = await _unitOfWork.Apartments.GetByIdAsync(viewModel.Id, x => x.Pictures);
             if (existingApartment is null)
             {
                 var exception = new Exception($"Apartment {viewModel.Id} was not found");
@@ -94,7 +108,7 @@ namespace Booking.Web.Services
             }
 
             Apartment.ApartmentDetails details = new Apartment.ApartmentDetails(viewModel.Name, viewModel.Description,viewModel.Price, 
-                                                viewModel.Picture, viewModel.ApartmentTypeFilterApplied, viewModel.CityFilterApplied,viewModel.Address, viewModel.PeopleNumber);
+                                                viewModel.Pictures, viewModel.ApartmentTypeFilterApplied, viewModel.CityFilterApplied,viewModel.Address, viewModel.PeopleNumber);
             existingApartment.UpdateDetails(details);
             await _unitOfWork.Apartments.UpdateAsync(existingApartment);
         }
@@ -114,7 +128,7 @@ namespace Booking.Web.Services
 
         public async Task<IList<SelectListItem>> GetCities(bool filter, bool itemAllSelected = true)
         {
-            var options = new QueryEntityOptions<City>().AddSortOption(false, y => y.Name);
+            var options = new QueryEntityOptions<City>().AddSortOption(false, y => y.Name!);
             var entities = await _unitOfWork.Cities.GetAllAsync(options);
             var cities = _mapper.Map<List<SelectListItem>>(entities);
             if (filter)
@@ -123,6 +137,11 @@ namespace Booking.Web.Services
             }
 
             return cities;
+        }
+
+        public void DeleteApartmentPictures(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

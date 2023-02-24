@@ -4,63 +4,16 @@
     ViewData["Title"] = "Index";
 }
 
-
-<div class="col-6">
-    <h2 class="text_action">Current reservations list</h2>
-</div>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Client's name
-            </th>
-            <th>
-                Client's email
-            </th>
-            <th>
-                Apartment
-            </th>
-            <th>
-                Price
-            </th>
-            <th>
-                Check in
-            </th>
-            <th>
-                Ckeck out
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model) {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Email)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ApartmentName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Price)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CheckInInfo)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CheckOutInfo)
-                </td>
-                <td>
-                    <a asp-controller="Reservation" asp-action="Delete" asp-route-id="@item.Id"
-                    class="btn btn-secondary btn-sm">
-                        <i class="bi bi-trash"></i>
-                        Delete
-                    </a>
-                </td>
-            </tr>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="text_action">Current reservations list</h2>
+        </div>
+    </div>
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <partial name="ReservationPartial/_ReservationCartPartial" model="@item"/>            
         }
-    </tbody>
-</table>
+    </div>
+</div>

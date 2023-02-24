@@ -12,7 +12,7 @@ namespace Booking.ApplicationCore.Interfaces
     {
        // Task<IList<T>> GetAllAsync();
         Task<IList<T>> GetAllAsync(QueryEntityOptions<T> options);
-        Task<IList<TVM>> GetAllDtoAsync<TVM>(QueryViewModelOption<T, TVM> options) where TVM : class; 
+        Task<IList<TVM>> GetAllDtoAsync<TVM>(QueryViewModelOption<T, TVM> options); //where TVM : class; 
         Task<T?> GetByIdAsync(int id, params Expression<Func<T, object>>[] includes);
         Task CreateAsync(T entity);
         Task UpdateAsync(T entity);

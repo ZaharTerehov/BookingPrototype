@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Booking.Web.Attributes.Validation
+namespace Booking.ApplicationCore.Attributes.Validation
 {
     [AttributeUsage(AttributeTargets.Property)]
     public class DepartureDateAttribute: ValidationAttribute
@@ -13,9 +13,9 @@ namespace Booking.Web.Attributes.Validation
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            DateTime departureDate = (DateTime)value;
-
-            DateTime arrivalDate = (DateTime)validationContext.ObjectType.GetProperty(ArrivalDateFieldName).GetValue(validationContext.ObjectInstance, null);
+            DateTime.TryParse(value.ToString(), out var departureDate);
+            object arrivalDateObject = validationContext.ObjectType.GetProperty(ArrivalDateFieldName).GetValue(validationContext.ObjectInstance, null);
+            DateTime.TryParse(arrivalDateObject.ToString(), out var arrivalDate);
 
             if (departureDate.Subtract(arrivalDate).TotalDays > 0)
             {

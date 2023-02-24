@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
-using Booking.Web.Attributes.Validation;
+using Booking.ApplicationCore.Attributes.Validation;
 using Booking.ApplicationCore.Models;
 
 namespace Booking.Web.Models
@@ -12,38 +12,31 @@ namespace Booking.Web.Models
 
         [Required]
         [StringLength(100)]
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         [Required]
         [StringLength(100)]
         [EmailAddress]
-        public string Email { get; set; }
+        public string? Email { get; set; }
 
         [Required]
         public int ApartmentId { get; set; }
 
         public string? ApartmentName { get; set; }
         public string? ApartmentDescription { get; set; }
-        public string? ApartmentPicture { get; set; }
+        public IList<ApartmentPicture>? ApartmentPictures { get; set; }
 
+        public string? FirstPicture { get => ApartmentPictures?.FirstOrDefault()!.PictureUrl; }
         [Required]
         [Range(0, double.MaxValue)]
         public decimal Price { get; set; }
 
         [Required]
         [CurrentDate]
-        public DateTime ArrivalDate { get; set; } = DateTime.Now;
+        public string? ArrivalDateS { get; set; }
 
         [Required]
-        [DepartureDate("ArrivalDate")]  
-        public DateTime DepartureDate { get; set; } = DateTime.Now.AddDays(1);
-
-        //To display check in/out date without time
-
-        [NotMapped]
-        public string CheckInInfo => ArrivalDate.ToString("dd/MM/yyyy");
-
-        [NotMapped]
-        public string CheckOutInfo => DepartureDate.ToString("dd/MM/yyyy");
+        [DepartureDate("ArrivalDateS")]  
+        public string? DepartureDateS { get; set; }     
     }
 }

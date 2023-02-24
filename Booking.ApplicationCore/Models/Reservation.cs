@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Booking.ApplicationCore.Models
 {
-    public class Reservation : BaseModel
+    public class Reservation : DateIntervalClass
     {
         [Required]
         public int ApartmentId { get; set; }
@@ -18,20 +18,10 @@ namespace Booking.ApplicationCore.Models
         public decimal Price { get; set; }
         [Required]
         [StringLength(100)]
-        public string Name { get; set; }
+        public string? Name { get; set; }
         [Required]
         [StringLength(100)]
         [EmailAddress]
-        public string Email { get; set; }
-        [Required]
-        public DateTime ArrivalDate { get; set; }
-        [Required]
-        public DateTime DepartureDate { get; set; }
-
-        //[NotMapped]
-        //public string ArrivalDate => ArrivalDateTime.ToString("MM/dd/yyyy");
-        //[NotMapped]
-        //public string DepartureDate => DepartureDateTime.ToString("MM/dd/yyyy");
-
+        public string? Email { get; set; }      
     }
 }
