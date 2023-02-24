@@ -86,9 +86,9 @@ if (!app.Environment.IsDevelopment())
 // Improves cookie security
 app.UseCookiePolicy(new CookiePolicyOptions
 {
-	MinimumSameSitePolicy = SameSiteMode.Strict,
-	HttpOnly = HttpOnlyPolicy.Always,
-	Secure = CookieSecurePolicy.Always
+    MinimumSameSitePolicy = SameSiteMode.None,
+    HttpOnly = HttpOnlyPolicy.Always,
+    Secure = CookieSecurePolicy.Always
 });
 
 app.UseHttpsRedirection();
