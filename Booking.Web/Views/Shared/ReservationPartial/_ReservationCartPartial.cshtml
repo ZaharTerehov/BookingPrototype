@@ -1,0 +1,23 @@
+﻿@model ReservationViewModel
+
+<div class="col-3">
+    <div class="card" style="width: 300px">
+        <img src="@Model.FirstPicture" class="card-img-top" alt="photo" style="height: 150px">
+        <div class="card-body">
+            <h6 class="card-title">@($"Name: {Model.Name!}".CardTitle())</h6>
+            <p class="card-text">@Model.ApartmentDescription!.CardText()</p>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">Price - &#36;@Model.Price</li>
+            <li class="list-group-item">Check in  - @Model.ArrivalDateS</li>
+            <li class="list-group-item">Check out - @Model.DepartureDateS</li>
+        </ul>
+        <div class="card-body d-flex justify-content-center">
+            <a asp-controller="Reservation" asp-action="Delete" asp-route-id="@Model.Id"
+               class="btn btn-secondary btn-sm">
+                <i class="bi bi-trash"></i>
+                Cancel Reservation
+            </a>
+        </div>
+    </div>
+</div>
