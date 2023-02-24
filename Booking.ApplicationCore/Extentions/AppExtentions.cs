@@ -16,12 +16,14 @@ namespace Booking.ApplicationCore.Extentions
 
         public static string CardTitle(this string text)
         {
-            return text.Substring(0, Math.Min(text.Length, ApplicationConstants.CardTitleSimbolCount)) + "...";
+            var result = text.Substring(0, Math.Min(text.Length, ApplicationConstants.CardTitleSimbolCount));
+            return result == text ? result : $"{result}...";            
         }
 
         public static string CardText(this string text)
         {
-            return text.Substring(0, Math.Min(text.Length, ApplicationConstants.CardTextSimbolCount))+"...";
+            var result = text.Substring(0, Math.Min(text.Length, ApplicationConstants.CardTextSimbolCount));
+            return result == text ? result: $"{result}...";
         }
 
         public static IList<ApartmentPicture> ToListApartmentPictures(this IList<string> filesList)

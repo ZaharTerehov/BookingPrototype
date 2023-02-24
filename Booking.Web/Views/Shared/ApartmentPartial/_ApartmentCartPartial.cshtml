@@ -1,0 +1,33 @@
+﻿@model ApartmentIndexViewModel
+@foreach (var item in Model.Apartments!)
+{
+    <div class="col-3">
+        <div class="card" style="width: 300px; height: 365px">
+            <img src="@item.Pictures.FirstOrDefault()!.PictureUrl" class="card-img-top" alt="photo" style="height: 150px">
+            <div class="card-body">
+                <h6 class="card-title">@item.Name!.CardTitle() - &#36;@item.Price</h6>
+                <p class="card-text">@item.Description!.CardText()</p>
+            </div>
+            <div class="card-footer d-flex justify-content-evenly">
+                <a asp-controller="Apartment" asp-action="Edit" asp-route-id="@item.Id"
+                   class="btn btn-secondary btn-sm">
+                    <i class="bi bi-pencil-square"></i>
+                    Edit
+                </a>
+                <a asp-controller="Reservation" asp-action="Create"
+                   asp-route-reserveOptions.apartmentId="@item.Id"
+                   asp-route-reserveOptions.checkInDateS="@Model.Options!.ArrivalDateS"
+                   asp-route-reserveOptions.checkOutDateS="@Model.Options.DepartureDateS"
+                   class="btn btn-secondary btn-sm">
+                    <i class="bi bi-ticket-detailed"></i>
+                    Details
+                </a>
+                <a asp-controller="Apartment" asp-action="Delete" asp-route-id="@item.Id"
+                   class="btn btn-secondary btn-sm">
+                    <i class="bi bi-trash"></i>
+                    Delete
+                </a>
+            </div>
+        </div>
+     </div>
+}
