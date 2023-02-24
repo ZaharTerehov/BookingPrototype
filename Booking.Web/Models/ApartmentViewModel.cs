@@ -17,7 +17,7 @@ namespace Booking.Web.Models
         [Range(1, double.MaxValue)]
         public decimal Price { get; set; }
         //[Required]
-        public string? Picture { get; set; }
+        public IList<ApartmentPicture> Pictures { get; set; }
         public string? CityName { get; set; }
         [Required]
         public string? Address { get; set; }
@@ -32,5 +32,6 @@ namespace Booking.Web.Models
         public IList<SelectListItem>? Cities { get; set; }
         [Required]        
         public int? CityFilterApplied { get; set; }
+        //public string FirstPicture { get => Pictures.FirstOrDefault()!.PictureUrl; }
     }
 }

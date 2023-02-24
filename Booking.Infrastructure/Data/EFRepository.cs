@@ -30,7 +30,6 @@ namespace Booking.Infrastructure.Data
 
         public async Task<T?> GetByIdAsync(int id, params Expression<Func<T, object>>[] includes)
         {
-            var en = _dbBookingContext.Apartments.FirstOrDefault(x => x.Id == 5);
             var entities = await _dbBookingContext.Set<T>().IncludeFields(includes).FirstOrDefaultAsync(x => x.Id == id);
             return entities;
         }

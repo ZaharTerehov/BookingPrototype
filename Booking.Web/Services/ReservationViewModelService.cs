@@ -48,7 +48,7 @@ namespace Booking.Web.Services
                 {
                     Id = x.Id,
                     ApartmentName = x.Apartment!.Name,
-                    ApartmentPicture = x.Apartment.Picture,
+                    ApartmentPictures = x.Apartment.Pictures,
                     ApartmentDescription = x.Apartment.Description,
                     Name = x.Name,
                     Email = x.Email,
@@ -76,7 +76,7 @@ namespace Booking.Web.Services
 
         public async Task<ReservationViewModel> GetNewReservationViewModelAsync(ApartmentReserveOptions reserveOptions)
         {
-            var chosenApartment = await _unitOfWork.Apartments.GetByIdAsync(reserveOptions.ApartmentId);
+            var chosenApartment = await _unitOfWork.Apartments.GetByIdAsync(reserveOptions.ApartmentId, x => x.Pictures);
             var newReservation = _mapper.Map<ReservationViewModel>(chosenApartment);
             newReservation.ArrivalDateS = reserveOptions.CheckInDateS;
             newReservation.DepartureDateS = reserveOptions.CheckOutDateS;

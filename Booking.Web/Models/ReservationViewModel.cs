@@ -24,8 +24,9 @@ namespace Booking.Web.Models
 
         public string? ApartmentName { get; set; }
         public string? ApartmentDescription { get; set; }
-        public string? ApartmentPicture { get; set; }
+        public IList<ApartmentPicture>? ApartmentPictures { get; set; }
 
+        public string? FirstPicture { get => ApartmentPictures?.FirstOrDefault()!.PictureUrl; }
         [Required]
         [Range(0, double.MaxValue)]
         public decimal Price { get; set; }

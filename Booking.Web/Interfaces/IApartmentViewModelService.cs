@@ -13,6 +13,7 @@ namespace Booking.Web.Interfaces
         Task CreateApartmentAsync(ApartmentViewModel viewModel);
         Task UpdateApartmentAsync(ApartmentViewModel viewModel);
         Task DeleteApartmentAsync(int id);
+        void DeleteApartmentPictures(int id);
         Task<ApartmentViewModel> GetApartmentViewModelByIdAsync(int id);
         Task<IList<SelectListItem>> GetApartmentTypes(bool filter, bool itemAllSelected = true);
         Task<IList<SelectListItem>> GetCities(bool filter, bool itemAllSelected = true);

@@ -19,18 +19,21 @@ namespace Booking.Web.Services
             _logger= logger;
             _webRootPath = _webHostEnvironment.WebRootPath;
         }
-        public void DeleteFile(string fileName)
+        public void DeleteFile(IList<string> fileNames)
         {
             try
             {
-                if (!fileName.IsNullOrEmpty())
-                { 
-                    string filePath = Path.Combine(_webRootPath, fileName);
-                    if (File.Exists(filePath))
+                foreach(string fileName in fileNames) 
+                {
+                    if (!fileName.IsNullOrEmpty())
                     {
-                        File.Delete(filePath);
+                        string filePath = Path.Combine(_webRootPath, fileName);
+                        if (File.Exists(filePath))
+                        {
+                            File.Delete(filePath);
+                        }
                     }
-                }
+                }                
             }
             catch (Exception ex)
             {

@@ -13,10 +13,11 @@ using Booking.Web.Services.QueryOptions;
 using Microsoft.Extensions.Options;
 using Booking.ApplicationCore.Models;
 using Booking.ApplicationCore.Attributes.Filters;
+using Booking.ApplicationCore.Extentions;
 
 namespace Booking.Web.Controllers
 {
-    //[TypeFilter(typeof(AppExceptionFilter))]
+    [TypeFilter(typeof(AppExceptionFilter))]
     public class ApartmentController : Controller
     {
         private readonly IApartmentViewModelService _apartmentViewModelService;        
@@ -62,10 +63,10 @@ namespace Booking.Web.Controllers
         public async Task<IActionResult> Create(ApartmentViewModel viewModel)
         {
             var files = HttpContext.Request.Form.Files;
-            if (files != null)
+            if (files.Count > 0)
             {
                 _fileService.UploadFiles(files, ApplicationConstants.ImagesDir);
-                viewModel.Picture = _fileService.Files.First();
+                viewModel.Pictures = _fileService.Files.ToListApartmentPictures();//.First();
             }
 
             if (ModelState.IsValid)
@@ -97,8 +98,10 @@ namespace Booking.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var _apartment = await _apartmentViewModelService.GetApartmentViewModelByIdAsync(id);
-                _fileService.DeleteFile(_apartment.Picture!);
+                var _apartment = await _apartmentViewModelService.GetApartmentViewModelByIdAsync(id);  
+                
+                _fileService.DeleteFile(_apartment.Pictures.ToListStringPaths());                
+                
                 await _apartmentViewModelService.DeleteApartmentAsync(id);
                 return RedirectToAction(nameof(Index));
             }
@@ -123,14 +126,15 @@ namespace Booking.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(ApartmentViewModel viewModel)
+        public async Task<IActionResult> Edit(ApartmentViewModel viewModel, params string[] oldPictureUrls)
         {
+            ModelState.Remove("Pictures");
             var files = HttpContext.Request.Form.Files;
-            if (files != null)
+            if (files.Count > 0)
             {
-                _fileService.DeleteFile(viewModel.Picture!);
+                _fileService.DeleteFile(oldPictureUrls);
                 _fileService.UploadFiles(files!, ApplicationConstants.ImagesDir);
-                viewModel.Picture = _fileService.Files.First();
+                viewModel.Pictures = _fileService.Files.ToListApartmentPictures();
             }
 
             if (ModelState.IsValid)
