@@ -11,8 +11,7 @@ namespace Booking.ApplicationCore.Extentions
     public static class AppExtentions
     {
         private const int needFormatIndex = 0;
-        public static string ToYYYYMMDDDateFormat(this DateTime date) =>
-                                date.GetDateTimeFormats()[ApplicationConstants.MinDateTimeFormatIndex].Split(" ")[needFormatIndex];
+        public static string ToYYYYMMDDDateFormat(this DateTime date) => date.ToString("yyyy-dd-MM");
 
 
         public static string CardTitle(this string text)
