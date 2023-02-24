@@ -4,11 +4,14 @@ using Booking.Web.Attributes.Filters;
 using Booking.Web.Extentions;
 using Booking.Web.Interfaces;
 using Booking.Web.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Booking.Web.Controllers
 {
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "User")]
     [TypeFilter(typeof(AppExceptionFilter))]
     public class CityController : Controller
     {
