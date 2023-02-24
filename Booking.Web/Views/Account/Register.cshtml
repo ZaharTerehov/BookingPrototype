@@ -70,6 +70,11 @@
                                 <input type="hidden" asp-for="ReCaptcha" id="captchaToken" />
                                 <button class="btn btn-success btn-lg float-right" type="submit">Register</button>
                             </form>
+                            <form>
+                                <button asp-controller="Account" asp-action="LoginWithGoogle" class="btn text-white" style="background-color: #dd4b39;" href="#!" role="button">
+                                    <i class="bi bi-google"></i>
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>
