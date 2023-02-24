@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Booking.Web.Interfaces;
 using Booking.Web.Services.Account;
+using Google.Apis.Auth.AspNetCore3;
+using Google.Apis.PeopleService.v1;
 
 namespace Booking.Web.Controllers
 {
@@ -97,6 +99,16 @@ namespace Booking.Web.Controllers
         {
             var token = Request.Cookies[_accountService.LocationAccessToken];
             return Json(await _accountService.CheckValidUser(token));
+        }
+
+        [GoogleScopedAuthorize(PeopleServiceService.ScopeConstants.UserinfoProfile)]
+        public async Task<IActionResult> LoginWithGoogle([FromServices] IGoogleAuthProvider auth)
+        {
+            var jwtTokenResult = await _accountService.LoginWithGoogle(auth);
+
+            await SetAccessTokenAndRefreshToken(jwtTokenResult);
+
+            return RedirectToAction("Index", "City");
         }
     }
 }
