@@ -4,6 +4,6 @@
     {
         public IList<string> Files { get; set; }
         public void UploadFiles(IFormFileCollection files, string dirPath);
-        public void DeleteFile(string fileName);
+        public void DeleteFile(IList<string> fileNames);
     }
 }

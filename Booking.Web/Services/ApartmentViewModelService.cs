@@ -38,7 +38,7 @@ namespace Booking.Web.Services
 
         public async Task DeleteApartmentAsync(int id)
         {
-            var existingApartment = await _unitOfWork.Apartments.GetByIdAsync(id);
+            var existingApartment = await _unitOfWork.Apartments.GetByIdAsync(id, x => x.Pictures);
             if (existingApartment is null)
             {
                 var exception = new Exception($"Apartment {id} was not found");
@@ -64,6 +64,7 @@ namespace Booking.Web.Services
             var queryOptions = new QueryEntityOptions<Apartment>()
                 .AddSqlQuery(query)
                 .AddIncludeOption(x => x.City!)
+                .AddIncludeOption(x => x.Pictures)
                 .AddSortOption(false, y => y.Price)
                 .SetFilterOption(x => 
                     (!apartmentOptions.ApartmentTypeFilterApplied.HasValue || x.ApartmentTypeId == apartmentOptions.ApartmentTypeFilterApplied) &&
@@ -84,7 +85,7 @@ namespace Booking.Web.Services
 
         public async Task<ApartmentViewModel> GetApartmentViewModelByIdAsync(int id)
         {
-            var existingApartment = await _unitOfWork.Apartments.GetByIdAsync(id, x => x.City!);
+            var existingApartment = await _unitOfWork.Apartments.GetByIdAsync(id, x => x.City!, x => x.Pictures);
             if (existingApartment == null)
             {
                 var exception = new Exception($"Apartment with id = {id} was not found");
@@ -99,7 +100,7 @@ namespace Booking.Web.Services
 
         public async Task UpdateApartmentAsync(ApartmentViewModel viewModel)
         {
-            var existingApartment = await _unitOfWork.Apartments.GetByIdAsync(viewModel.Id);
+            var existingApartment = await _unitOfWork.Apartments.GetByIdAsync(viewModel.Id, x => x.Pictures);
             if (existingApartment is null)
             {
                 var exception = new Exception($"Apartment {viewModel.Id} was not found");
@@ -107,7 +108,7 @@ namespace Booking.Web.Services
             }
 
             Apartment.ApartmentDetails details = new Apartment.ApartmentDetails(viewModel.Name, viewModel.Description,viewModel.Price, 
-                                                viewModel.Picture, viewModel.ApartmentTypeFilterApplied, viewModel.CityFilterApplied,viewModel.Address, viewModel.PeopleNumber);
+                                                viewModel.Pictures, viewModel.ApartmentTypeFilterApplied, viewModel.CityFilterApplied,viewModel.Address, viewModel.PeopleNumber);
             existingApartment.UpdateDetails(details);
             await _unitOfWork.Apartments.UpdateAsync(existingApartment);
         }
@@ -136,6 +137,11 @@ namespace Booking.Web.Services
             }
 
             return cities;
+        }
+
+        public void DeleteApartmentPictures(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

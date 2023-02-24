@@ -1,4 +1,5 @@
 ﻿using Booking.ApplicationCore.Constants;
+using Booking.ApplicationCore.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,33 @@ namespace Booking.ApplicationCore.Extentions
         public static string CardText(this string text)
         {
             return text.Substring(0, Math.Min(text.Length, ApplicationConstants.CardTextSimbolCount))+"...";
+        }
+
+        public static IList<ApartmentPicture> ToListApartmentPictures(this IList<string> filesList)
+        {            
+            IList<ApartmentPicture> pictureList = new List<ApartmentPicture>();
+            if (filesList != null)
+            {
+                foreach (var file in filesList)
+                {
+                    pictureList.Add(new ApartmentPicture { PictureUrl = file });
+                }
+            }
+
+            return pictureList;
+        }
+        public static IList<string> ToListStringPaths(this IList<ApartmentPicture> picturesList)
+        {
+            IList<string> pictureList = new List<string>();
+            if (picturesList != null)
+            {
+                foreach (var picture in picturesList)
+                {
+                    pictureList.Add(picture.PictureUrl);
+                }
+            }
+
+            return pictureList;
         }
     }
 }

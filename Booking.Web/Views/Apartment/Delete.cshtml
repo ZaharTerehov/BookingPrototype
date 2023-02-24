@@ -53,7 +53,7 @@
             </div>
         </div>
         <div class="col-12">
-            <img style="border-radius:10px; border:1px solid #ddd" width="300px" src="~/@Model.Picture" alt="Photo"/>
+            <img style="border-radius:10px; border:1px solid #ddd" width="300px" src="~/@Model.Pictures.FirstOrDefault()!.PictureUrl" alt="Photo"/>
         </div>
         <form asp-action="DeleteApartment">
             <input type="hidden" name="id" value="@Model.Id"/>
