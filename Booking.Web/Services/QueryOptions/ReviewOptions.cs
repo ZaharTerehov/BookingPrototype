@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Booking.ApplicationCore.QueryOptions
+namespace Booking.Web.Services.QueryOptions
 {
     public sealed class ReviewOptions
     {

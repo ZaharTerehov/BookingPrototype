@@ -13,8 +13,6 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" name="apartmentId" value="@(Model.ApartmentId)" />
-            @Model.ApartmentId
-            @apartmentId
             <div class="form-group">
                 <label asp-for="VoterName" class="control-label"></label>
                 <input asp-for="VoterName" class="form-control" />

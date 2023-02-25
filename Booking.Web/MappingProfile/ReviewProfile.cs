@@ -21,7 +21,9 @@ namespace Booking.Web.MappingProfile
                 .ForMember(dst => dst.ApartmentId, opt => opt.MapFrom(entity => entity.ApartmentId));
 
             CreateMap<Apartment, ReviewViewModel>()
-                .ForMember(dst => dst.ApartmentId, opt => opt.MapFrom(entity => entity.Id));
+                .ForMember(dst => dst.ApartmentId, opt => opt.MapFrom(entity => entity.Id))
+                .ForMember(dst => dst.Id, opt => opt.Ignore());
+                
 
         }
     }

@@ -1,8 +1,8 @@
 ﻿using AspNetCore;
 using Booking.ApplicationCore.Models;
-using Booking.ApplicationCore.QueryOptions;
 using Booking.Web.Interfaces;
 using Booking.Web.Models;
+using Booking.Web.Services.QueryOptions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Booking.Web.Controllers
@@ -34,7 +34,7 @@ namespace Booking.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Create(ReviewOptions reviewOptions)
         {
-            var newReview = new ReviewViewModel();
+            var newReview = await _reviewViewModelService.GetNewReviewViewModelAsync(reviewOptions);
             return View(newReview);
         }
 

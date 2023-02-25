@@ -1,4 +1,5 @@
 ﻿using Booking.Web.Models;
+using Booking.Web.Services.QueryOptions;
 
 namespace Booking.Web.Interfaces
 {
@@ -6,5 +7,6 @@ namespace Booking.Web.Interfaces
     {
         Task<ReviewViewModel> GetReviewViewModelByIdAsync(int id);
         Task CreateReviewAsync(ReviewViewModel viewModel);
+        Task<ReviewViewModel> GetNewReviewViewModelAsync(ReviewOptions reviewOptions);
     }
 }
