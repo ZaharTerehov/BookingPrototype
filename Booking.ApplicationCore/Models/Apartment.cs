@@ -32,7 +32,7 @@ namespace Booking.ApplicationCore.Models
         public ApartmentType? ApartmentType { get; set; }
         public int? ApartmentTypeId { get; set; }
 
-        public IList<Review> Reviews { get; set; }
+        public IList<Review>? Reviews { get; set; }
 
         public IList<Reservation>? Reservations { get; set; }
         public Apartment()

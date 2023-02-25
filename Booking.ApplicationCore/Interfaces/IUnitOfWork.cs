@@ -15,5 +15,6 @@ namespace Booking.ApplicationCore.Interfaces
         IRepository<Apartment> Apartments { get; }
         IRepository<User> Users { get; }
         IRepository<Reservation> Reservations { get; }
+        IRepository<Review> Reviews { get; }
     }
 }

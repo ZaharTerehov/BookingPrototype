@@ -27,6 +27,12 @@
                     <i class="bi bi-trash"></i>
                     Delete
                 </a>
+                <a asp-controller="Review" asp-action="Create"
+               asp-route-reserveOptions.apartmentId="@item.Id"
+                    class="btn btn-secondary btn-sm">
+                    <i class="bi"></i>
+                    Add review
+                </a>
             </div>
         </div>
      </div>
