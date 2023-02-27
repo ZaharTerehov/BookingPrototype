@@ -77,11 +77,14 @@
                     <span asp-validation-for="Price" class="text-danger"></span>
                 </div>
             </div>
-            <div class="col-12">
-                <div class="input-group mb-3">
+            <div class="col-12 mb-3">
+                <div class="input-group">
                     <label asp-for="Pictures" class="input-group-text w-10" id="input-picture">Pictures</label>
-                    <input type="file" name="files" class="form-control" multiple />
-                </div>
+                    <input type="file" name="files" class="form-control" multiple />                    
+                </div> 
+                <span class="text-black" style="font-size: small; font-family:'Comic Sans MS'">
+                    Don't choose any files if you don't want to change current photos
+                </span>
             </div>
             <button type="submit" class="btn btn-primary" style="width: 150px;">Edit</button>
             <a asp-controller="Apartment" asp-action="Index" class="btn btn-outline-primary" style="width:150px">

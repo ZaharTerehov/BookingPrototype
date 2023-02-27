@@ -45,7 +45,7 @@ namespace Booking.Web.Controllers
                 if(response.StatusCode == ApplicationCore.Enum.StatusCode.OK)
                 {
                     await SetAccessTokenAndRefreshToken(response.Data!);
-					return RedirectToAction("Index", "City");
+					return RedirectToAction("Index", "Apartment");
 				}
 
                 ModelState.AddModelError("", response?.Description!);
@@ -108,7 +108,7 @@ namespace Booking.Web.Controllers
 
             await SetAccessTokenAndRefreshToken(jwtTokenResult);
 
-            return RedirectToAction("Index", "City");
+            return RedirectToAction("Index", "Apartment");
         }
     }
 }
