@@ -10,6 +10,7 @@ namespace Booking.Web.Models
 
         public string VoterName { get; set; }
         public int NumStars { get; set; }
+        [Required]
         public string Comment { get; set; }
 
         //For Apartment
