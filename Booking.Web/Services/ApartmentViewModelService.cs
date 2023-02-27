@@ -65,6 +65,7 @@ namespace Booking.Web.Services
                 .AddSqlQuery(query)
                 .AddIncludeOption(x => x.City!)
                 .AddIncludeOption(x => x.Pictures)
+                .AddIncludeOption(x => x.Reviews!)
                 .AddSortOption(false, y => y.Price)
                 .SetFilterOption(x => 
                     (!apartmentOptions.ApartmentTypeFilterApplied.HasValue || x.ApartmentTypeId == apartmentOptions.ApartmentTypeFilterApplied) &&

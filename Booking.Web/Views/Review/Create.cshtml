@@ -19,7 +19,7 @@ Fill out the form below for feedback.</p>
             </div>
             <div class="form-group" style="margin-bottom:5px;">
                 <label asp-for="NumStars" class="control-label"></label>
-                <input asp-for="NumStars" class="form-control" />
+                <input asp-for="NumStars" type="number" min="0" max="10" class="form-control" />
                 <span asp-validation-for="NumStars" class="text-danger"></span>
             </div>
             <p>Leave a comment</p>
