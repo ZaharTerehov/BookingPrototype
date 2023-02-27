@@ -9,7 +9,7 @@
         <div class="col-12">
             <h2 class="text_action">Creation Apartament</h2>
         </div>
-        <form asp-action="Create" enctype="multipart/form-data" class="needs-validation">
+        <form asp-action="Create" enctype="multipart/form-data" class="needs-validation" onsubmit="onCreateApartmentSubmit();">
             <div class="col-12">
                 <div class="input-group">
                     <div class="input-group-prepend w-10">
@@ -75,9 +75,12 @@
                 </div>
             </div>
             <div class="col-12">
-                <div class="input-group mb-3">
-                    <label asp-for="Pictures" class="input-group-text w-10" id="input-picture">Pictures</label>
-                    <input type="file" name="Pictures" class="form-control" required multiple/>
+                <div class="input-group">
+                    <label asp-for="Pictures" class="input-group-text w-10">Pictures</label>
+                    <input type="file" name="Pictures" id="input-picture" class="form-control" required multiple onchange="onInputFileChange();" />
+                </div>
+                <div class="mb-3">
+                    <span class="file-error-message text-danger"></span>
                 </div>
             </div>
             <button type="submit" class="btn btn-primary" style="width: 150px;">Create</button>
