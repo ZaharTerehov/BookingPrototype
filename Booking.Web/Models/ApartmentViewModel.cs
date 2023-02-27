@@ -36,7 +36,7 @@ namespace Booking.Web.Models
 
         public string AverageRage()
         {
-            string result = "No reviews";
+            string result = "No rate";
             if (Reviews != null && Reviews.Count>0)
             {
                 result = Reviews.Average(x => x.NumStars).ToString("N1");
