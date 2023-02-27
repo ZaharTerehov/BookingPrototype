@@ -10,6 +10,7 @@ namespace Booking.ApplicationCore.Models
     public class Review : BaseModel
     {
         public string VoterName { get; set; }
+        [Range(1, 10)]
         public int NumStars { get; set; }
         public string Comment { get; set; }
 
