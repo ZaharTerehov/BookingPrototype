@@ -34,7 +34,7 @@
                    asp-route-reserveOptions.checkInDateS="@Model.Options!.ArrivalDateS"
                    asp-route-reserveOptions.checkOutDateS="@Model.Options.DepartureDateS">
                 <img src="@item.Pictures.FirstOrDefault()!.PictureUrl" class="card-img-top" alt="photo" style="height: 150px">
-                <h6 class="card-title">@item.Name!.CardTitle() - &#36;@item.Price</h6>
+                <h6 class="card-title">@item.Name!.CardTitle() - &#36;@item.Price <span style="color:yellow">@item.AverageRage()&#9733;</span></h6>
                 <p class="card-text">@item.Description!.CardText()</p>
              </a>
             </div>

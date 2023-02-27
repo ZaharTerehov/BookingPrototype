@@ -3,9 +3,9 @@ using Booking.ApplicationCore.Enums;
 using Booking.ApplicationCore.Extentions;
 using Booking.ApplicationCore.QueryOptions;
 using Booking.ApplicationCore.Attributes.Validation;
-using Booking.ApplicationCore.Models;
 using Microsoft.VisualBasic;
 using System.ComponentModel.DataAnnotations;
+using Booking.ApplicationCore.Models.Abstracts;
 
 namespace Booking.Web.Services.QueryOptions
 {

@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Booking.ApplicationCore.Models
+namespace Booking.ApplicationCore.Models.Abstracts
 {
     public abstract class DateIntervalClass : BaseModel
     {
