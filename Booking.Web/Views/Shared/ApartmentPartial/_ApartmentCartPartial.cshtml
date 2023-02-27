@@ -1,12 +1,42 @@
 ﻿@model ApartmentIndexViewModel
 @foreach (var item in Model.Apartments!)
 {
-    <div class="col-3">
-        <div class="card" style="width: 300px; height: 365px">
-            <img src="@item.Pictures.FirstOrDefault()!.PictureUrl" class="card-img-top" alt="photo" style="height: 150px">
-            <div class="card-body">
+@*    <div class="container">
+        <div class = "row">
+            <div class="col-lg-4 col-sm-6">
+                <div class="apartment-card">
+                    <div class="apartment-thumb">
+                        <a asp-controller="Reservation" asp-action="Create"
+                            asp-route-reserveOptions.apartmentId="@item.Id"
+                            asp-route-reserveOptions.checkInDateS="@Model.Options!.ArrivalDateS"
+                            asp-route-reserveOptions.checkOutDateS="@Model.Options.DepartureDateS">
+                            <img src="@item.Pictures.FirstOrDefault()!.PictureUrl" class="card-img-top" alt="photo" style="height: 150px">
+                        </a>
+                    </div>
+                    <div class="apartment-details">
+                        <h6 class="card-title">@item.Name!.CardTitle() - &#36;@item.Price</h6>
+                        <p class="card-text">@item.Description!.CardText()</p>
+                    </div>
+                    <div class="apartment-bottom-details">
+                        <div class="apartment-price">
+                            &#36;@item.Price
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>*@
+
+    <div class="card border-0 rounded-0" style="width: 400px; height: 365px; margin: 5px">
+        <div class="card-body">
+            <a class="text-decoration-none" asp-controller="Reservation" asp-action="Create"
+                   asp-route-reserveOptions.apartmentId="@item.Id"
+                   asp-route-reserveOptions.checkInDateS="@Model.Options!.ArrivalDateS"
+                   asp-route-reserveOptions.checkOutDateS="@Model.Options.DepartureDateS">
+                <img src="@item.Pictures.FirstOrDefault()!.PictureUrl" class="card-img-top" alt="photo" style="height: 150px">
                 <h6 class="card-title">@item.Name!.CardTitle() - &#36;@item.Price</h6>
                 <p class="card-text">@item.Description!.CardText()</p>
+             </a>
             </div>
             <div class="card-footer d-flex justify-content-evenly">
                 <a asp-controller="Apartment" asp-action="Edit" asp-route-id="@item.Id"
@@ -14,20 +44,25 @@
                     <i class="bi bi-pencil-square"></i>
                     Edit
                 </a>
-                <a asp-controller="Reservation" asp-action="Create"
+              @*  <a asp-controller="Reservation" asp-action="Create"
                    asp-route-reserveOptions.apartmentId="@item.Id"
                    asp-route-reserveOptions.checkInDateS="@Model.Options!.ArrivalDateS"
                    asp-route-reserveOptions.checkOutDateS="@Model.Options.DepartureDateS"
                    class="btn btn-secondary btn-sm">
                     <i class="bi bi-ticket-detailed"></i>
                     Details
-                </a>
+                </a>*@
                 <a asp-controller="Apartment" asp-action="Delete" asp-route-id="@item.Id"
                    class="btn btn-secondary btn-sm">
                     <i class="bi bi-trash"></i>
                     Delete
                 </a>
+                <a asp-controller="Review" asp-action="Create"
+                    asp-route-reviewOptions.apartmentId="@item.Id"
+                    class="btn btn-secondary btn-sm">
+                    <i class="bi"></i>
+                    Add review
+                </a>
             </div>
         </div>
-     </div>
 }

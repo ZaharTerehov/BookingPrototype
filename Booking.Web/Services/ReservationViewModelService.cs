@@ -76,7 +76,7 @@ namespace Booking.Web.Services
 
         public async Task<ReservationViewModel> GetNewReservationViewModelAsync(ApartmentReserveOptions reserveOptions)
         {
-            var chosenApartment = await _unitOfWork.Apartments.GetByIdAsync(reserveOptions.ApartmentId, x => x.Pictures);
+            var chosenApartment = await _unitOfWork.Apartments.GetByIdAsync(reserveOptions.ApartmentId, x => x.Pictures, t=>t.Reviews);
             var newReservation = _mapper.Map<ReservationViewModel>(chosenApartment);
             newReservation.ArrivalDateS = reserveOptions.CheckInDateS;
             newReservation.DepartureDateS = reserveOptions.CheckOutDateS;

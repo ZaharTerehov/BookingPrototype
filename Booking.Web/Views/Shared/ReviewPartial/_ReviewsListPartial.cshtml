@@ -1,0 +1,36 @@
+﻿@model ReservationViewModel
+@foreach (var item in Model.Reviews)
+{
+    string color;
+    if (item.NumStars >=8)
+    {
+        color = "#b9ffb5";
+    }
+    else if (item.NumStars >=6 && item.NumStars<8)
+    {
+        color = "#f0f7b0";
+    }
+    else
+    {
+        color = "#ff5e5e";
+    }
+
+    <div class="border" style="background-color: @color; margin-bottom:10px" >
+        @*Верхняя часть*@
+        <div class="justify-content-between d-flex">
+            <div>
+                <h2>@item.VoterName</h2>
+                <p>@item.DateCreated</p>
+            </div>
+
+            <div>
+                <h2>@item.NumStars</h2>
+            </div>
+        </div>
+
+        @*Нижняя часть*@
+        <div>
+            <p>@item.Comment</p>
+        </div>
+    </div>
+}

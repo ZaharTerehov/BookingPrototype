@@ -25,7 +25,7 @@
                 </div>
                 <div class="carousel-inner">
                     <div class="carousel-item active">
-                        <img src="~/@Model.ApartmentPictures!.FirstOrDefault()!.PictureUrl" class="d-block w-100" alt="photo">
+                        <img src="~/@Model.ApartmentPictures!.FirstOrDefault()!.PictureUrl" class="d-block w-75" alt="photo">
                     </div>
                     @foreach (var picture in Model.ApartmentPictures!.Skip(1))
                     {
@@ -104,7 +104,20 @@
                 <a asp-controller=Apartment asp-action="Index" class="btn btn-outline-primary" style="width:150px">
                     Cancel
                 </a>
+
+                <div class="d-flex justify-content-between" style="margin-top:20px">
+                    <h2>Reviews</h2>
+                    <h2>Rate</h2>
+                </div>
+
+                <div class="container">
+                    <div class="row">
+                        <partial name="ReviewPartial/_ReviewsListPartial" model="@Model" />
+                    </div>
+                </div>
+
             </form>
+            
         </div>
     </div>
 </div>

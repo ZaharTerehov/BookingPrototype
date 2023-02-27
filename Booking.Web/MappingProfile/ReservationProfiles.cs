@@ -19,6 +19,7 @@ namespace Booking.Web.MappingProfile
                 .ForMember(dto => dto.ApartmentId, opt => opt.MapFrom(entity => entity.Id))
                 .ForMember(dto => dto.ApartmentName, opt => opt.MapFrom(entity => entity.Name))
                 .ForMember(dto => dto.ApartmentPictures, opt => opt.MapFrom(entity => entity.Pictures))
+                .ForMember(dto => dto.Reviews, opt => opt.MapFrom(entity => entity.Reviews))
                 .ForMember(dto => dto.ApartmentDescription, opt => opt.MapFrom(entity => entity.Description));
         }
     }
