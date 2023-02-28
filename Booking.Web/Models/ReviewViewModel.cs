@@ -17,5 +17,9 @@ namespace Booking.Web.Models
         //For Apartment
         [Required]
         public int ApartmentId { get; set; }
+
+        public string ApartmentName { get; set; }
+
+        public IList<ApartmentPicture>? ApartmentPictures { get; set; }
     }
 }

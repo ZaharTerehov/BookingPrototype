@@ -26,7 +26,7 @@ namespace Booking.Web.Services
 
         public async Task<ReviewViewModel> GetNewReviewViewModelAsync(ReviewOptions reviewOptions)
         {
-            var chosenApartment = await _unitOfWork.Apartments.GetByIdAsync(reviewOptions.ApartmentId);
+            var chosenApartment = await _unitOfWork.Apartments.GetByIdAsync(reviewOptions.ApartmentId, x=>x.Pictures);
             var newReview = _mapper.Map<ReviewViewModel>(chosenApartment);
             return newReview;
         }
