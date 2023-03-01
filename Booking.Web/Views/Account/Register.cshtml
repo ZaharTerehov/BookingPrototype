@@ -50,12 +50,7 @@
                                     <input asp-for="NumberPhone" class="form-control textbox-dg font-weight-bold text-center" placeholder="NumberPhone" type="number">
                                     <span asp-validation-for="NumberPhone"/>
                                 </div>
-                                <div class="form-group" data-provide="datepicker">
-                                    <input asp-for="DateOfBirth" type="text" id="datepicker" class="form-control textbox-dg font-weight-bold text-center" placeholder="DateOfBirth">
-                                    <div class="input-group-addon">
-                                        <span class="glyphicon glyphicon-th"></span>
-                                    </div>
-                                </div>
+                                <input type="date" asp-for="DateOfBirth" class="form-control datepicker" placeholder="DateOfBirth" />
                                 <div class="form-group">
                                     <input autocomplete="new-password" asp-for="Password" placeholder="Password" class="form-control textbox-dg font-weight-bold text-center" type="password">
                                     <span asp-validation-for="Password" />

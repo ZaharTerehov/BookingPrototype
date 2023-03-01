@@ -42,7 +42,7 @@ var options = sectionJwtSettings.Get<JwtOptions>();
 var jwtOptions = new JwtOptions(options.SigningKey, options.Issuer, options.Audience, 
     options.AccessTokenExpiryInMinutes, options.RefreshTokenExpiryInMinutes);
 
-builder.Services.AddJwtAuthentication(jwtOptions);
+builder.Services.AddJwtAuthentication(builder.Configuration, jwtOptions);
 
 builder.Services.Configure<JwtOptions>(sectionJwtSettings);
 

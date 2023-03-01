@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -29,15 +31,25 @@
                 </div>
             </div>
             <div class="bk_header__buttons">
-                <a class="nav__link" asp-action="Register" asp-controller="Account">
-                    <div class="bk_header__buttons__button">Register</div>
-                 </a>
-                 <a class="nav__link" asp-action="Login" asp-controller="Account">
-                    <div class="bk_header__buttons__button">Sign in</div>
-                </a>
-                <a class="nav__link" asp-action="Logout" asp-controller="Account">
-                    <div class="bk_header__buttons__button">Logout</div>
-                </a>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <div class="bk_header__buttons__button">
+                        @HttpContextAccessor.HttpContext.Request.Cookies["Name"]
+                        <img src="@HttpContextAccessor.HttpContext.Request.Cookies["Avatar"]" class="rounded-circle" style="width: 25px;" alt="Avatar" />
+                        </div>
+                    <a class="nav__link" asp-action="Logout" asp-controller="Account">
+                        <div class="bk_header__buttons__button">Logout</div>
+                    </a>
+                }
+                else
+                {
+                    <a class="nav__link" asp-action="Register" asp-controller="Account">
+                        <div class="bk_header__buttons__button">Register</div>
+                    </a>
+                    <a class="nav__link" asp-action="Login" asp-controller="Account">
+                        <div class="bk_header__buttons__button">Log in</div>
+                    </a>
+                }
             </div>
         </nav>
         <nav class="bk_header_nav_bar">
