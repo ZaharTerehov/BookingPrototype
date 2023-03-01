@@ -16,6 +16,8 @@ namespace Booking.ApplicationCore.Models
 
         public DateTime? DateOfBirth { get; set; }
 
+        public string? Avatar { get; set; }
+
         public DateTime RegistrationDate { get; set; } = DateTime.Now;
 
         public Role Role { get; set; }
