@@ -1,0 +1,53 @@
+﻿@model Booking.Web.Models.ReviewViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Hello! </h2>
+<p>Your feedback can help other users to choose! <br />
+Fill out the form below for feedback.</p>
+<div>
+    <div>
+        @Model.ApartmentName
+    </div>
+    <div>
+        <img src="~/@Model.ApartmentPictures.FirstOrDefault().PictureUrl" class="d-block w-25" alt="...">
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" name="apartmentId" value="@(Model.ApartmentId)" />
+            <div class="form-group">
+                <label asp-for="VoterName" class="control-label">Enter your name</label>
+                <input asp-for="VoterName" class="form-control" />
+                <span asp-validation-for="VoterName" class="text-danger"></span>
+            </div>
+            <div class="form-group" style="margin-bottom:5px;">
+                <label asp-for="NumStars" class="control-label"></label>
+                <input asp-for="NumStars" type="number" min="0" max="10" class="form-control" />
+                <span asp-validation-for="NumStars" class="text-danger"></span>
+            </div>
+            <p>Leave a comment</p>
+            <div class="form-floating">
+                <textarea asp-for="Comment" class="form-control" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
+                <label for="floatingTextarea">Comments</label>
+                <span asp-validation-for="Comment" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-controller="Apartment" asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

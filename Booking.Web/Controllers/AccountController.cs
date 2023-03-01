@@ -49,7 +49,7 @@ namespace Booking.Web.Controllers
                     SetNameAndAvatar(result.Result.name, result.Result.avatar);
 
                     await SetAccessTokenAndRefreshToken(response.Data!);
-					return RedirectToAction("Index", "City");
+					return RedirectToAction("Index", "Apartment");
 				}
 
                 ModelState.AddModelError("", response?.Description!);
@@ -135,7 +135,7 @@ namespace Booking.Web.Controllers
             HttpContext.Response.Cookies.Delete(".AspNetCore.CookiesC1");
             HttpContext.Response.Cookies.Delete(".AspNetCore.CookiesC2");
 
-            return RedirectToAction("Index", "City");
+            return RedirectToAction("Index", "Apartment");
         }
     }
 }

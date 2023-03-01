@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Booking.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(BookingContext))]
-    [Migration("20230224192128_InitialiseDatabase")]
-    partial class InitialiseDatabase
+    [Migration("20230227131410_InitialiseDB")]
+    partial class InitialiseDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -227,6 +227,42 @@ namespace Booking.Infrastructure.Data.Migrations
                     b.ToTable("Reservations");
                 });
 
+            modelBuilder.Entity("Booking.ApplicationCore.Models.Review", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnOrder(1);
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ApartmentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Comment")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateUpdated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("NumStars")
+                        .HasColumnType("int");
+
+                    b.Property<string>("VoterName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApartmentId");
+
+                    b.ToTable("Reviews");
+                });
+
             modelBuilder.Entity("Booking.ApplicationCore.Models.User", b =>
                 {
                     b.Property<int>("Id")
@@ -332,11 +368,24 @@ namespace Booking.Infrastructure.Data.Migrations
                     b.Navigation("Apartment");
                 });
 
+            modelBuilder.Entity("Booking.ApplicationCore.Models.Review", b =>
+                {
+                    b.HasOne("Booking.ApplicationCore.Models.Apartment", "Apartment")
+                        .WithMany("Reviews")
+                        .HasForeignKey("ApartmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Apartment");
+                });
+
             modelBuilder.Entity("Booking.ApplicationCore.Models.Apartment", b =>
                 {
                     b.Navigation("Pictures");
 
                     b.Navigation("Reservations");
+
+                    b.Navigation("Reviews");
                 });
 #pragma warning restore 612, 618
         }

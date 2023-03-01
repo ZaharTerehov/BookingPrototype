@@ -25,6 +25,7 @@ namespace Booking.Web.Models
         public string? ApartmentName { get; set; }
         public string? ApartmentDescription { get; set; }
         public IList<ApartmentPicture>? ApartmentPictures { get; set; }
+        public IList<Review>? Reviews { get; set; }
 
         public string? FirstPicture { get => ApartmentPictures?.FirstOrDefault()!.PictureUrl; }
         [Required]

@@ -16,8 +16,8 @@ namespace Booking.Web.Models
         [Required]
         [Range(1, double.MaxValue)]
         public decimal Price { get; set; }
-        //[Required]
-        public IList<ApartmentPicture> Pictures { get; set; }
+        [Required]
+        public IList<ApartmentPicture>? Pictures { get; set; }
         public string? CityName { get; set; }
         [Required]
         public string? Address { get; set; }
@@ -32,6 +32,16 @@ namespace Booking.Web.Models
         public IList<SelectListItem>? Cities { get; set; }
         [Required]        
         public int? CityFilterApplied { get; set; }
-        //public string FirstPicture { get => Pictures.FirstOrDefault()!.PictureUrl; }
+        public IList<Review>? Reviews { get; set; }
+
+        public string AverageRage()
+        {
+            string result = "No rate";
+            if (Reviews != null && Reviews.Count>0)
+            {
+                result = Reviews.Average(x => x.NumStars).ToString("N1");
+            }
+            return result;
+        }
     }
 }
