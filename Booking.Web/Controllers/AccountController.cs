@@ -4,6 +4,7 @@ using Booking.Web.Interfaces;
 using Booking.Web.Services.Account;
 using Google.Apis.Auth.AspNetCore3;
 using Google.Apis.PeopleService.v1;
+using Newtonsoft.Json.Linq;
 
 namespace Booking.Web.Controllers
 {
@@ -44,6 +45,9 @@ namespace Booking.Web.Controllers
 
                 if(response.StatusCode == ApplicationCore.Enum.StatusCode.OK)
                 {
+                    var result = _accountService.GetNameAndAvatar(model.Login);
+                    SetNameAndAvatar(result.Result.name, result.Result.avatar);
+
                     await SetAccessTokenAndRefreshToken(response.Data!);
 					return RedirectToAction("Index", "City");
 				}
@@ -52,6 +56,20 @@ namespace Booking.Web.Controllers
 			}
 
             return View(model);
+        }
+
+        private void SetNameAndAvatar(string name, string avatar)
+        {
+            HttpContext.Response.Cookies.Append("Name", name,
+            new CookieOptions
+            {
+                Expires = DateTime.Now.AddMinutes(10)
+            });
+            HttpContext.Response.Cookies.Append("Avatar", avatar,
+            new CookieOptions
+            {
+                Expires = DateTime.Now.AddMinutes(10)
+            });
         }
 
         [HttpGet]
@@ -81,9 +99,12 @@ namespace Booking.Web.Controllers
 		}
 
         [HttpGet]
-        public async Task<IActionResult> ConfirmEmail(string userId, string token)
+        public async Task<IActionResult> ConfirmEmail(string email, string token)
         {
-            var result = await _accountService.ConfirmEmail(int.Parse(userId), token);
+            var result = await _accountService.ConfirmEmail(email, token);
+
+            var nameAndAvatar = _accountService.GetNameAndAvatar(email);
+            SetNameAndAvatar(nameAndAvatar.Result.name, nameAndAvatar.Result.avatar);
 
             if (result.StatusCode == ApplicationCore.Enum.StatusCode.OK)
             {
@@ -104,9 +125,15 @@ namespace Booking.Web.Controllers
         [GoogleScopedAuthorize(PeopleServiceService.ScopeConstants.UserinfoProfile)]
         public async Task<IActionResult> LoginWithGoogle([FromServices] IGoogleAuthProvider auth)
         {
-            var jwtTokenResult = await _accountService.LoginWithGoogle(auth);
+            var result = await _accountService.LoginWithGoogle(auth);
 
-            await SetAccessTokenAndRefreshToken(jwtTokenResult);
+            SetNameAndAvatar($"{result.user.Name} {result.user.Surname}", result.user.Avatar);
+
+            await SetAccessTokenAndRefreshToken(result.jwt);
+
+            HttpContext.Response.Cookies.Delete(".AspNetCore.Cookies");
+            HttpContext.Response.Cookies.Delete(".AspNetCore.CookiesC1");
+            HttpContext.Response.Cookies.Delete(".AspNetCore.CookiesC2");
 
             return RedirectToAction("Index", "City");
         }
