@@ -19,8 +19,6 @@ namespace Booking.Web.Services.Account
 
         public async Task<JwtTokenResult> GenerateAccessToken(User user)
         {
-            var expiration = DateTime.Now.AddMinutes(_jwtOptions.AccessTokenExpiryInMinutes);
-
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Email, user.Email),
@@ -35,20 +33,20 @@ namespace Booking.Web.Services.Account
 				_jwtOptions.Audience,
                 claims,
                 DateTime.UtcNow,
-                expiration,
+                DateTime.Now.AddMinutes(_jwtOptions.AccessTokenExpiryInMinutes),
                 new SigningCredentials(
 					new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_jwtOptions.SigningKey)),
 					SecurityAlgorithms.HmacSha256)
             );
 
-            string accessToken = new JwtSecurityTokenHandler()
+            var accessToken = new JwtSecurityTokenHandler()
                 .WriteToken(jwtToken);
 
             return new JwtTokenResult()
             {
                 AccessToken = accessToken,
-                AccessTokenExpires = expiration
-			};
+                AccessTokenExpires = DateTime.Now.AddMinutes(_jwtOptions.RefreshTokenExpiryInMinutes)
+            };
 		}
 
         public async Task<RefreshToken> GenerateRefreshToken()
@@ -56,7 +54,7 @@ namespace Booking.Web.Services.Account
             var refreshToken = new RefreshToken
             {
                 Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
-                Expires = DateTime.Now.AddMinutes(_jwtOptions.RefreshTokenExpiryInMinutes),
+                Expires = DateTime.Now.AddMinutes(_jwtOptions.RefreshTokenExpiryInMinutes)
             };
 
             return refreshToken;

@@ -1,4 +1,5 @@
-﻿using Booking.ApplicationCore.Response;
+﻿using Booking.ApplicationCore.Models;
+using Booking.ApplicationCore.Response;
 using Booking.Web.Models;
 using Booking.Web.Services.Account;
 using Google.Apis.Auth.AspNetCore3;
@@ -19,8 +20,10 @@ namespace Booking.Web.Interfaces
 
         Task<bool> CheckValidUser(string accessToken);
 
-        Task<BaseResponse<JwtTokenResult>> ConfirmEmail(int userId, string token);
+        Task<BaseResponse<JwtTokenResult>> ConfirmEmail(string email, string token);
 
-        Task<JwtTokenResult> LoginWithGoogle([FromServices] IGoogleAuthProvider auth);
+        Task<(User user, JwtTokenResult jwt)> LoginWithGoogle([FromServices] IGoogleAuthProvider auth);
+
+        Task<(string name, string avatar)> GetNameAndAvatar(string email);
     }
 }

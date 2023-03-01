@@ -16,11 +16,14 @@ using Google.Apis.Auth.AspNetCore3;
 using Google.Apis.PeopleService.v1;
 using Google.Apis.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.FileProviders;
 
 namespace Booking.Web.Services
 {
     public sealed class AccountService : IAccountServiceViewModelService
     {
+        private readonly IWebHostEnvironment _webHostEnvironment;
+
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
@@ -32,13 +35,14 @@ namespace Booking.Web.Services
         public string LocationRefreshToken { get; init; } = "Booking.Application.IdR";
 
         public AccountService(IMapper mapper, IUnitOfWork unitOfWork, ITokenService jwtProvider,
-            ICaptchaValidator captchaValidator, IEmailSender emailSender)
+            ICaptchaValidator captchaValidator, IEmailSender emailSender, IWebHostEnvironment webHostEnvironment)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
             _jwtProvider = jwtProvider;
             _captchaValidator = captchaValidator;
             _emailSender = emailSender;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         public async Task<BaseResponse<JwtTokenResult>> Register(RegisterViewModel model)
@@ -61,11 +65,16 @@ namespace Booking.Web.Services
                     };
                 }
 
+                var provider = new PhysicalFileProvider(_webHostEnvironment.WebRootPath);
+                var contents = provider.GetDirectoryContents(Path.Combine("Images", "Account"));
+                var objFiles = contents.OrderBy(m => m.LastModified).ToList();
+
                 var newUser = new User()
                 {
 					Role = Role.User,
                     Name = model.Name,
                     Email = model.Email,
+                    Avatar = "/Images/Account/" + objFiles[0].Name,
                     Surname = model.Surname,
                     DateOfBirth = model.DateOfBirth,
                     NumberPhone = model.NumberPhone,
@@ -104,18 +113,20 @@ namespace Booking.Web.Services
 
             var validEmailToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(confirmEmailToken));
 
-            return ($"https://localhost:7048/Account/ConfirmEmail?userid={user.Id}&token={validEmailToken}", validEmailToken);
+            return ($"https://localhost:7048/Account/ConfirmEmail?email={user.Email}&token={validEmailToken}", validEmailToken);
         }
 
-        public async Task<BaseResponse<JwtTokenResult>> ConfirmEmail(int userId, string token)
+        public async Task<BaseResponse<JwtTokenResult>> ConfirmEmail(string email, string token)
         {
-            var existingUser = await _unitOfWork.Users.GetByIdAsync(userId);
+            var optionsEmail = new QueryEntityOptions<User>().SetFilterOption(y => y.Email == email);
+            var users = await _unitOfWork.Users.GetAllAsync(optionsEmail);
+            var user = users.First();
 
-            if(existingUser != null && existingUser.EmailVerificationToken == token)
+            if(user != null && user.EmailVerificationToken == token)
             {
-                existingUser.EmailIsVerified = true;
+                user.EmailIsVerified = true;
 
-                var result = await Authenticate(existingUser);
+                var result = await Authenticate(user);
 
                 return new BaseResponse<JwtTokenResult>()
                 {
@@ -202,7 +213,8 @@ namespace Booking.Web.Services
                 return new BaseResponse<JwtTokenResult>()
                 {
                     Data = result,
-                    StatusCode = StatusCode.OK
+                    StatusCode = StatusCode.OK,
+                    Description = $"{user.Name} {user.Surname}"
                 };
             }
             catch (Exception ex)
@@ -244,7 +256,7 @@ namespace Booking.Web.Services
             string email = principal.Claims.First(claim => claim.Type == "sub").Value;
 
             var options = new QueryEntityOptions<User>().SetFilterOption(y => y.Email == email);
-            var users = await _unitOfWork.Users.GetAllAsync(options); 
+            var users = await _unitOfWork.Users.GetAllAsync(options);
 
             if (users.Count == 0)
                 return null;
@@ -259,7 +271,20 @@ namespace Booking.Web.Services
                 return null;
         }
 
-        public async Task<JwtTokenResult> LoginWithGoogle([FromServices] IGoogleAuthProvider auth)
+        public async Task<(string name, string avatar)> GetNameAndAvatar(string email)
+        {
+            var options = new QueryEntityOptions<User>().SetFilterOption(y => y.Email == email);
+            var users = await _unitOfWork.Users.GetAllAsync(options);
+
+            if (users is null)
+                return (null, null);
+
+            var user = users.First();
+
+            return ($"{user.Name} {user.Surname}", user.Avatar);
+        }
+
+        public async Task<(User, JwtTokenResult)> LoginWithGoogle([FromServices] IGoogleAuthProvider auth)
         {
             var cred = await auth.GetCredentialAsync();
             var service = new PeopleServiceService(new BaseClientService.Initializer()
@@ -291,6 +316,7 @@ namespace Booking.Web.Services
                 Name = profile.Names[0].GivenName,
                 Email = profile.EmailAddresses[0].Value,
                 Surname = profile.Names[0].FamilyName,
+                Avatar = profile.Photos[0].Url,
                 DateOfBirth = dateOfBirth,
                 NumberPhone = numberPhone,
                 Password = HashPasswordHelper.HashPassword(profile.EmailAddresses[0].Value),
@@ -301,10 +327,10 @@ namespace Booking.Web.Services
             var users = await _unitOfWork.Users.GetAllAsync(optionsEmail);
 
             if (users.Count > 0)
-                return await Authenticate(users.First());
+                return (users.First(), await Authenticate(users.First()));
 
             await _unitOfWork.Users.CreateAsync(newUser);
-            return await Authenticate(newUser);
+            return (newUser, await Authenticate(newUser));
         }
     }
 }
