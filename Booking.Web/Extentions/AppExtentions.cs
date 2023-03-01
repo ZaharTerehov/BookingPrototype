@@ -33,6 +33,7 @@ namespace Booking.Web.Extentions
         }
 
         public static IServiceCollection AddJwtAuthentication(this IServiceCollection services,
+            IConfiguration configuration,
             JwtOptions tokenOptions)
         {
 			services.AddScoped<ITokenService, TokenService>(serviceProvider =>
@@ -43,13 +44,13 @@ namespace Booking.Web.Extentions
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = GoogleOpenIdConnectDefaults.AuthenticationScheme;
                 options.DefaultForbidScheme = GoogleOpenIdConnectDefaults.AuthenticationScheme;
-                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;               
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             }) 
             .AddCookie()
             .AddGoogleOpenIdConnect(options =>
             {
-                options.ClientId = "795475899726-kbmr7p6nfnssv1q40ddo652ifa9vh0c0.apps.googleusercontent.com";
-                options.ClientSecret = "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";
+                options.ClientId = configuration.GetValue<string>("GoogleOpenIdConnect:ClientId");
+                options.ClientSecret = configuration.GetValue<string>("GoogleOpenIdConnect:ClientSecret");
             })
             .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
             {
