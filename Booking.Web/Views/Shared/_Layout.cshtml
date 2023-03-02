@@ -1,5 +1,11 @@
 ﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 
+@{
+    var name = HttpContextAccessor.HttpContext.Request.Cookies["Name"];
+    var avatar = HttpContextAccessor.HttpContext.Request.Cookies["Avatar"];
+    var token = HttpContextAccessor.HttpContext.Request.Cookies["Booking.Application.IdR"];
+}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -32,11 +38,11 @@
                 </div>
             </div>
             <div class="bk_header__buttons">
-                @if (User.Identity.IsAuthenticated)
+                @if (name != null && avatar != null && token != null)
                 {
                     <div class="bk_header__buttons__button">
-                        @HttpContextAccessor.HttpContext.Request.Cookies["Name"]
-                        <img src="@HttpContextAccessor.HttpContext.Request.Cookies["Avatar"]" class="rounded-circle" style="width: 25px;" alt="Avatar" />
+                        @name
+                        <img src=@avatar class="rounded-circle" style="width: 25px;" alt="Avatar" />
                         </div>
                     <a class="nav__link" asp-action="Logout" asp-controller="Account">
                         <div class="bk_header__buttons__button">Logout</div>

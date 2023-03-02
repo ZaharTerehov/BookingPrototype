@@ -49,8 +49,8 @@ namespace Booking.Web.Controllers
                     SetNameAndAvatar(result.Result.name, result.Result.avatar);
 
                     await SetAccessTokenAndRefreshToken(response.Data!);
-					return RedirectToAction("Index", "Apartment");
-				}
+                    return Redirect(Request.Headers["Referer"].ToString());
+                }
 
                 ModelState.AddModelError("", response?.Description!);
 			}
